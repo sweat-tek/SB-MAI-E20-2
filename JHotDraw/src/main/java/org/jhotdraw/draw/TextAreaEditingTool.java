@@ -77,7 +77,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
     public void draw(Graphics2D g) {
     }
 
-    protected void beginEdit(TextHolderFigure textHolder) {
+    private void beginEdit(TextHolderFigure textHolder) {
         if (textArea == null) {
             textArea = new FloatingTextArea();
 

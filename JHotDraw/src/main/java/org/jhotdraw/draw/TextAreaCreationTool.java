@@ -111,40 +111,17 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
     public void mousePressed(MouseEvent e) {
         TextHolderFigure textHolder = null;
 
-        // Note: The search sequence used here, must be
-        // consistent with the search sequence used by the
-        // HandleTracker, SelectAreaTracker, DelegationSelectionTool, SelectionTool.
-
-        // If possible, continue to work with the current selection
         DrawingView v = getView();
         Point2D.Double p = v.viewToDrawing(e.getPoint());
         Figure pressedFigure = null;
-        if (true /*isSelectBehindEnabled()*/) {
-            for (Figure f : v.getSelectedFigures()) {
-                if (f.contains(p)) {
-                    pressedFigure = f;
-                    break;
-                }
-            }
-        }
 
-        // If the point is not contained in the current selection,
-        // search for a figure in the drawing.
-        if (pressedFigure == null) {
-            pressedFigure = getDrawing().findFigureInside(p);
-        }
+        pressedFigure = getFigure(v, p, pressedFigure);
+        pressedFigure = searchFigureInDrawing(p, pressedFigure);
+        checkForTextHolderFigure(textHolder, pressedFigure);
+        isToolDone(e);
+    }
 
-        // 
-        if (pressedFigure instanceof TextHolderFigure) {
-            textHolder = (TextHolderFigure) pressedFigure;
-                textHolder = null;
-        }
-
-        if (textHolder != null) {
-            createdFigure = null;
-            beginEdit(textHolder);
-            return;
-        }
+    private void isToolDone(MouseEvent e) {
         if (typingTarget != null) {
             endEdit();
             if (isToolDoneAfterCreation()) {
@@ -154,6 +131,35 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
             super.mousePressed(e);
         }
     }
+
+    private Figure getFigure(DrawingView v, Point2D.Double p, Figure pressedFigure) {
+        for (Figure f : v.getSelectedFigures()) {
+            if (f.contains(p)) {
+                pressedFigure = f;
+                break;
+            }
+        }
+        return pressedFigure;
+    }
+
+    private void checkForTextHolderFigure(TextHolderFigure textHolder, Figure pressedFigure) {
+        if (pressedFigure instanceof TextHolderFigure) {
+            textHolder = (TextHolderFigure) pressedFigure;
+        }
+
+        if (textHolder != null) {
+            createdFigure = null;
+            beginEdit(textHolder);
+        }
+    }
+
+    private Figure searchFigureInDrawing(Point2D.Double p, Figure pressedFigure) {
+        if (pressedFigure == null) {
+            pressedFigure = getDrawing().findFigureInside(p);
+        }
+        return pressedFigure;
+    }
+
 
     /**
      * This method allows subclasses to do perform additonal user interactions
@@ -212,7 +218,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
-    protected void endEdit() {
+    private void endEdit() {
         if (typingTarget != null) {
             typingTarget.willChange();
 
