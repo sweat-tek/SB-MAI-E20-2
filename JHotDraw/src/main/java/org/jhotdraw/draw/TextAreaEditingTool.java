@@ -108,7 +108,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
         return r;
     }
 
-    protected void endEdit() {
+    private void endEdit() {
         if (typingTarget != null) {
             typingTarget.willChange();
 
