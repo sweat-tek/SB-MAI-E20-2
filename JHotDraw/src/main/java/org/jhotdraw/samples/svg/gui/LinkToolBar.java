@@ -281,7 +281,8 @@ public class LinkToolBar extends AbstractToolBar {
         return label;
 
     }
-
+    // paremeter object, builder
+    // Builder pattern
     private JScrollPane buildJScrollPane(int horPaneConstantPolicy, int verPaneConstantPolicy,
             String clientPropertyKey, String clientPropertyValue, Border border, Component viewPortView) {
         JScrollPane scrollPane = new JScrollPane();
