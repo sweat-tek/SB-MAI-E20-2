@@ -25,3 +25,11 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file JHotDraw/pom.xml
+
+      - name: Merge master -> dev/linetool
+        uses: devmasx/merge-branch@v1.3.0
+        with:
+          type: now
+          from_branch: master
+          target_branch: dev/linetool
+          github_token: ${{ github.token }}
