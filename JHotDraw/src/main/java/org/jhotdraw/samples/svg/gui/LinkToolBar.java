@@ -28,6 +28,7 @@ import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.gui.plaf.palette.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
+import org.jhotdraw.samples.svg.gui.builder.Constraints;
 
 /**
  * LinkToolBar.
@@ -83,15 +84,16 @@ public class LinkToolBar extends AbstractToolBar {
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
         jPanel = new JPanel();
+        jLabel = new JLabel();
+        jScrollPane = new JScrollPane();
+        jattrTextArea = new JAttributeTextArea<>();
+        jattrTextField = new JAttributeTextField<>();
+        gridBagConstraints = new GridBagConstraints();
         switch (state) {
             case 1: {
-                jLabel = new JLabel();
-                jScrollPane = new JScrollPane();
-                jattrTextArea = new JAttributeTextArea<>();
-                jattrTextField = new JAttributeTextField<>();
-                gridBagConstraints = new GridBagConstraints();
 
-                jPanel = buildJPanel(new GridBagLayout(), new EmptyBorder(5, 5, 5, 8), false);
+                //jPanel = buildJPanel(new GridBagLayout(), new EmptyBorder(5, 5, 5, 8), false);
+                buildJPanel(new GridBagLayout(), new EmptyBorder(5, 5, 5, 8), false);
                 //p.setOpaque(false);
                 //p.setLayout(new GridBagLayout());
 
@@ -99,32 +101,35 @@ public class LinkToolBar extends AbstractToolBar {
                 //p.setBorder(new EmptyBorder(5, 5, 5, 8));
                 // Link field
                 //JLabel linkLabel;
-                JScrollPane scrollPane;
-                JAttributeTextArea<String> linkField = new JAttributeTextArea<String>();
+                //JScrollPane scrollPane;
+                //JAttributeTextArea<String> linkField = new JAttributeTextArea<String>();
+                buildJLabelView((LabelUI) PaletteLabelUI.createUI(jLabel), labels.getString("attribute.figureLink.toolTipText"), labels.getString("attribute.figureLink.text"), PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
+                buildJLabelProperty(jattrTextArea);
+                //buildJLabel(labels.getString("attribute.figureLink.toolTipText"), labels.getString("attribute.figureLink.text"), PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), linkField);
 
-                JLabel linkLabel = buildJLabel(labels.getString(
-                        "attribute.figureLink.toolTipText"),
-                        labels.getString("attribute.figureLink.text"), PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), linkField);
-                //linkLabel.setUI((LabelUI) PaletteLabelUI.createUI(linkLabel));
+//linkLabel.setUI((LabelUI) PaletteLabelUI.createUI(linkLabel));
                 //linkLabel.setToolTipText(labels.getString("attribute.figureLink.toolTipText"));
                 //linkLabel.setText(labels.getString("attribute.figureLink.text")); // NOI18N
                 //linkLabel.setFont(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
-
                 //linkField = new JAttributeTextArea<String>();
                 //linkLabel.setLabelFor(linkField);
-                GridBagConstraints gbc = buildGridBagConstraints(0, 0, new Insets(-2, 0, -2, 0), 0, GridBagConstraints.REMAINDER, 0, 0, GridBagConstraints.SOUTHWEST);
+                //GridBagConstraints gbc = buildGridBagConstraints(0, 0, new Insets(-2, 0, -2, 0), 0, GridBagConstraints.REMAINDER, 0, 0, GridBagConstraints.SOUTHWEST);
+                Constraints gbc = new Constraints.Builder().setgbcObj(gridBagConstraints = new GridBagConstraints()).withgridx(0).withinsets(new Insets(-2, 0, -2, 0)).withanchor(GridBagConstraints.SOUTHWEST).withgridwidth(GridBagConstraints.REMAINDER).build();
+
                 //gbc = new GridBagConstraints();
                 //gbc.gridx = 0;
                 //gbc.insets = new Insets(-2, 0, -2, 0);
                 //gbc.anchor = GridBagConstraints.SOUTHWEST;
                 //gbc.gridwidth = GridBagConstraints.REMAINDER;
-                jPanel.add(linkLabel, gbc);
+                jPanel.add(this.jLabel, gbc.getGridBagConstraints());
 
                 //scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 //scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
                 //scrollPane.putClientProperty("JComponent.sizeVariant", "small");
                 //scrollPane.setBorder(PaletteLookAndFeel.getInstance().getBorder("ScrollPane.border"));
-                linkField = buildTextArea(labels.getString("attribute.figureLink.toolTipText"), 8, true, 2, true, PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), new DefaultFormatterFactory(new DefaultFormatter()));
+                //linkField = buildTextArea(labels.getString("attribute.figureLink.toolTipText"), 8, true, 2, true, PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), new DefaultFormatterFactory(new DefaultFormatter()));
+                buildTextAreaView(true, true, PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
+                buildTextAreaProperty(labels.getString("attribute.figureLink.toolTipText"), 8, 2, new DefaultFormatterFactory(new DefaultFormatter()));
                 //linkField.setToolTipText(labels.getString("attribute.figureLink.toolTipText"));
                 //linkField.setColumns(8);
                 //linkField.setLineWrap(true);
@@ -132,12 +137,13 @@ public class LinkToolBar extends AbstractToolBar {
                 //linkField.setWrapStyleWord(true);
                 //linkField.setFont(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
                 //linkField.setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
-                new FigureAttributeEditorHandler<String>(LINK, linkField, editor, false);
-                scrollPane = buildJScrollPane(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER,
-                        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, "JComponent.sizeVariant", "small",
-                        PaletteLookAndFeel.getInstance().getBorder("ScrollPane.border"), linkField);
+                new FigureAttributeEditorHandler<String>(LINK, jattrTextArea, editor, false);
+                buildJScrollPaneView(PaletteLookAndFeel.getInstance().getBorder("ScrollPane.border"), jattrTextArea);
+                buildJScrollPaneProperty(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, "JComponent.sizeVariant", "small");
+                //scrollPane = buildJScrollPane(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, "JComponent.sizeVariant", "small",PaletteLookAndFeel.getInstance().getBorder("ScrollPane.border"), linkField);
                 //scrollPane.setViewportView(linkField);
-                gbc = buildGridBagConstraints(0, 1, new Insets(3, 0, 0, 0), GridBagConstraints.BOTH, GridBagConstraints.REMAINDER, 1d, 1d, GridBagConstraints.CENTER);
+                gbc = new Constraints.Builder().setgbcObj(gridBagConstraints = new GridBagConstraints()).withgridx(0).withgridy(1).withinsets(new Insets(3, 0, 0, 0)).withfill(GridBagConstraints.BOTH).withgridwidth(GridBagConstraints.REMAINDER).withweightx(1d).withweighty(1d).build();
+                //gbc = buildGridBagConstraints(0, 1, new Insets(3, 0, 0, 0), GridBagConstraints.BOTH, GridBagConstraints.REMAINDER, 1d, 1d, GridBagConstraints.CENTER);
                 //gbc.gridx = 0;
                 //gbc.gridy = 1;
                 //gbc.insets = new Insets(3, 0, 0, 0);
@@ -145,43 +151,51 @@ public class LinkToolBar extends AbstractToolBar {
                 //gbc.gridwidth = GridBagConstraints.REMAINDER;
                 //gbc.weightx = 1d;
                 //gbc.weighty = 1d;
-                jPanel.add(scrollPane, gbc);
+                jPanel.add(this.jScrollPane, gbc.getGridBagConstraints());
 
                 // Target field
-                JLabel targetLabel;
-                JAttributeTextField<String> targetField = new JAttributeTextField<>();
+                //JLabel targetLabel;
+                //JAttributeTextField<String> targetField = new JAttributeTextField<>();
+                //targetLabel = buildJLabel(labels.getString("attribute.figureLinkTarget.toolTipText"), labels.getString("attribute.figureLinkTarget.text"),
+                //        PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), targetField);
+                this.jLabel = new JLabel();
+                buildJLabelView((LabelUI) PaletteLabelUI.createUI(jLabel), labels.getString("attribute.figureLinkTarget.toolTipText"), labels.getString("attribute.figureLinkTarget.text"), PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
 
-                targetLabel = buildJLabel(labels.getString("attribute.figureLinkTarget.toolTipText"), labels.getString("attribute.figureLinkTarget.text"),
-                        PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), targetField);
                 //targetLabel.setUI((LabelUI) PaletteLabelUI.createUI(targetLabel));
                 //targetLabel.setToolTipText(labels.getString("attribute.figureLinkTarget.toolTipText"));
                 //targetLabel.setText(labels.getString("attribute.figureLinkTarget.text")); // NOI18N
                 //targetLabel.setFont(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
-
                 //targetLabel.setLabelFor(targetField);
-                gbc = buildGridBagConstraints(0, 2, new Insets(3, 0, 0, 0), GridBagConstraints.BOTH, 0, 0, 0, GridBagConstraints.FIRST_LINE_START);
+                //gbc = buildGridBagConstraints(0, 2, new Insets(3, 0, 0, 0), GridBagConstraints.BOTH, 0, 0, 0, GridBagConstraints.FIRST_LINE_START);
+                gbc = new Constraints.Builder().setgbcObj(gridBagConstraints = new GridBagConstraints())
+                        .withgridx(0).withgridy(2).withinsets(new Insets(3, 0, 0, 0)).withfill(GridBagConstraints.BOTH).withanchor(GridBagConstraints.FIRST_LINE_START)
+                        .build();
                 //gbc.gridx = 0;
                 //gbc.gridy = 2;
                 //gbc.insets = new Insets(3, 0, 0, 0);
                 //gbc.fill = GridBagConstraints.BOTH;
                 //gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-                jPanel.add(targetLabel, gbc);
-                targetField = buildTextField(labels.getString("attribute.figureLinkTarget.toolTipText"), 4, null, new DefaultFormatterFactory(new DefaultFormatter()), (TextUI) PaletteFormattedTextFieldUI.createUI(targetField));
+
+                jPanel.add(jLabel, gbc.getGridBagConstraints());
+                //targetField = buildTextField(labels.getString("attribute.figureLinkTarget.toolTipText"), 4, null, new DefaultFormatterFactory(new DefaultFormatter()), (TextUI) PaletteFormattedTextFieldUI.createUI(targetField));
+                buildTextFieldView(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"), (TextUI) PaletteFormattedTextFieldUI.createUI(jattrTextField));
+
                 //targetField.setToolTipText(labels.getString("attribute.figureLinkTarget.toolTipText"));
                 //targetField.setColumns(4);
                 //targetField.setFont(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
                 //targetField.setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
                 //targetField.setUI((TextUI) PaletteFormattedTextFieldUI.createUI(targetField));
-                new FigureAttributeEditorHandler<>(LINK_TARGET, targetField, editor, false);
-                gbc = buildGridBagConstraints(1, 2, new Insets(3, 3, 0, 0),
-                        GridBagConstraints.HORIZONTAL, GridBagConstraints.REMAINDER, 0, 0, GridBagConstraints.FIRST_LINE_START);
+                new FigureAttributeEditorHandler<>(LINK_TARGET, jattrTextField, editor, false);
+                gbc = new Constraints.Builder().setgbcObj(gridBagConstraints = new GridBagConstraints()).withgridx(1).withgridy(2).withinsets(new Insets(3, 3, 0, 0)).withfill(GridBagConstraints.HORIZONTAL).withgridwidth(GridBagConstraints.REMAINDER).withanchor(GridBagConstraints.FIRST_LINE_START).build();
+                // gbc = buildGridBagConstraints(1, 2, new Insets(3, 3, 0, 0),
+                //        GridBagConstraints.HORIZONTAL, GridBagConstraints.REMAINDER, 0, 0, GridBagConstraints.FIRST_LINE_START);
                 //gbc.gridx = 1;
                 //gbc.gridy = 2;
                 //gbc.insets = new Insets(3, 3, 0, 0);
                 //gbc.fill = GridBagConstraints.HORIZONTAL;
                 //gbc.gridwidth = GridBagConstraints.REMAINDER;
                 //gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-                jPanel.add(targetField, gbc);
+                jPanel.add(jattrTextField, gbc.getGridBagConstraints());
 
             }
             break;
@@ -268,18 +282,17 @@ public class LinkToolBar extends AbstractToolBar {
         return jPanel;
     }
 
-    private void buildJPanel(GridBagLayout gridbaglayout,
-            EmptyBorder emptyBorder, boolean setopaque) {
+    private void buildJPanel(GridBagLayout gridbaglayout, EmptyBorder emptyBorder, boolean setopaque) {
         this.jPanel.setOpaque(setopaque);
         this.jPanel.setLayout(gridbaglayout);
         this.jPanel.setBorder(emptyBorder);
     }
 
-    private void buildJLabelView(String tooltiptext, String text, Font font) {
-        this.jLabel.setUI((LabelUI) PaletteLabelUI.createUI(this.jLabel));
+    private void buildJLabelView(LabelUI ui, String tooltiptext, String text, Font font) {
+        this.jLabel.setUI(ui);
         this.jLabel.setToolTipText(tooltiptext);
         this.jLabel.setText(text); // NOI18N
-        this.jLabel.setFont(PaletteLookAndFeel.getInstance().getFont("SmallSystemFont"));
+        this.jLabel.setFont(font);
     }
 
     private void buildJLabelProperty(Component component) {
@@ -312,21 +325,17 @@ public class LinkToolBar extends AbstractToolBar {
     }
 
     private void buildTextFieldView(Font font, TextUI textui) {
-        JAttributeTextField<String> textField = new JAttributeTextField<>();
-
-        this.jattrTextField.setToolTipText(tipText);
-
-        textField.setFont(font);
-        textField.setUI(textui);
+        this.jattrTextField.setFont(font);
+        this.jattrTextField.setUI(textui);
     }
 
     private void buildTextFieldProperty(String tipText, int columns, JFormattedTextField.AbstractFormatterFactory formatterFactory) {
         this.jattrTextField.setToolTipText(tipText);
-        textField.setColumns(columns);
-        textField.setFormatterFactory(formatterFactory);
+        this.jattrTextField.setColumns(columns);
+        this.jattrTextField.setFormatterFactory(formatterFactory);
     }
 
-    private GridBagConstraints buildGridBagConstraints(int gridx, int gridy,
+    /*private GridBagConstraints buildGridBagConstraints(int gridx, int gridy,
             Insets insets, int fill, int gridwidth, double weightx,
             double weighty, int anchor) {
 
@@ -341,8 +350,7 @@ public class LinkToolBar extends AbstractToolBar {
         gbc.anchor = anchor;
 
         return gbc;
-    }
-
+    }*/
     @Override
     protected String getID() {
         return "link";
