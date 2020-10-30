@@ -31,43 +31,50 @@ public class Geom {
 
     /**
      * Tests if a point is on a line.
+     * @Deprecated use {@link #LineContainsPoint(Point, Point, Point, double)}
      */
+    @Deprecated
     public static boolean lineContainsPoint(int x1, int y1,
             int x2, int y2,
-            int px, int py) {
-        return lineContainsPoint(x1, y1, x2, y2, px, py, 3d);
+            int px, int py, double toleranc) {
+        return lineContainsPoint(new Point(x1, x2), new Point(x2, y2), new Point(px, py), toleranc);
     }
 
     /**
      * Tests if a point is on a line.
      * <p>changed Werner Randelshofer 2003-11-26
      */
-    public static boolean lineContainsPoint(int x1, int y1,
-            int x2, int y2,
-            int px, int py, double tolerance) {
+    public static boolean lineContainsPoint(Point startPoint,
+            Point endPoint,
+            Point checkPoint, double tolerance) {
 
-        Rectangle r = new Rectangle(new Point(x1, y1));
-        r.add(x2, y2);
+        Rectangle r = new Rectangle(new Point(startPoint));
+        r.add(endPoint.getX(), endPoint.getY());
         r.grow(max(2, (int) ceil(tolerance)), max(2, (int) ceil(tolerance)));
-        if (!r.contains(px, py)) {
+        if (!r.contains(checkPoint.getX(), checkPoint.getY())) {
             return false;
         }
+        if (startPoint.getX() == startPoint.getY()) {
+            return (abs(checkPoint.getX() - startPoint.getX()) <= tolerance);
+        }
+        if (endPoint.getX() == endPoint.getY()) {
+            return (abs(checkPoint.getY() - startPoint.getY()) <= tolerance);
+        }
 
+        double distance = calculateDistance(startPoint, endPoint, checkPoint);
+        return (distance <= tolerance); 
+        
+    }
+    
+    private static double calculateDistance(Point startPoint, Point endPoint, Point checkpoint){
         double a, b, x, y;
+        
+        a = (double) (startPoint.getY() - endPoint.getY()) / (double) (startPoint.getX() - endPoint.getX());
+        b = (double) startPoint.getY() - a * (double) startPoint.getX();
+        x = (checkpoint.getY() - b) / a;
+        y = a * checkpoint.getX() + b;
 
-        if (x1 == x2) {
-            return (abs(px - x1) <= tolerance);
-        }
-        if (y1 == y2) {
-            return (abs(py - y1) <= tolerance);
-        }
-
-        a = (double) (y1 - y2) / (double) (x1 - x2);
-        b = (double) y1 - a * (double) x1;
-        x = (py - b) / a;
-        y = a * px + b;
-
-        return (min(abs(x - px), abs(y - py)) <= tolerance);
+        return min(abs(x - checkpoint.getX()), abs(y - checkpoint.getY()));
     }
 
     /**
@@ -77,7 +84,7 @@ public class Geom {
     public static boolean lineContainsPoint(double x1, double y1,
             double x2, double y2,
             double px, double py, double tolerance) {
-
+        
         Rectangle2D.Double r = new Rectangle2D.Double(x1, y1, 0, 0);
         r.add(x2, y2);
         double grow = max(2, (int) ceil(tolerance));
@@ -97,7 +104,6 @@ public class Geom {
         if (y1 == y2) {
             return (abs(py - y1) <= tolerance);
         }
-
         a = (double) (y1 - y2) / (double) (x1 - x2);
         b = (double) y1 - a * (double) x1;
         x = (py - b) / a;
