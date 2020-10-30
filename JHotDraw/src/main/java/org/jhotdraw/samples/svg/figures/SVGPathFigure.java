@@ -255,8 +255,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
     }
 
     public void transform(AffineTransform tx) {
-        if (TRANSFORM.get(this) != null ||
-                (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
+        if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSetClone(this, tx);
             } else {
@@ -268,20 +267,19 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
             for (Figure f : getChildren()) {
                 f.transform(tx);
             }
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+            transformGradient(FILL_GRADIENT, tx);
+            transformGradient(STROKE_GRADIENT, tx);
         }
         invalidate();
+    }
+
+    private void transformGradient(AttributeKey<Gradient> gradient, AffineTransform tx){
+        if (gradient.get(this) != null &&
+                !gradient.get(this).isRelativeToFigureBounds()) {
+            Gradient g = gradient.getClone(this);
+            g.transform(tx);
+            gradient.basicSet(this, g);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -407,7 +405,56 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         });
     }
     private void addTransformActions(LinkedList<Action> actions, ResourceBundleUtil labels ){
-        actions.add(new AbstractAction(labels.getString("edit.removeTransform.text")) {
+        actions.add(getRemoveTransform(labels));
+        actions.add(getFlattenTransformAction(labels));
+    }
+
+    private AbstractAction getFlattenTransformAction(ResourceBundleUtil labels) {
+        return new AbstractAction(labels.getString("edit.flattenTransform.text")) {
+
+            public void actionPerformed(ActionEvent evt) {
+                final Object restoreData = getTransformRestoreData();
+                UndoableEdit edit = getUndoableEdit(restoreData, labels);
+                willChange();
+                flattenTransform();
+                changed();
+                fireUndoableEditHappened(edit);
+            }
+
+
+        };
+    }
+
+    private AbstractUndoableEdit getUndoableEdit(Object restoreData, ResourceBundleUtil labels) {
+        return new AbstractUndoableEdit() {
+
+            @Override
+            public String getPresentationName() {
+                return labels.getString("edit.flattenTransform.text");
+            }
+
+            @Override
+            public void undo() throws CannotUndoException {
+                super.undo();
+                willChange();
+                restoreTransformTo(restoreData);
+                changed();
+            }
+
+            @Override
+            public void redo() throws CannotRedoException {
+                super.redo();
+                willChange();
+                restoreTransformTo(restoreData);
+                flattenTransform();
+                changed();
+            }
+        };
+    }
+
+
+    private AbstractAction getRemoveTransform(ResourceBundleUtil labels) {
+        return new AbstractAction(labels.getString("edit.removeTransform.text")) {
 
             public void actionPerformed(ActionEvent evt) {
                 ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
@@ -416,41 +463,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
                         TRANSFORM.setUndoable(SVGPathFigure.this, null));
                 SVGPathFigure.this.changed();
             }
-        });
-        actions.add(new AbstractAction(labels.getString("edit.flattenTransform.text")) {
-
-            public void actionPerformed(ActionEvent evt) {
-                final Object restoreData = getTransformRestoreData();
-                UndoableEdit edit = new AbstractUndoableEdit() {
-
-                    @Override
-                    public String getPresentationName() {
-                        return labels.getString("edit.flattenTransform.text");
-                    }
-
-                    @Override
-                    public void undo() throws CannotUndoException {
-                        super.undo();
-                        willChange();
-                        restoreTransformTo(restoreData);
-                        changed();
-                    }
-
-                    @Override
-                    public void redo() throws CannotRedoException {
-                        super.redo();
-                        willChange();
-                        restoreTransformTo(restoreData);
-                        flattenTransform();
-                        changed();
-                    }
-                };
-                willChange();
-                flattenTransform();
-                changed();
-                fireUndoableEditHappened(edit);
-            }
-        });
+        };
     }
 
     // CONNECTING
