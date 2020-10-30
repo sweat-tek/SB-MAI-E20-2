@@ -42,8 +42,6 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
      * This is set to true, if this is the active tool of the editor.
      */
     private boolean isActive;
-    private TextHolderFigure typingTarget;
-    private FloatingTextField textField;
 
     /**
      * This is set to true, while the tool is doing some work. This prevents the
