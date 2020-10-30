@@ -62,7 +62,7 @@ public class LinkToolBar extends AbstractToolBar {
         DrawingEditor oldValue = getEditor();
         if (displayer != null) {
             displayer.dispose();
-            displayer = new NullSelectionComponentDisplayer();
+            displayer = null;
         }
         super.setEditor(newValue);
         if (newValue != null) {
