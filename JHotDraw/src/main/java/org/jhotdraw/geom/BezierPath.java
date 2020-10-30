@@ -475,134 +475,39 @@ public class BezierPath extends ArrayList<BezierPath.Node>
 
     public Rectangle2D.Double getBounds2D() {
         if (bounds == null) {
-            double x1, y1, x2, y2;
+            Double[] rectCoordinates = new Double[4];
             int size = size();
             if (size == 0) {
-                x1 = y1 = x2 = y2 = 0.0f;
+                Arrays.fill(rectCoordinates, 0.0f);
             } else {
-                double x, y;
-                Double[] rectCoordinates = new Double[4];
-
                 // handle first node
                 Node node = get(0);
-
                 rectCoordinates[0] = rectCoordinates[2] = node.x[0];
                 rectCoordinates[1] = rectCoordinates[3] = node.y[0];
-                x1 = x2 = node.x[0];
-                y1 = y2 = node.y[0];
-
-                if (isClosed && (node.mask & C1_MASK) != 0) {
-                    rectCoordinates = setCoordinates(node.x[1], node.y[1], rectCoordinates);
-                }
-                if ((node.mask & C2_MASK) != 0) {
-                    rectCoordinates = setCoordinates(node.x[2], node.y[2], rectCoordinates);
-                }
+                setCoordinatesBasedOnNode(node, rectCoordinates);
                 // handle last node
-                node = get(size - 1);
-                y = node.y[0];
-                x = node.x[0];
-                if (x < x1) {
-                    x1 = x;
-                }
-                if (y < y1) {
-                    y1 = y;
-                }
-                if (x > x2) {
-                    x2 = x;
-                }
-                if (y > y2) {
-                    y2 = y;
-                }
-                if ((node.mask & C1_MASK) != 0) {
-                    y = node.y[1];
-                    x = node.x[1];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
-                }
-                if (isClosed && (node.mask & C2_MASK) != 0) {
-                    y = node.y[2];
-                    x = node.x[2];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
-                }
-
+                setCoordinatesBasedOnNode(get(size - 1), rectCoordinates);
                 // handle all other nodes
                 for (int i = 1, n = size - 1; i < n; i++) {
-                    node = get(i);
-                    y = node.y[0];
-                    x = node.x[0];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
-                    if ((node.mask & C1_MASK) != 0) {
-                        y = node.y[1];
-                        x = node.x[1];
-                        if (x < x1) {
-                            x1 = x;
-                        }
-                        if (y < y1) {
-                            y1 = y;
-                        }
-                        if (x > x2) {
-                            x2 = x;
-                        }
-                        if (y > y2) {
-                            y2 = y;
-                        }
-                    }
-                    if ((node.mask & C2_MASK) != 0) {
-                        y = node.y[2];
-                        x = node.x[2];
-                        if (x < x1) {
-                            x1 = x;
-                        }
-                        if (y < y1) {
-                            y1 = y;
-                        }
-                        if (x > x2) {
-                            x2 = x;
-                        }
-                        if (y > y2) {
-                            y2 = y;
-                        }
-                    }
+                    setCoordinatesBasedOnNode(get(i), rectCoordinates);
                 }
             }
-            bounds = new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1);
+            bounds = new Rectangle2D.Double(rectCoordinates[0], rectCoordinates[1], rectCoordinates[0] - rectCoordinates[2], rectCoordinates[1] - rectCoordinates[3]);
         }
         return (Rectangle2D.Double) bounds.clone();
     }
 
-    private Double[] setCoordinates(double nodeX, double nodeY, Double[] rectCoordinates){
+    private void setCoordinatesBasedOnNode(Node node, Double[] rectCoordinates){
+        setCoordinates(node.x[0], node.y[0], rectCoordinates);
+        if ((node.mask & C1_MASK) != 0) {
+            setCoordinates(node.x[1], node.y[1], rectCoordinates);
+        }
+        if (isClosed && (node.mask & C2_MASK) != 0) {
+            setCoordinates(node.x[2], node.y[2], rectCoordinates);
+        }
+    }
+
+    private void setCoordinates(double nodeX, double nodeY, Double[] rectCoordinates){
         double x = nodeX;
         double y = nodeY;
         if (x < rectCoordinates[0]) {
@@ -617,7 +522,6 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         if (y > rectCoordinates[3]) {
             rectCoordinates[3] = y;
         }
-        return rectCoordinates;
     }
 
     public Rectangle getBounds() {
