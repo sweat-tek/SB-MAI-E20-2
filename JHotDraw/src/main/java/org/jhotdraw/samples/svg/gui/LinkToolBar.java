@@ -62,7 +62,7 @@ public class LinkToolBar extends AbstractToolBar {
         DrawingEditor oldValue = getEditor();
         if (displayer != null) {
             displayer.dispose();
-            displayer = null;
+            displayer = new NullSelectionComponentDisplayer();
         }
         super.setEditor(newValue);
         if (newValue != null) {
@@ -70,11 +70,6 @@ public class LinkToolBar extends AbstractToolBar {
         }
     }
 
-    /**
-     *
-     * @param state
-     * @return
-     */
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
@@ -173,7 +168,6 @@ public class LinkToolBar extends AbstractToolBar {
     private void buildJScrollPaneView(Border border, Component viewPortView) {
         this.jScrollPane.setBorder(border);
         this.jScrollPane.setViewportView(viewPortView);
-
     }
 
     private void buildJScrollPaneProperty(int horPaneConstantPolicy, int verPaneConstantPolicy, String clientPropertyKey, String clientPropertyValue) {
@@ -208,6 +202,70 @@ public class LinkToolBar extends AbstractToolBar {
         this.jattrTextField.setToolTipText(tipText);
         this.jattrTextField.setColumns(columns);
         this.jattrTextField.setFormatterFactory(formatterFactory);
+    }
+
+    public SelectionComponentDisplayer getDisplayer() {
+        return displayer;
+    }
+
+    public void setDisplayer(SelectionComponentDisplayer displayer) {
+        this.displayer = displayer;
+    }
+
+    public ResourceBundleUtil getLabels() {
+        return labels;
+    }
+
+    public void setLabels(ResourceBundleUtil labels) {
+        this.labels = labels;
+    }
+
+    public JPanel getjPanel() {
+        return jPanel;
+    }
+
+    public void setjPanel(JPanel jPanel) {
+        this.jPanel = jPanel;
+    }
+
+    public JLabel getjLabel() {
+        return jLabel;
+    }
+
+    public void setjLabel(JLabel jLabel) {
+        this.jLabel = jLabel;
+    }
+
+    public JScrollPane getjScrollPane() {
+        return jScrollPane;
+    }
+
+    public void setjScrollPane(JScrollPane jScrollPane) {
+        this.jScrollPane = jScrollPane;
+    }
+
+    public JAttributeTextArea<String> getJattrTextArea() {
+        return jattrTextArea;
+    }
+
+    public void setJattrTextArea(JAttributeTextArea<String> jattrTextArea) {
+        this.jattrTextArea = jattrTextArea;
+    }
+
+    public JAttributeTextField<String> getJattrTextField() {
+        return jattrTextField;
+    }
+
+    public void setJattrTextField(JAttributeTextField<String> jattrTextField) {
+        this.jattrTextField = jattrTextField;
+    }
+
+    public GridBagConstraints getGridBagConstraints() {
+        return gridBagConstraints;
+    }
+
+    public void setGridBagConstraints(GridBagConstraints gridBagConstraints) {
+        this.gridBagConstraints = gridBagConstraints;
     }
 
     @Override

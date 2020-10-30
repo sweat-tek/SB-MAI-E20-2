@@ -58,6 +58,8 @@ public class LinkHandle extends AbstractHandle {
             g.drawLine(r.x + r.width - 1, r.y + r.height / 2, (int) (r.x + r.width * .75 - 1), (int) (r.y + r.height * .75));
         }
     }
+    
+    
 
     @Override
     protected Rectangle basicGetBounds() {
@@ -86,11 +88,11 @@ public class LinkHandle extends AbstractHandle {
 
     @Override
         public String getToolTipText(Point p) {
-
+                
         return (LINK.get(getOwner()) != null)
                 ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").//
                         getString("handle.link.toolTipText")
-                : null;
+                : "";
     }
 
 }
