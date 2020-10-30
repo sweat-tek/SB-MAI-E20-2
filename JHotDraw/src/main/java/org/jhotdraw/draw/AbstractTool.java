@@ -18,10 +18,15 @@ import javax.swing.*;
 import org.jhotdraw.app.action.*;
 import org.jhotdraw.beans.AbstractBean;
 import org.jhotdraw.draw.action.*;
+import org.jhotdraw.geom.Insets2D;
+import org.jhotdraw.util.ResourceBundleUtil;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.UndoableEdit;
 
 /**
  * AbstractTool.
@@ -434,4 +439,78 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
     public boolean supportsHandleInteraction() {
         return false;
     }
+
+    protected void beginEdit(TextHolderFigure textHolder, FloatingTextArea textArea, TextHolderFigure typingTarget) {
+        if (textArea == null) {
+            textArea = new FloatingTextArea();
+
+            //textArea.addActionListener(this);
+        }
+
+        if (textHolder != typingTarget && typingTarget != null) {
+            endEdit(textArea, typingTarget);
+        }
+        textArea.createOverlay(getView(), textHolder);
+        textArea.setBounds(getFieldBounds(textHolder), textHolder.getText());
+        textArea.requestFocus();
+        typingTarget = textHolder;
+
+    }
+
+    protected UndoableEdit endEdit(FloatingTextArea textArea, TextHolderFigure typingTarget) {
+            final TextHolderFigure editedFigure = typingTarget;
+            final String oldText = typingTarget.getText();
+            final String newText = textArea.getText();
+
+
+            UndoableEdit edit = new AbstractUndoableEdit() {
+
+                @Override
+                public String getPresentationName() {
+                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+                    return labels.getString("attribute.text.text");
+                }
+
+                @Override
+                public void undo() {
+                    super.undo();
+                    editedFigure.willChange();
+                    editedFigure.setText(oldText);
+                    editedFigure.changed();
+                }
+
+                @Override
+                public void redo() {
+                    super.redo();
+                    editedFigure.willChange();
+                    editedFigure.setText(newText);
+                    editedFigure.changed();
+                }
+            };
+            return edit;
+            /*getDrawing().fireUndoableEditHappened(edit);
+
+            typingTarget.changed();
+
+            textArea.endOverlay();*/
+        }
+
+
+    private Rectangle2D.Double getFieldBounds(TextHolderFigure figure) {
+        Rectangle2D.Double r = figure.getDrawingArea();
+        Insets2D.Double insets = figure.getInsets();
+        insets.subtractTo(r);
+
+        // FIXME - Find a way to determine the parameters for grow.
+        //r.grow(1,2);
+        //r.width += 16;
+        r.x -= 1;
+        r.y -= 2;
+        r.width += 18;
+        r.height += 4;
+        return r;
+    }
+
+
+
 }

@@ -18,11 +18,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
+
 import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.geom.*;
-import org.jhotdraw.util.ResourceBundleUtil;
 
 /**
  * A tool to create new or edit existing figures that implement the TextHolderFigure
@@ -123,7 +120,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
 
     private void isToolDone(MouseEvent e) {
         if (typingTarget != null) {
-            //endEdit();
+            endTextAreaEdit();
             if (isToolDoneAfterCreation()) {
                 fireToolDone();
             }
@@ -149,7 +146,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
 
         if (textHolder != null) {
             createdFigure = null;
-            //beginEdit(textHolder);
+            beginEdit(textHolder, textArea, typingTarget);
         }
     }
 
@@ -185,6 +182,31 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         }
     }
 
+
+    @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
+    protected void endTextAreaEdit() {
+        if (typingTarget != null) {
+            typingTarget.willChange();
+
+            final TextHolderFigure editedFigure = typingTarget;
+            final String oldText = typingTarget.getText();
+            final String newText = textArea.getText();
+
+            if (newText.length() > 0) {
+                typingTarget.setText(newText);
+            } else {
+                if (createdFigure != null) {
+                    getDrawing().remove((Figure) getAddedFigure());
+                    // XXX - Fire undoable edit here!!
+                } else {
+                    typingTarget.setText("");
+                }
+            }
+            endEdit(textArea, typingTarget);
+            //Call End edit in abstract tool
+        }
+        //	        view().checkDamage();
+    }
 
     public void actionPerformed(ActionEvent event) {
         //endEdit();
