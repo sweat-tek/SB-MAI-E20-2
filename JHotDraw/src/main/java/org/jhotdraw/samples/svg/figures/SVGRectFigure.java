@@ -36,9 +36,14 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
 
     /** The variable acv is used for generating the locations of the control
      * points for the rounded rectangle using path.curveTo. */
-    private static final double acv;
-
-
+    private static final double acv = 0.44771525016920666;
+   
+    /*
+    Change 1
+    The calculation of acv was uncommented
+    for simplisiti reasons.
+    The value is the same every time 
+    so a static field was created holding the value 
     static {
         double angle = Math.PI / 4.0;
         double a = 1.0 - Math.cos(angle);
@@ -47,6 +52,10 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
         double cv = 4.0 / 3.0 * a * b / c;
         acv = (1.0 - cv);
     }
+    */
+    
+    
+    
     /**
      */
     private RoundRectangle2D.Double roundrect;
@@ -60,10 +69,11 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
     private transient Shape cachedHitShape;
 
     /** Creates a new instance. */
-    public SVGRectFigure() {
+   
+    public SVGRectFigure() { 
         this(0, 0, 0, 0);
     }
-
+   
     public SVGRectFigure(double x, double y, double width, double height) {
         this(x, y, width, height, 0, 0);
     }
@@ -94,6 +104,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
             GeneralPath p = new GeneralPath();
             double aw = roundrect.arcwidth / 2d;
             double ah = roundrect.archeight / 2d;
+            
             p.moveTo((float) (roundrect.x + aw), (float) roundrect.y);
             p.lineTo((float) (roundrect.x + roundrect.width - aw), (float) roundrect.y);
             p.curveTo((float) (roundrect.x + roundrect.width - aw * acv), (float) roundrect.y, //
@@ -222,10 +233,10 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      * @param tx The transformation.
      */
     public void transform(AffineTransform tx) {
+        System.out.println("TRANSFORM CALLED");
         invalidateTransformedShape();
-        if (TRANSFORM.get(this) != null ||
-                //              (tx.getType() & (AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_MASK_SCALE)) != tx.getType()) {
-                (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
+        if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
+                // (tx.getType() & (AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_MASK_SCALE)) != tx.getType()) {
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
             } else {
@@ -234,11 +245,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
                 TRANSFORM.basicSet(this, t);
             }
         } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
+                transformNull(tx);
             if (FILL_GRADIENT.get(this) != null &&
                     !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
                 Gradient g = FILL_GRADIENT.getClone(this);
@@ -252,6 +259,13 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
                 STROKE_GRADIENT.basicSet(this, g);
             }
         }
+    }
+    
+    public void transformNull(AffineTransform tx){
+        System.out.println("This works?");
+        Point2D.Double anchor = getStartPoint();
+        Point2D.Double lead = getEndPoint();
+        setBounds((Point2D.Double) tx.transform(anchor, anchor),(Point2D.Double) tx.transform(lead, lead));
     }
     // ATTRIBUTES
 
