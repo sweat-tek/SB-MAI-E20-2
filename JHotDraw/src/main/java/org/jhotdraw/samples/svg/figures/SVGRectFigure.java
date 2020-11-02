@@ -22,6 +22,7 @@ import org.jhotdraw.draw.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import org.jhotdraw.samples.svg.*;
 import org.jhotdraw.geom.*;
+import org.jhotdraw.samples.svg.figures.SVGRectFigureBuilder;
 
 /**
  * SVGRect.
@@ -37,25 +38,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
     /** The variable acv is used for generating the locations of the control
      * points for the rounded rectangle using path.curveTo. */
     private static final double acv = 0.44771525016920666;
-   
-    /*
-    Change 1
-    The calculation of acv was uncommented
-    for simplisiti reasons.
-    The value is the same every time 
-    so a static field was created holding the value 
-    static {
-        double angle = Math.PI / 4.0;
-        double a = 1.0 - Math.cos(angle);
-        double b = Math.tan(angle);
-        double c = Math.sqrt(1.0 + b * b) - 1 + a;
-        double cv = 4.0 / 3.0 * a * b / c;
-        acv = (1.0 - cv);
-    }
-    */
-    
-    
-    
+  
     /**
      */
     private RoundRectangle2D.Double roundrect;
@@ -67,22 +50,27 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      * This is used to perform faster hit testing.
      */
     private transient Shape cachedHitShape;
+    
+    private SVGRectFigureBuilder rectBuilder;
 
     /** Creates a new instance. */
-   
     public SVGRectFigure() { 
-        this(0, 0, 0, 0);
+        rectBuilder = new SVGRectFigureBuilder();
+        roundrect = rectBuilder.createSVGRectFigure();
+        SVGAttributeKeys.setDefaults(this);
+       // this(0, 0, 0, 0);
+
     }
    
-    public SVGRectFigure(double x, double y, double width, double height) {
-        this(x, y, width, height, 0, 0);
-    }
-
-    @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
-    public SVGRectFigure(double x, double y, double width, double height, double rx, double ry) {
-        roundrect = new RoundRectangle2D.Double(x, y, width, height, rx, ry);
-        SVGAttributeKeys.setDefaults(this);
-    }
+//    public SVGRectFigure(double x, double y, double width, double height) {
+//        this(x, y, width, height, 0, 0);
+//    }
+//
+//    @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
+//    public SVGRectFigure(double x, double y, double width, double height, double rx, double ry) {
+//        roundrect = new RoundRectangle2D.Double(x, y, width, height, rx, ry);
+//        SVGAttributeKeys.setDefaults(this);
+//    }
 
     // DRAWING
     protected void drawFill(Graphics2D g) {
