@@ -226,36 +226,43 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      * @param tx The transformation.
      */
     public void transform(AffineTransform tx) {
-        System.out.println("TRANSFORM CALLED");
         invalidateTransformedShape();
         if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
-                // (tx.getType() & (AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_MASK_SCALE)) != tx.getType()) {
-            if (TRANSFORM.get(this) == null) {
+                isTransform(tx);
+        } else {
+                transformNull(tx);
+                isFillGradient(tx);
+                isStrokeGradient(tx);
+        }
+    }
+    
+    private void isFillGradient(AffineTransform tx){
+        if(FILL_GRADIENT.get(this) != null && !FILL_GRADIENT.get(this).isRelativeToFigureBounds()){
+             Gradient g = FILL_GRADIENT.getClone(this);
+             g.transform(tx);
+             FILL_GRADIENT.basicSet(this, g);   
+        }
+    }
+    
+    private void isStrokeGradient(AffineTransform tx){
+         if (STROKE_GRADIENT.get(this) != null && !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
+              Gradient g = STROKE_GRADIENT.getClone(this);
+              g.transform(tx);
+              STROKE_GRADIENT.basicSet(this, g);
+          }
+    }
+    
+    private void isTransform(AffineTransform tx){
+         if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
             } else {
                 AffineTransform t = TRANSFORM.getClone(this);
                 t.preConcatenate(tx);
                 TRANSFORM.basicSet(this, t);
             }
-        } else {
-                transformNull(tx);
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
-        }
     }
     
-    public void transformNull(AffineTransform tx){
-        System.out.println("This works?");
+    public void transformNull(AffineTransform tx){ 
         Point2D.Double anchor = getStartPoint();
         Point2D.Double lead = getEndPoint();
         setBounds((Point2D.Double) tx.transform(anchor, anchor),(Point2D.Double) tx.transform(lead, lead));

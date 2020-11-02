@@ -84,8 +84,8 @@ public class SVGRectRadiusHandle extends AbstractHandle {
     }
     
     public void trackStep(Point anchor, Point lead, int modifiersEx) {
-        int dx = lead.x - anchor.x;
-        int dy = lead.y - anchor.y;
+//        int dx = lead.x - anchor.x;
+//        int dy = lead.y - anchor.y;
         SVGRectFigure svgRect = (SVGRectFigure) getOwner();
         svgRect.willChange();
         Point2D.Double p = view.viewToDrawing(lead);
