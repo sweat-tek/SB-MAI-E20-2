@@ -528,9 +528,18 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         return getBounds2D().getBounds();
     }
 
-    public boolean contains(double x, double y, double w, double h) {
+    public boolean contains(Rectangle2D.Double rect){
         validatePath();
-        return generalPath.contains(x, y, w, h);
+        return generalPath.contains(rect);
+    }
+    /**
+     * @deprecated
+     * this method is deprecated, and it is recommended to use the
+     *  {@link #contains(Rectangle2D.Double rect) contains} method
+     */
+    @Deprecated
+    public boolean contains(double x, double y, double w, double h) {
+        return this.contains(new Rectangle2D.Double(x, y, w, h));
     }
 
     public boolean contains(double x, double y) {
