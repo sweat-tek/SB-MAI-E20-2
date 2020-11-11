@@ -14,13 +14,11 @@
 package org.jhotdraw.draw.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import org.jhotdraw.util.*;
-import javax.swing.*;
+
 import java.util.*;
 import javax.swing.undo.*;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.draw.*;
-import static org.jhotdraw.draw.action.BringToFrontAction.ID;
 
 /**
  * SendToBackAction.
@@ -46,7 +44,7 @@ public class SendToBackAction extends AbstractSelectedAction {
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();
         final LinkedList<Figure> figures = new LinkedList<Figure>(view.getSelectedFigures());
-        sendToBack(view, figures);
+        sendToBackAction(view, figures);
         makeUndoable(view,figures); 
     }
 
@@ -60,19 +58,19 @@ public class SendToBackAction extends AbstractSelectedAction {
             @Override
             public void redo() throws CannotRedoException {
                 super.redo();
-                SendToBackAction.sendToBack(view, figures);
+                SendToBackAction.sendToBackAction(view, figures);
             }
 
             @Override
             public void undo() throws CannotUndoException {
                 super.undo();
-                BringToFrontAction.bringToFront(view, figures);
+                BringToFrontAction.bringToFrontAction(view, figures);
             }
         }
         );
     }
 
-    public static void sendToBack(DrawingView view, Collection figures) {
+    protected static void sendToBackAction(DrawingView view, Collection figures) {
         Iterator i = figures.iterator();
         Drawing drawing = view.getDrawing();
         while (i.hasNext()) {
