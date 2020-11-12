@@ -28,11 +28,11 @@ import org.jhotdraw.app.Application;
  */
 public class RedoAction extends AbstractUndoRedoAction {
     public final static String ID = "edit.redo";
-    private ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-    
+
     /** Creates a new instance. */
     public RedoAction(Application app) {
         super(app);
+        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
         labels.configureAction(this, setID(ID));
         setPropertyChangeListener();
     }

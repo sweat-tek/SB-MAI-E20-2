@@ -77,9 +77,9 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 String name = evt.getPropertyName();
-                if (name == AbstractAction.NAME) {
+                if (name.equals(AbstractAction.NAME)) {
                     putValue(AbstractAction.NAME, evt.getNewValue());
-                } else if (name == "enabled") {
+                } else if (name.equals("enabled")) {
                     updateEnabledState();
                 }
             }
