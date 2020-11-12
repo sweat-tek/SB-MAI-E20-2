@@ -34,8 +34,8 @@ import org.jhotdraw.geom.*;
  *
  * @author Werner Randelshofer
  * @version 2.1 2008-05-17 Rendering hints must be copied, when creating
- * a local Graphics2D object. Remove transformation action was not undoable. 
- * <br>2.0.1 2008-04-13 We must catch all throwables when calling ImageIO.read(). 
+ * a local Graphics2D object. Remove transformation action was not undoable.
+ * <br>2.0.1 2008-04-13 We must catch all throwables when calling ImageIO.read().
  * <br>2.0 2007-04-14 Adapted for new AttributeKeys.TRANSFORM support.
  * <br>1.0 July 8, 2006 Created.
  */
@@ -87,29 +87,31 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
             if (opacity != 1d) {
                 graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
             }
-            BufferedImage image = getBufferedImage();
-            if (image != null) {
-                if (TRANSFORM.get(this) != null) {
-                    // FIXME - We should cache the transformed image.
-                    //         Drawing a transformed image appears to be very slow.
-                    Graphics2D graphics2Dx = (Graphics2D) graphics2D.create();
-                    // Use same rendering hints like parent graphics
-                    graphics2Dx.setRenderingHints(graphics2D.getRenderingHints());
-                    graphics2Dx.transform(TRANSFORM.get(this));
-                    graphics2Dx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                    graphics2Dx.dispose();
-                } else {
-                    graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                }
-            } else {
-                Shape shape = getTransformedShape();
-                graphics2D.setColor(Color.red);
-                graphics2D.setStroke(new BasicStroke());
-                graphics2D.draw(shape);
-            }
+            draw2DGraphics(graphics2D);
             if (opacity != 1d) {
                 graphics2D.setComposite(savedComposite);
             }
+        }
+    }
+
+    private void draw2DGraphics(Graphics2D graphics2D) {
+        BufferedImage image = getBufferedImage();
+        if (image != null) {
+            if (TRANSFORM.get(this) != null) {
+                // FIXME - We should cache the transformed image. Drawing a transformed image appears to be very slow.
+                Graphics2D graphics2Dx = (Graphics2D) graphics2D.create();
+                graphics2Dx.setRenderingHints(graphics2D.getRenderingHints()); // Use same rendering hints like parent graphics
+                graphics2Dx.transform(TRANSFORM.get(this));
+                graphics2Dx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+                graphics2Dx.dispose();
+            } else {
+                graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+            }
+        } else {
+            Shape shape = getTransformedShape();
+            graphics2D.setColor(Color.red);
+            graphics2D.setStroke(new BasicStroke());
+            graphics2D.draw(shape);
         }
     }
 
