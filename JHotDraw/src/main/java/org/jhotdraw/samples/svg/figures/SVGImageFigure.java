@@ -97,21 +97,25 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     private void draw2DGraphics(Graphics2D graphics2D) {
         BufferedImage image = getBufferedImage();
         if (image != null) {
-            if (TRANSFORM.get(this) != null) {
-                // FIXME - We should cache the transformed image. Drawing a transformed image appears to be very slow.
-                Graphics2D graphics2Dx = (Graphics2D) graphics2D.create();
-                graphics2Dx.setRenderingHints(graphics2D.getRenderingHints()); // Use same rendering hints like parent graphics
-                graphics2Dx.transform(TRANSFORM.get(this));
-                graphics2Dx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                graphics2Dx.dispose();
-            } else {
-                graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-            }
+            drawBufferedImage(graphics2D, image);
         } else {
             Shape shape = getTransformedShape();
             graphics2D.setColor(Color.red);
             graphics2D.setStroke(new BasicStroke());
             graphics2D.draw(shape);
+        }
+    }
+
+    private void drawBufferedImage(Graphics2D graphics2D, BufferedImage image) {
+        if (TRANSFORM.get(this) != null) {
+            // FIXME - We should cache the transformed image. Drawing a transformed image appears to be very slow.
+            Graphics2D graphics2Dx = (Graphics2D) graphics2D.create();
+            graphics2Dx.setRenderingHints(graphics2D.getRenderingHints()); // Use same rendering hints like parent graphics
+            graphics2Dx.transform(TRANSFORM.get(this));
+            graphics2Dx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+            graphics2Dx.dispose();
+        } else {
+            graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
         }
     }
 
