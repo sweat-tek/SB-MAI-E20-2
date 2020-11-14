@@ -394,19 +394,13 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     }
 
     public void loadImage(File file) throws IOException {
-        InputStream in = null;
-        try {
-            in = new FileInputStream(file);
+        try (InputStream in = new FileInputStream(file)) {
             loadImage(in);
         } catch (Throwable t) {
             ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
             IOException e = new IOException(labels.getFormatted("file.failedToLoadImage.message", file.getName()));
             e.initCause(t);
             throw e;
-        } finally {
-            if (in != null) {
-                in.close();
-            }
         }
     }
 
