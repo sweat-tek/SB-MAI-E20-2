@@ -181,8 +181,6 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      * @param leftMargin the left bound of the paragraph
      * @param rightMargin the right bound of the paragraph
      * @param tabStops an array with tab stops
-     * @param tabCounts the number of entries in tabStops which contain actual
-     *        values
      * @return Returns the actual bounds of the paragraph.
      */
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
@@ -323,28 +321,10 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
             } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
+                super.transformOutCome1(tx);
             }
         } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+                super.transformOutCome2(tx);
         }
         invalidate();
     }

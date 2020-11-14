@@ -151,35 +151,20 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * Transforms the figure.
      *
      * @param tx the transformation.
+     * moved dublicated code up in the superclass for a shortned method here and in SVGTextAreaFigure
+     * that uses the same piece of code
      */
+
     public void transform(AffineTransform tx) {
         if (TRANSFORM.get(this) != null ||
                 (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSetClone(this, tx);
             } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
+                super.transformOutCome1(tx);
             }
         } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+                super.transformOutCome2(tx);
         }
         invalidate();
     }
