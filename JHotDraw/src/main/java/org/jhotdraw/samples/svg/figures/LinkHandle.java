@@ -59,8 +59,10 @@ public class LinkHandle extends AbstractHandle {
         }
     }
     
-    
-
+    /**
+     *
+     * @return
+     */
     @Override
     protected Rectangle basicGetBounds() {
         Rectangle2D.Double b = getOwner().getBounds();

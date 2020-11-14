@@ -78,7 +78,7 @@ public abstract class AbstractHandle implements Handle, FigureListener {
         return view;
     }
 
-    public DrawingEditor getEditor() {
+            public DrawingEditor getEditor() {
         return view.getEditor();
     }
 
