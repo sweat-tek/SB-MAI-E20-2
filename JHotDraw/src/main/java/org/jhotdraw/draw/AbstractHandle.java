@@ -39,7 +39,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
      */
     private Rectangle bounds;
 
-    /** Creates a new instance. */
+    /** Creates a new instance.
+     * @param owner */
     public AbstractHandle(Figure owner) {
         if (owner == null) {
             throw new IllegalArgumentException("owner must not be null");
@@ -49,7 +50,7 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     protected int getHandlesize() {
-        return (Integer) getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_SIZE);
+        return getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_SIZE);
     }
 
     /**

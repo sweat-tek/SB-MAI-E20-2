@@ -51,15 +51,19 @@ public class LinkToolBar extends AbstractToolBar {
      * Creates new instance.
      */
     public LinkToolBar() {
-        labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+        labels = this.getLabel("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));
         setDisclosureStateCount(3);
     }
 
-    // https://refactoring.guru/introduce-null-object
+    public ResourceBundleUtil getLabel(String bundleName) {
+        if (!bundleName.isEmpty()) {
+            return ResourceBundleUtil.getBundle(bundleName);
+        }
+        return ResourceBundleUtil.getBundle("");
+    }
     @Override
     public void setEditor(DrawingEditor newValue) {
-        DrawingEditor oldValue = getEditor();
         if (displayer != null) {
             displayer.dispose();
             displayer = null;

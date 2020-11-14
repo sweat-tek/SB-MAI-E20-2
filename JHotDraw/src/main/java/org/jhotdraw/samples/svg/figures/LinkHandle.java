@@ -31,6 +31,7 @@ public class LinkHandle extends AbstractHandle {
 
     /**
      * Creates a new instance.
+     * @param owner
      */
     public LinkHandle(Figure owner) {
         super(owner);
@@ -43,6 +44,7 @@ public class LinkHandle extends AbstractHandle {
 
     /**
      * Draws this handle.
+     * @param g Graphics2D
      */
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
     @Override
@@ -79,19 +81,22 @@ public class LinkHandle extends AbstractHandle {
         return r;
     }
 
+    @Override
     public void trackStart(Point anchor, int modifiersEx) {
     }
 
+    @Override
     public void trackStep(Point anchor, Point lead, int modifiersEx) {
     }
 
+    @Override
     public void trackEnd(Point anchor, Point lead, int modifiersEx) {
     }
 
     @Override
         public String getToolTipText(Point p) {
-                
-        return (LINK.get(getOwner()) != null)
+                String f = LINK.get(getOwner());
+        return f != null
                 ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").//
                         getString("handle.link.toolTipText")
                 : "";

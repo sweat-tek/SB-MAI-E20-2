@@ -5,18 +5,11 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import org.jhotdraw.draw.AbstractHandle;
 import org.jhotdraw.draw.DefaultDrawingView;
-import org.jhotdraw.draw.DrawingEditor;
-import org.jhotdraw.draw.DrawingView;
 import org.jhotdraw.draw.Figure;
-import org.jhotdraw.draw.Handle;
-import org.jhotdraw.draw.HandleAttributeKeys;
 import org.jhotdraw.draw.LineFigure;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,16 +17,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.mockito.Mockito;
 
 /**
  *
  * @author ALEKSTUD
  */
 public class LinkHandleTest {
-
+ 
     private static Figure owner;
-    private static AbstractHandle ah;
+    private static LinkHandle ah;
     private static DefaultDrawingView view; // view = DefaultDrawingView
     private static Rectangle2D.Double b; // x = 125.0, y = 78.0, width= 192.0, height 148.0
     private static Point2D.Double p;
@@ -61,7 +53,6 @@ public class LinkHandleTest {
 
     @After
     public void tearDown() {
-        
         owner = null;
         ah = null;
         b = null;
@@ -71,7 +62,7 @@ public class LinkHandleTest {
 
     @Test
     public void testBasicGetBounds() {
-        System.out.println("basicGetBounds");
+        System.out.println("testBasicGetBounds()");
         Rectangle actualRectangle = new Rectangle(view.drawingToView(p));
         int h = 7;
         actualRectangle.x -= h * 4;

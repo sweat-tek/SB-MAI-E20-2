@@ -85,7 +85,6 @@ public class SelectionComponentDisplayer
         component.revalidate();
     }
     
-     // https://refactoring.guru/introduce-null-object
     public void dispose() {
         if (editor != null) {
             if (editor.getActiveView() != null) {
