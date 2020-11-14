@@ -34,5 +34,10 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit</groupId>
+            <artifactId>junit4-engine</artifactId>
+            <version>5.0.0-ALPHA</version>
+        </dependency>
     </dependencies>   
  </project>
