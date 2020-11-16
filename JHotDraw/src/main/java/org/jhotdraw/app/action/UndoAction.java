@@ -31,9 +31,9 @@ public class UndoAction extends AbstractUndoRedoAction {
 
     /** Creates a new instance. */
     public UndoAction(Application app) {
-        super(app);
+        super(app, ID);
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, setID(ID));
+        labels.configureAction(this, ID);
         setPropertyChangeListener();
     }
 }

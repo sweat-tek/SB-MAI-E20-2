@@ -20,8 +20,9 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
      *
      * @param app
      */
-    public AbstractUndoRedoAction(Application app) {
+    public AbstractUndoRedoAction(Application app, String id) {
         super(app);
+        this.ID = id;
     }
 
     protected void updateEnabledState() {
@@ -85,9 +86,5 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
             }
         };
         return redoActionPropertyListener;
-    }
-
-    public String setID(String ID) {
-        return this.ID = ID;
     }
 }
