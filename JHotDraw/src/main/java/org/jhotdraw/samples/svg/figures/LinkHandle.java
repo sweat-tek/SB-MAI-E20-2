@@ -29,8 +29,12 @@ import org.jhotdraw.util.ResourceBundleUtil;
  */
 public class LinkHandle extends AbstractHandle {
 
+    private int handleSize;
+    private boolean handleSizeSet;
+
     /**
      * Creates a new instance.
+     *
      * @param owner
      */
     public LinkHandle(Figure owner) {
@@ -38,12 +42,31 @@ public class LinkHandle extends AbstractHandle {
     }
 
     @Override
+    public void setView(DrawingView view) {
+        this.view = view;
+    }
+
+    public LinkHandle makeLinkHandle(Figure owner) {
+        return new LinkHandle(owner);
+    }
+
+    @Override
+    public DrawingView getView() {
+        return view;
+    }
+
+    @Override
     public boolean contains(Point p) {
         return false;
     }
 
+    public void setDrawingEditor(DrawingEditor d) {
+        this.view.setEditor(d);
+    }
+
     /**
      * Draws this handle.
+     *
      * @param g Graphics2D
      */
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
@@ -60,7 +83,7 @@ public class LinkHandle extends AbstractHandle {
             g.drawLine(r.x + r.width - 1, r.y + r.height / 2, (int) (r.x + r.width * .75 - 1), (int) (r.y + r.height * .75));
         }
     }
-    
+
     /**
      *
      * @return
@@ -73,11 +96,15 @@ public class LinkHandle extends AbstractHandle {
             TRANSFORM.get(getOwner()).transform(p, p);
         }
         Rectangle r = new Rectangle(view.drawingToView(p));
-        int h = getHandlesize();
-        r.x -= h * 4;
-        r.y -= h;
-        r.width = h * 2;
-        r.height = h;
+        try {
+            handleSize = getHandlesize();
+        } catch (NullPointerException e) {
+            handleSize = 1; // Default random value
+        }
+        r.x -= handleSize * 4;
+        r.y -= handleSize;
+        r.width = handleSize * 2;
+        r.height = handleSize;
         return r;
     }
 
@@ -94,8 +121,8 @@ public class LinkHandle extends AbstractHandle {
     }
 
     @Override
-        public String getToolTipText(Point p) {
-                String f = LINK.get(getOwner());
+    public String getToolTipText(Point p) {
+        String f = LINK.get(getOwner());
         return f != null
                 ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").//
                         getString("handle.link.toolTipText")

@@ -23,7 +23,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import org.jhotdraw.app.EditableComponent;
 import org.jhotdraw.app.JHotDrawFeatures;
 import static org.jhotdraw.draw.AttributeKeys.*;
@@ -108,6 +107,10 @@ public class DefaultDrawingView
     };
     private transient Rectangle2D.Double cachedDrawingArea;
 
+    @Override
+    public void setEditor(DrawingEditor editor) {
+        this.editor = editor;
+    }
     public void repaintHandles() {
         validateHandles();
         Rectangle r = null;

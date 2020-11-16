@@ -65,7 +65,7 @@ public class LinkHandleTest {
         System.out.println("testBasicGetBounds()");
         Rectangle actualRectangle = new Rectangle(view.drawingToView(p));
         int h = 7;
-        actualRectangle.x -= h * 4;
+        actualRectangle.x -= h * 4; 
         actualRectangle.y -= h;
         actualRectangle.width = h * 2;
         actualRectangle.height = h;
