@@ -28,17 +28,19 @@ import org.jhotdraw.samples.svg.figures.SVGRectFigureBuilder;
  * SVGRect.
  *
  * @author Werner Randelshofer
- * @version 2.1 2009-04-17 Method contains() takes now into account
- * whether the figure is filled.
+ * @version 2.1 2009-04-17 Method contains() takes now into account whether the
+ * figure is filled.
  * <br>2.0 2007-04-14 Adapted for new AttributeKeys.TRANSFORM support.
  * <br>1.0 July 8, 2006 Created.
  */
 public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
 
-    /** The variable acv is used for generating the locations of the control
-     * points for the rounded rectangle using path.curveTo. */
+    /**
+     * The variable acv is used for generating the locations of the control
+     * points for the rounded rectangle using path.curveTo.
+     */
     private static final double acv = 0.44771525016920666;
-  
+
     /**
      */
     private RoundRectangle2D.Double roundrect;
@@ -50,27 +52,29 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      * This is used to perform faster hit testing.
      */
     private transient Shape cachedHitShape;
-    
+
     private SVGRectFigureBuilder rectBuilder;
 
-    /** Creates a new instance. */
-    public SVGRectFigure() { 
-        rectBuilder = new SVGRectFigureBuilder();
-        roundrect = rectBuilder.createSVGRectFigure();
-        SVGAttributeKeys.setDefaults(this);
-       // this(0, 0, 0, 0);
+    /**
+     * Creates a new instance.
+     */
+    public SVGRectFigure() {
+//        rectBuilder = new SVGRectFigureBuilder();
+//        roundrect = rectBuilder.createSVGRectFigure();
+//        SVGAttributeKeys.setDefaults(this);
+        this(0, 0, 0, 0);
 
     }
-   
-//    public SVGRectFigure(double x, double y, double width, double height) {
-//        this(x, y, width, height, 0, 0);
-//    }
-//
-//    @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
-//    public SVGRectFigure(double x, double y, double width, double height, double rx, double ry) {
-//        roundrect = new RoundRectangle2D.Double(x, y, width, height, rx, ry);
-//        SVGAttributeKeys.setDefaults(this);
-//    }
+
+    public SVGRectFigure(double x, double y, double width, double height) {
+        this(x, y, width, height, 0, 0);
+    }
+
+    @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
+    public SVGRectFigure(double x, double y, double width, double height, double rx, double ry) {
+        roundrect = new RoundRectangle2D.Double(x, y, width, height, rx, ry);
+        SVGAttributeKeys.setDefaults(this);
+    }
 
     // DRAWING
     protected void drawFill(Graphics2D g) {
@@ -86,41 +90,40 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
         if (roundrect.archeight == 0 && roundrect.arcwidth == 0) {
             g.draw(roundrect.getBounds2D());
         } else {
-           createRoundRect(g);
+            createRoundRect(g);
         }
     }
-    
-    private void createRoundRect(Graphics2D g){
-         GeneralPath p = new GeneralPath();
-        
-         double aw = getArcWidth();
-         double ah = getArcHeight();
-         double xWidth = roundrect.x + roundrect.width;
-         double yHeight = roundrect.y + roundrect.height;
-         double x = roundrect.x;
-         double y = roundrect.y;
-         
-            moveToPosition(p);
-            p.lineTo( (xWidth- aw),  y); 
-            p.curveTo( (xWidth - aw * acv),  y, xWidth, (y + ah * acv), xWidth,  (y + ah));
-            p.lineTo( xWidth,  (yHeight - ah)); 
-            p.curveTo(xWidth,  (yHeight - ah * acv),(xWidth - aw * acv),  yHeight,(xWidth - aw),  yHeight);
-            p.lineTo( (x + aw),  yHeight); 
-            p.curveTo( (x + aw*acv),  yHeight,x, (yHeight - ah*acv), x,  (yHeight - ah));
-            p.lineTo( x,  (y + ah)); 
-            p.curveTo( (x),  (y + ah*acv), (x + aw*acv), y,(x + aw), y);
-            p.closePath();
-            g.draw(p);  
-    }
-    
-    //Method for setting the drawing coordinates
-    private void moveToPosition(GeneralPath p){
-         double x = (float)roundrect.x + getArcWidth();
-         double y = (float) roundrect.y;
-         p.moveTo(x, y);
+
+    private void createRoundRect(Graphics2D g) {
+        GeneralPath p = new GeneralPath();
+
+        double aw = getArcWidth();
+        double ah = getArcHeight();
+        double xWidth = roundrect.x + roundrect.width;
+        double yHeight = roundrect.y + roundrect.height;
+        double x = roundrect.x;
+        double y = roundrect.y;
+
+        moveToPosition(p);
+        p.lineTo((xWidth - aw), y);
+        p.curveTo((xWidth - aw * acv), y, xWidth, (y + ah * acv), xWidth, (y + ah));
+        p.lineTo(xWidth, (yHeight - ah));
+        p.curveTo(xWidth, (yHeight - ah * acv), (xWidth - aw * acv), yHeight, (xWidth - aw), yHeight);
+        p.lineTo((x + aw), yHeight);
+        p.curveTo((x + aw * acv), yHeight, x, (yHeight - ah * acv), x, (yHeight - ah));
+        p.lineTo(x, (y + ah));
+        p.curveTo((x), (y + ah * acv), (x + aw * acv), y, (x + aw), y);
+        p.closePath();
+        g.draw(p);
     }
 
-    
+    //Method for setting the drawing coordinates
+    private void moveToPosition(GeneralPath p) {
+        double x = (float) roundrect.x + getArcWidth();
+        double y = (float) roundrect.y;
+        p.moveTo(x, y);
+    }
+
     // SHAPE AND BOUNDS
     public double getX() {
         return roundrect.x;
@@ -223,52 +226,53 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
 
     /**
      * Transforms the figure.
+     *
      * @param tx The transformation.
      */
     public void transform(AffineTransform tx) {
         invalidateTransformedShape();
         if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
-                isTransform(tx);
+            isTransform(tx);
         } else {
-                transformNull(tx);
-                isFillGradient(tx);
-                isStrokeGradient(tx);
+            transformNull(tx);
+            isFillGradient(tx);
+            isStrokeGradient(tx);
         }
     }
-    
-    private void isFillGradient(AffineTransform tx){
-        if(FILL_GRADIENT.get(this) != null && !FILL_GRADIENT.get(this).isRelativeToFigureBounds()){
-             Gradient g = FILL_GRADIENT.getClone(this);
-             g.transform(tx);
-             FILL_GRADIENT.basicSet(this, g);   
+
+    private void isFillGradient(AffineTransform tx) {
+        if (FILL_GRADIENT.get(this) != null && !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = FILL_GRADIENT.getClone(this);
+            g.transform(tx);
+            FILL_GRADIENT.basicSet(this, g);
         }
     }
-    
-    private void isStrokeGradient(AffineTransform tx){
-         if (STROKE_GRADIENT.get(this) != null && !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-              Gradient g = STROKE_GRADIENT.getClone(this);
-              g.transform(tx);
-              STROKE_GRADIENT.basicSet(this, g);
-          }
+
+    private void isStrokeGradient(AffineTransform tx) {
+        if (STROKE_GRADIENT.get(this) != null && !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = STROKE_GRADIENT.getClone(this);
+            g.transform(tx);
+            STROKE_GRADIENT.basicSet(this, g);
+        }
     }
-    
-    private void isTransform(AffineTransform tx){
-         if (TRANSFORM.get(this) == null) {
-                TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
-            } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
-            }
+
+    private void isTransform(AffineTransform tx) {
+        if (TRANSFORM.get(this) == null) {
+            TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
+        } else {
+            AffineTransform t = TRANSFORM.getClone(this);
+            t.preConcatenate(tx);
+            TRANSFORM.basicSet(this, t);
+        }
     }
-    
-    public void transformNull(AffineTransform tx){ 
+
+    public void transformNull(AffineTransform tx) {
         Point2D.Double anchor = getStartPoint();
         Point2D.Double lead = getEndPoint();
-        setBounds((Point2D.Double) tx.transform(anchor, anchor),(Point2D.Double) tx.transform(lead, lead));
+        setBounds((Point2D.Double) tx.transform(anchor, anchor), (Point2D.Double) tx.transform(lead, lead));
     }
-    // ATTRIBUTES
 
+    // ATTRIBUTES
     public void setArc(double w, double h) {
         roundrect.arcwidth = Math.max(0d, Math.min(roundrect.width, w * 2d));
         roundrect.archeight = Math.max(0d, Math.min(roundrect.height, h * 2d));
@@ -296,10 +300,10 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
 
     public Object getTransformRestoreData() {
         return new Object[]{
-                    roundrect.clone(),
-                    TRANSFORM.getClone(this),
-                    FILL_GRADIENT.getClone(this),
-                    STROKE_GRADIENT.getClone(this),};
+            roundrect.clone(),
+            TRANSFORM.getClone(this),
+            FILL_GRADIENT.getClone(this),
+            STROKE_GRADIENT.getClone(this),};
     }
 
     // EDITING
