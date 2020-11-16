@@ -43,6 +43,7 @@ public class BringToFrontAction extends AbstractSelectedAction {
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();
+        assert view != null: "View is null";
         final LinkedList<Figure> figures = new LinkedList<Figure>(view.getSelectedFigures());
         bringToFrontAction(view, figures);
         makeUndoable(view, figures);
