@@ -46,6 +46,7 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
      * Installs listeners on the view object.
      */
     @Override protected void installViewListeners(View p) {
+        assert p != null: "The view is null";
         super.installViewListeners(p);
         if (p.getAction(ID) != null) {
             p.getAction(ID).addPropertyChangeListener(redoActionPropertyListener);
@@ -55,6 +56,7 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
      * Installs listeners on the view object.
      */
     @Override protected void uninstallViewListeners(View p) {
+        assert p != null: "The view is null";
         super.uninstallViewListeners(p);
         if (p.getAction(ID) != null) {
             p.getAction(ID).removePropertyChangeListener(redoActionPropertyListener);
