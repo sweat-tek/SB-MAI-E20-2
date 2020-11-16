@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.jhotdraw.samples.svg.gui;
 
 import org.jhotdraw.util.ResourceBundleUtil;
@@ -13,32 +8,29 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author ALEKSTUD
- */
 public class LinkToolBarTest {
-    
+
     LinkToolBar ltb;
     ResourceBundleUtil rbu;
+
     public LinkToolBarTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         ltb = new LinkToolBar();
         rbu = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
-    
+
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -55,8 +47,6 @@ public class LinkToolBarTest {
         System.out.println("Expected: " + expected);
         System.out.println("Actual: " + actual);
         assertEquals(expected, actual);
-     
-    }   
-}
 
-   
+    }
+}
