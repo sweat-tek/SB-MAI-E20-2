@@ -29,11 +29,30 @@ import org.jhotdraw.util.ResourceBundleUtil;
  */
 public class LinkHandle extends AbstractHandle {
 
+    private int handleSize;
+    private boolean handleSizeSet;
+
     /**
      * Creates a new instance.
+     *
+     * @param owner
      */
     public LinkHandle(Figure owner) {
         super(owner);
+    }
+
+    @Override
+    public void setView(DrawingView view) {
+        this.view = view;
+    }
+
+    public LinkHandle makeLinkHandle(Figure owner) {
+        return new LinkHandle(owner);
+    }
+
+    @Override
+    public DrawingView getView() {
+        return view;
     }
 
     @Override
@@ -41,8 +60,14 @@ public class LinkHandle extends AbstractHandle {
         return false;
     }
 
+    public void setDrawingEditor(DrawingEditor d) {
+        this.view.setEditor(d);
+    }
+
     /**
      * Draws this handle.
+     *
+     * @param g Graphics2D
      */
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
     @Override
@@ -59,6 +84,10 @@ public class LinkHandle extends AbstractHandle {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected Rectangle basicGetBounds() {
         Rectangle2D.Double b = getOwner().getBounds();
@@ -67,30 +96,37 @@ public class LinkHandle extends AbstractHandle {
             TRANSFORM.get(getOwner()).transform(p, p);
         }
         Rectangle r = new Rectangle(view.drawingToView(p));
-        int h = getHandlesize();
-        r.x -= h * 4;
-        r.y -= h;
-        r.width = h * 2;
-        r.height = h;
+        try {
+            handleSize = getHandlesize();
+        } catch (NullPointerException e) {
+            handleSize = 1; // Default random value
+        }
+        r.x -= handleSize * 4;
+        r.y -= handleSize;
+        r.width = handleSize * 2;
+        r.height = handleSize;
         return r;
     }
 
+    @Override
     public void trackStart(Point anchor, int modifiersEx) {
     }
 
+    @Override
     public void trackStep(Point anchor, Point lead, int modifiersEx) {
     }
 
+    @Override
     public void trackEnd(Point anchor, Point lead, int modifiersEx) {
     }
 
     @Override
-        public String getToolTipText(Point p) {
-
-        return (LINK.get(getOwner()) != null)
+    public String getToolTipText(Point p) {
+        String f = LINK.get(getOwner());
+        return f != null
                 ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").//
                         getString("handle.link.toolTipText")
-                : null;
+                : "";
     }
 
 }

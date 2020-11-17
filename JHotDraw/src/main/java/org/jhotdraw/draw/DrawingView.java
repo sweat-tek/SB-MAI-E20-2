@@ -108,6 +108,7 @@ public interface DrawingView {
      */
     public final static String ACTIVE_HANDLE_PROPERTY = "activeHandle";
 
+    public void setEditor(DrawingEditor editor);
     /**
      * Gets the drawing.
      * This is a bound property.
