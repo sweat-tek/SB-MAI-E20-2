@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ RefactorLinkToolBar]
+    branches: [ link_palette]
   pull_request:
-    branches: [ RefactorLinkToolBar]
+    branches: [ link_palette]
 
 jobs:
   build:
