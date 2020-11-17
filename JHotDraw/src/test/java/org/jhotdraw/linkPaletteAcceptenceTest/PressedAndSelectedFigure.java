@@ -1,12 +1,10 @@
-package acceptanceTestLinkPalette;
+package org.jhotdraw.linkPaletteAcceptenceTest;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import org.jhotdraw.draw.BezierFigure;
 import org.jhotdraw.draw.BezierTool;
 import org.jhotdraw.draw.DefaultDrawingEditor;
@@ -14,37 +12,37 @@ import org.jhotdraw.draw.DefaultDrawingView;
 import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.GridConstrainer;
 import org.jhotdraw.draw.QuadTreeDrawing;
-import org.jhotdraw.samples.svg.figures.LinkHandle;
 import org.mockito.Mockito;
-import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
 
 /**
- *
- * @author alek
+ * @author Aleksander G. Duszkiewicz
+ * @version 1.0 2020-11-17 Created.
  */
 class PressedAndSelectedFigure extends Stage<PressedAndSelectedFigure> {
 
     @ProvidedScenarioState
     DefaultDrawingView defaultDrawingView;
     @ProvidedScenarioState
-    int xAxis = 408;
+    int xAxis = 250;
     @ProvidedScenarioState
-    int yAxis = 127;
+    int yAxis = 150;
     @ProvidedScenarioState
     BezierTool bezierTool;
-@ProvidedScenarioState
+
     DefaultDrawingEditor defaultDrawingEditor;
     GridConstrainer gridConstrainer;
     Drawing drawing;
 
     public PressedAndSelectedFigure figureSelected() {
+
         setUpMock();
 
-        Assert.assertNotNull(bezierTool);
-        Assert.assertNotNull(defaultDrawingEditor);
-        Assert.assertNotNull(defaultDrawingView);
-        Assert.assertNotNull(gridConstrainer);
-        Assert.assertNotNull(drawing);
+        assertNotNull(bezierTool);
+        assertNotNull(defaultDrawingEditor);
+        assertNotNull(defaultDrawingView);
+        assertNotNull(gridConstrainer);
+        assertNotNull(drawing);
 
         givenMousePressed();
 
@@ -58,6 +56,7 @@ class PressedAndSelectedFigure extends Stage<PressedAndSelectedFigure> {
         gridConstrainer = Mockito.mock(GridConstrainer.class);
         drawing = Mockito.mock(QuadTreeDrawing.class);
 
+        Mockito.when(defaultDrawingEditor.getActiveView()).thenReturn(defaultDrawingView);
         Mockito.when(defaultDrawingEditor.findView(defaultDrawingView)).thenReturn(defaultDrawingView);
         Mockito.when(defaultDrawingView.viewToDrawing(new Point(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
         Mockito.when(gridConstrainer.constrainPoint(new Point2D.Double(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
