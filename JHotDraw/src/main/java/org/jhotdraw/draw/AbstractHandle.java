@@ -26,7 +26,7 @@ import java.util.*;
  *
  * @author Werner Randelshofer
  * @version 2.0 2008-05-11 Handle attributes are now retrieved from
- * DrawingEditor. 
+ * DrawingEditor.
  * <br>1.0 2003-12-01 Derived from JHotDraw 5.4b1.
  */
 public abstract class AbstractHandle implements Handle, FigureListener {
@@ -39,7 +39,11 @@ public abstract class AbstractHandle implements Handle, FigureListener {
      */
     private Rectangle bounds;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     *
+     * @param owner
+     */
     public AbstractHandle(Figure owner) {
         if (owner == null) {
             throw new IllegalArgumentException("owner must not be null");
@@ -49,7 +53,7 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     protected int getHandlesize() {
-        return (Integer) getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_SIZE);
+        return getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_SIZE);
     }
 
     /**
@@ -83,8 +87,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     /**
-     *  Notify all listenerList that have registered interest for
-     * notification on this event type.
+     * Notify all listenerList that have registered interest for notification on
+     * this event type.
      */
     protected void fireAreaInvalidated(Rectangle invalidatedArea) {
         HandleEvent event = null;
@@ -105,16 +109,16 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     /**
-     *  Notify all listenerList that have registered interest for
-     * notification on this event type.
+     * Notify all listenerList that have registered interest for notification on
+     * this event type.
      */
     protected void fireUndoableEditHappened(UndoableEdit edit) {
         view.getDrawing().fireUndoableEditHappened(edit);
     }
 
     /**
-     *  Notify all listenerList that have registered interest for
-     * notification on this event type.
+     * Notify all listenerList that have registered interest for notification on
+     * this event type.
      */
     protected void fireHandleRequestRemove(Rectangle invalidatedArea) {
         HandleEvent event = null;
@@ -135,8 +139,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     /**
-     *  Notify all listenerList that have registered interest for
-     * notification on this event type.
+     * Notify all listenerList that have registered interest for notification on
+     * this event type.
      */
     protected void fireHandleRequestSecondaryHandles() {
         HandleEvent event = null;
@@ -192,7 +196,7 @@ public abstract class AbstractHandle implements Handle, FigureListener {
             r.height -= 2;
             g.fill(r);
         }
-            g.setStroke(new BasicStroke());
+        g.setStroke(new BasicStroke());
         if (stroke != null) {
             Rectangle r = getBounds();
             r.width -= 1;
@@ -257,15 +261,14 @@ public abstract class AbstractHandle implements Handle, FigureListener {
 
     public void dispose() {
         owner.removeFigureListener(this);
-    //owner = null;
+        //owner = null;
     }
 
     /**
-     * Sent when a region used by the figure needs to be repainted.
-     * The implementation of this method assumes that the handle
-     * is located on the bounds of the figure or inside the figure.
-     * If the handle is located elsewhere this method must be reimpleted
-     * by the subclass.
+     * Sent when a region used by the figure needs to be repainted. The
+     * implementation of this method assumes that the handle is located on the
+     * bounds of the figure or inside the figure. If the handle is located
+     * elsewhere this method must be reimpleted by the subclass.
      */
     public void areaInvalidated(FigureEvent evt) {
         updateBounds();
@@ -307,8 +310,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     }
 
     /**
-     * Returns true, if the given handle is an instance of the same
-     * class or of a subclass of this handle,.
+     * Returns true, if the given handle is an instance of the same class or of
+     * a subclass of this handle,.
      */
     public boolean isCombinableWith(Handle handle) {
         return getClass().isAssignableFrom(handle.getClass());

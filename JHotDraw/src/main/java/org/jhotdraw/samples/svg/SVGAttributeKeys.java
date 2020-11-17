@@ -108,6 +108,7 @@ public class SVGAttributeKeys extends AttributeKeys {
      * figure.
      * http://www.w3.org/TR/SVGMobile12/linking.html#AElement
      */
+    
     public final static AttributeKey<String> LINK = new AttributeKey<String>("link",String.class, null, true, labels);
     /**
      * Specifies a link target.
