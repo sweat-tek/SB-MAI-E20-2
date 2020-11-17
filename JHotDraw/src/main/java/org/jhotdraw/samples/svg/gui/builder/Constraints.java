@@ -1,18 +1,12 @@
 package org.jhotdraw.samples.svg.gui.builder;
 
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-import org.jhotdraw.gui.JAttributeTextArea;
-import org.jhotdraw.gui.JAttributeTextField;
+
 
 /**
- *
- * @author Aleksander
+ * @author Aleksander G. Duszkiewicz
+ * @version 1.0 2020-11-17 Created.
  */
 public class Constraints {
 
@@ -109,11 +103,8 @@ public class Constraints {
             constraints.weightx = this.weightx;
             constraints.weighty = this.weighty;
             constraints.anchor = this.anchor;
-            
-            
 
             return constraints;
         }
-
     }
 }

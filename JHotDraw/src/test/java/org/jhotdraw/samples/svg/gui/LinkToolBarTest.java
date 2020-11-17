@@ -8,6 +8,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * @author Aleksander G. Duszkiewicz
+ * @version 1.0 2020-11-17 Created.
+ */
+
 public class LinkToolBarTest {
 
     LinkToolBar ltb;

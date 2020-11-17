@@ -1,14 +1,18 @@
-//package acceptanceTestLinkPalette;
-//
-//import com.tngtech.jgiven.junit.ScenarioTest;
-//import org.junit.Test;
-//
-//public class AcceptanceTestLinkPalette extends ScenarioTest<mousePressedAndMouseClick, input_text_link_and_text_target, link_added_to_figure> {
-//
-//    @Test
-//    public void link_added_to_figure() {
-//        given().mousePressedAndMouseClick();
-//        when().input_text_link_and_text_target();
-//        then().link_added_to_figure();
-//    }
-//}
+package acceptanceTestLinkPalette;
+
+import com.tngtech.jgiven.junit.ScenarioTest;
+import org.junit.Test;
+
+/**
+ * @author Aleksander G. Duszkiewicz
+ * @version 1.0 2020-11-17 Created.
+ */
+public class AcceptanceTestLinkPalette extends ScenarioTest<PressedAndSelectedFigure, InputLinkAndTargetText, LinkAddedToFigure> {
+
+    @Test
+    public void linkAddedToFigure() {
+        given().figureSelected();
+        when().hasInputLinkAndTargetText();
+        then().linkAddedToFigure();
+    }
+}

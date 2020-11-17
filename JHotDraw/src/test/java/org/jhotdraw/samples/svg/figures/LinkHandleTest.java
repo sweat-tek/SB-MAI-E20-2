@@ -17,6 +17,10 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.spy;
 import static org.junit.Assert.*;
 
+/**
+ * @author Aleksander G. Duszkiewicz
+ * @version 1.0 2020-11-17 Created.
+ */
 public class LinkHandleTest {
 
     private BezierFigure bezierFigure;
