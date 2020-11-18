@@ -4,6 +4,7 @@ import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.app.View;
+import org.jhotdraw.util.ResourceBundleUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,9 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
     public AbstractUndoRedoAction(Application app, String id) {
         super(app);
         this.ID = id;
+        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
+        labels.configureAction(this, ID);
+        setPropertyChangeListener();
     }
 
     protected void updateEnabledState() {

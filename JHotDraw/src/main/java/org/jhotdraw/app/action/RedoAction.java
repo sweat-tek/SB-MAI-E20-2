@@ -13,7 +13,6 @@
  */
 
 package org.jhotdraw.app.action;
-import org.jhotdraw.util.*;
 import org.jhotdraw.app.Application;
 
 /**
@@ -32,8 +31,5 @@ public class RedoAction extends AbstractUndoRedoAction {
     /** Creates a new instance. */
     public RedoAction(Application app) {
         super(app, ID);
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
-        setPropertyChangeListener();
     }
 }
