@@ -5,16 +5,15 @@
  * and all its contributors.
  * All rights reserved.
  *
- * The copyright of this software is owned by the authors and  
- * contributors of the JHotDraw project ("the copyright holders").  
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * the copyright holders. For details see accompanying license terms. 
+ * The copyright of this software is owned by the authors and
+ * contributors of the JHotDraw project ("the copyright holders").
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * the copyright holders. For details see accompanying license terms.
  */
 package org.jhotdraw.draw;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import javax.swing.event.*;
 import javax.swing.undo.*;
 import org.jhotdraw.util.*;
 import java.awt.*;
@@ -23,7 +22,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import org.jhotdraw.app.EditableComponent;
 import org.jhotdraw.app.JHotDrawFeatures;
 import static org.jhotdraw.draw.AttributeKeys.*;
@@ -40,10 +38,10 @@ import static org.jhotdraw.draw.AttributeKeys.*;
  * the canvas size.
  * <br>4.5.3 2008-09-01 Use an ordered set for the selected figures.
  * <br>4.5.2 2008-06-09 A DrawingView must not create Handle's, if it
- * has no DrawingEditor. 
- * <br>4.5.1 2008-05-18 Delete method did not preserve z-index on undo. 
+ * has no DrawingEditor.
+ * <br>4.5.1 2008-05-18 Delete method did not preserve z-index on undo.
  * <br>4.5 2008-05-18 Retrieve tooltip text from current tool.
- * <br>4.4 2007-12-18 Reduced repaints of the drawing area. 
+ * <br>4.4 2007-12-18 Reduced repaints of the drawing area.
  * <br>4.3 2007-12-16 Retrieve canvasColor color from Drawing object.
  * <br>4.2 2007-09-12 The DrawingView is now responsible for
  * holding the Constrainer objects which affect editing on this view.
@@ -72,20 +70,19 @@ public class DefaultDrawingView
      */
     private final static boolean DEBUG = false;
     private Drawing drawing;
-    private Set<Figure> dirtyFigures = new HashSet<Figure>();
     /**
      * Holds the selected figures in an ordered set. The ordering reflects
      * the sequence that was used to select the figures.
      */
-    private Set<Figure> selectedFigures = new LinkedHashSet<Figure>();
+    private Set<Figure> selectedFigures = new LinkedHashSet<>();
     //private int rainbow = 0;
-    private LinkedList<Handle> selectionHandles = new LinkedList<Handle>();
+    private LinkedList<Handle> selectionHandles = new LinkedList<>();
     private boolean isConstrainerVisible = false;
     private Constrainer visibleConstrainer = new GridConstrainer(8, 8);
     private Constrainer invisibleConstrainer = new GridConstrainer();
     private Handle secondaryHandleOwner;
     private Handle activeHandle;
-    private LinkedList<Handle> secondaryHandles = new LinkedList<Handle>();
+    private LinkedList<Handle> secondaryHandles = new LinkedList<>();
     private boolean handlesAreValid = true;
     private transient Dimension cachedPreferredSize;
     private double scaleFactor = 1;
@@ -94,16 +91,9 @@ public class DefaultDrawingView
     private DrawingEditor editor;
     private JLabel emptyDrawingLabel;
     private FigureListener handleInvalidator = new FigureAdapter() {
-
         @Override
         public void figureHandlesChanged(FigureEvent e) {
             invalidateHandles();
-        }
-    };
-    private ChangeListener changeHandler = new ChangeListener() {
-
-        public void stateChanged(ChangeEvent evt) {
-            repaint();
         }
     };
     private transient Rectangle2D.Double cachedDrawingArea;
@@ -217,7 +207,7 @@ public class DefaultDrawingView
         public void figureRequestRemove(FigureEvent e) {
         }
     }
-    private EventHandler eventHandler;
+    private final EventHandler eventHandler;
 
     /** Creates new instance. */
     public DefaultDrawingView() {
@@ -258,18 +248,6 @@ public class DefaultDrawingView
             return getEditor().getTool().getToolTipText(this, evt);
         }
         return null;
-    }
-
-    public void setEmptyDrawingMessage(String newValue) {
-        String oldValue = (emptyDrawingLabel == null) ? null : emptyDrawingLabel.getText();
-        if (newValue == null) {
-            emptyDrawingLabel = null;
-        } else {
-            emptyDrawingLabel = new JLabel(newValue);
-            emptyDrawingLabel.setHorizontalAlignment(JLabel.CENTER);
-        }
-        firePropertyChange("emptyDrawingMessage", oldValue, newValue);
-        repaint();
     }
 
     public String getEmptyDrawingMessage() {
@@ -393,7 +371,6 @@ public class DefaultDrawingView
     }
 
     protected void drawDrawing(Graphics2D gr) {
-
         if (drawing != null) {
             if (drawing.getChildCount() == 0 && emptyDrawingLabel != null) {
                 emptyDrawingLabel.setBounds(0, 0, getWidth(), getHeight());
@@ -478,10 +455,10 @@ public class DefaultDrawingView
         if (DEBUG) {
             System.out.println("DefaultDrawingView" + ".addToSelection(" + figure + ")");
         }
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
         if (selectedFigures.add(figure)) {
             figure.addFigureListener(handleInvalidator);
-            Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> newSelection = new HashSet<>(selectedFigures);
             Rectangle invalidatedArea = null;
             if (handlesAreValid && getEditor() != null) {
                 for (Handle h : figure.createHandles(detailLevel)) {
@@ -506,8 +483,8 @@ public class DefaultDrawingView
      * Adds a collection of figures to the current selection.
      */
     public void addToSelection(Collection<Figure> figures) {
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
-        Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
+        Set<Figure> newSelection = new HashSet<>(selectedFigures);
         boolean selectionChanged = false;
         Rectangle invalidatedArea = null;
         for (Figure figure : figures) {
@@ -541,9 +518,9 @@ public class DefaultDrawingView
      * Removes a figure from the selection.
      */
     public void removeFromSelection(Figure figure) {
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
         if (selectedFigures.remove(figure)) {
-            Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> newSelection = new HashSet<>(selectedFigures);
             invalidateHandles();
             figure.removeFigureListener(handleInvalidator);
             fireSelectionChanged(oldSelection, newSelection);
@@ -574,7 +551,7 @@ public class DefaultDrawingView
      */
     @FeatureEntryPoint(JHotDrawFeatures.AUTOMATIC_SELECTION)
     public void selectAll() {
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
         selectedFigures.clear();
 
         for (Figure figure : drawing.getChildren()) {
@@ -583,7 +560,7 @@ public class DefaultDrawingView
             }
         }
 
-        Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> newSelection = new HashSet<>(selectedFigures);
         invalidateHandles();
         fireSelectionChanged(oldSelection, newSelection);
         repaint();
@@ -595,9 +572,9 @@ public class DefaultDrawingView
     @FeatureEntryPoint(JHotDrawFeatures.AUTOMATIC_SELECTION)
     public void clearSelection() {
         if (getSelectionCount() > 0) {
-            Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> oldSelection = new HashSet<>(selectedFigures);
             selectedFigures.clear();
-            Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> newSelection = new HashSet<>(selectedFigures);
             invalidateHandles();
             fireSelectionChanged(oldSelection, newSelection);
         }
@@ -718,12 +695,12 @@ public class DefaultDrawingView
     public Handle findHandle(Point p) {
         validateHandles();
 
-        for (Handle handle : new ReversedList<Handle>(getSecondaryHandles())) {
+        for (Handle handle : new ReversedList<>(getSecondaryHandles())) {
             if (handle.contains(p)) {
                 return handle;
             }
         }
-        for (Handle handle : new ReversedList<Handle>(getSelectionHandles())) {
+        for (Handle handle : new ReversedList<>(getSelectionHandles())) {
             if (handle.contains(p)) {
                 return handle;
             }
@@ -738,8 +715,8 @@ public class DefaultDrawingView
     public Collection<Handle> getCompatibleHandles(Handle master) {
         validateHandles();
 
-        HashSet<Figure> owners = new HashSet<Figure>();
-        LinkedList<Handle> compatibleHandles = new LinkedList<Handle>();
+        HashSet<Figure> owners = new HashSet<>();
+        LinkedList<Handle> compatibleHandles = new LinkedList<>();
         owners.add(master.getOwner());
         compatibleHandles.add(master);
 
@@ -873,23 +850,19 @@ public class DefaultDrawingView
         Double ch = CANVAS_HEIGHT.get(getDrawing());
 
         if (cw == null || ch == null) {
-            // The canvas size is not specified. 
+            // The canvas size is not specified.
 
             // Place the drawing at the top left corner.
             translate.x = Math.min(0, r.x);
             translate.y = Math.min(0, r.y);
         } else {
             // The canvas size is not specified.
-
-            //Place the canvas at the center
-            Dimension preferred = getPreferredSize();
-            if (cw != null && ch != null) {
-                if (cw * scaleFactor < width) {
-                    translate.x = (width / scaleFactor - cw) / -2d;
-                }
-                if (ch * scaleFactor < height) {
-                    translate.y = (height / scaleFactor - ch) / -2d;
-                }
+            // Place the canvas at the center
+            if (cw * scaleFactor < width) {
+                translate.x = (width / scaleFactor - cw) / -2d;
+            }
+            if (ch * scaleFactor < height) {
+                translate.y = (height / scaleFactor - ch) / -2d;
             }
 
             if (r.y - translate.y < insets.top / scaleFactor) {
@@ -997,10 +970,7 @@ public class DefaultDrawingView
             invalidateHandles();
 
             validateHandles();
-
         }
-
-
     }
 
     public int getHandleDetailLevel() {
@@ -1016,7 +986,6 @@ public class DefaultDrawingView
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void delete() {
-        final LinkedList<CompositeFigureEvent> deletionEvents = new LinkedList<CompositeFigureEvent>();
         final java.util.List<Figure> deletedFigures = drawing.sort(getSelectedFigures());
 
         // Abort, if not all of the selected figures may be removed from the
@@ -1025,10 +994,7 @@ public class DefaultDrawingView
             if (!f.isRemovable()) {
                 getToolkit().beep();
                 return;
-
             }
-
-
         }
 
         // Get z-indices of deleted figures
@@ -1078,11 +1044,11 @@ public class DefaultDrawingView
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void duplicate() {
         Collection<Figure> sorted = getDrawing().sort(getSelectedFigures());
-        HashMap<Figure, Figure> originalToDuplicateMap = new HashMap<Figure, Figure>(sorted.size());
+        HashMap<Figure, Figure> originalToDuplicateMap = new HashMap<>(sorted.size());
 
         clearSelection();
 
-        final ArrayList<Figure> duplicates = new ArrayList<Figure>(sorted.size());
+        final ArrayList<Figure> duplicates = new ArrayList<>(sorted.size());
         AffineTransform tx = new AffineTransform();
         tx.translate(5, 5);
         for (Figure f : sorted) {
