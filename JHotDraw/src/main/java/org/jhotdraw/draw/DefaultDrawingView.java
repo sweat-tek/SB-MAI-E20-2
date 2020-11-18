@@ -322,6 +322,7 @@ public class DefaultDrawingView
         drawDrawing(g);
     }
 
+    @FeatureEntryPoint(JHotDrawFeatures.CANVAS)
     protected void drawBackground(Graphics2D g) {
         // Position of the zero coordinate point on the view
         int x = (int) (-translate.x * scaleFactor);

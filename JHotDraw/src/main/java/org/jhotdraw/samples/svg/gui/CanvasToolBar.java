@@ -13,6 +13,8 @@
  */
 package org.jhotdraw.samples.svg.gui;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.text.JavaNumberFormatter;
 import javax.swing.border.*;
 import org.jhotdraw.gui.*;
@@ -43,6 +45,7 @@ public class CanvasToolBar extends AbstractToolBar {
     }
 
     @Override
+    @FeatureEntryPoint(JHotDrawFeatures.CANVAS)
     protected JComponent createDisclosedComponent(int state) {
         JPanel p = null;
 
