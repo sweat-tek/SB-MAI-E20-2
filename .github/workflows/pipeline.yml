@@ -1,14 +1,6 @@
-name: Build code base
+name: Java CI
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
+on: [push]
 
 jobs:
   build:
