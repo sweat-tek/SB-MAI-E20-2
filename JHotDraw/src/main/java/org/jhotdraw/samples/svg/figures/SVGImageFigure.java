@@ -296,11 +296,12 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // CLONING
     @Override
     public SVGImageFigure clone() {
-        SVGImageFigure that = (SVGImageFigure) super.clone();
-        that.rectangle = (Rectangle2D.Double) this.rectangle.clone();
-        that.cachedTransformedShape = null;
-        that.cachedHitShape = null;
-        return that;
+        SVGImageFigure svgImageFigure = (SVGImageFigure) super.clone();
+        assert svgImageFigure != null : "Clone is null";
+        svgImageFigure.rectangle = (Rectangle2D.Double) this.rectangle.clone();
+        svgImageFigure.cachedTransformedShape = null;
+        svgImageFigure.cachedHitShape = null;
+        return svgImageFigure;
     }
 
     public boolean isEmpty() {
