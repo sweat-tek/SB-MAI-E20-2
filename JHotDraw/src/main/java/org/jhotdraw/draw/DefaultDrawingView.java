@@ -74,23 +74,23 @@ public class DefaultDrawingView
      * Holds the selected figures in an ordered set. The ordering reflects
      * the sequence that was used to select the figures.
      */
-    private Set<Figure> selectedFigures = new LinkedHashSet<>();
+    private final Set<Figure> selectedFigures = new LinkedHashSet<>();
     //private int rainbow = 0;
-    private LinkedList<Handle> selectionHandles = new LinkedList<>();
+    LinkedList<Handle> selectionHandles = new LinkedList<>();
     private boolean isConstrainerVisible = false;
     private Constrainer visibleConstrainer = new GridConstrainer(8, 8);
     private Constrainer invisibleConstrainer = new GridConstrainer();
-    private Handle secondaryHandleOwner;
+    Handle secondaryHandleOwner;
     private Handle activeHandle;
-    private LinkedList<Handle> secondaryHandles = new LinkedList<>();
+    final LinkedList<Handle> secondaryHandles = new LinkedList<>();
     private boolean handlesAreValid = true;
     private transient Dimension cachedPreferredSize;
     private double scaleFactor = 1;
-    private Point2D.Double translate = new Point2D.Double(0, 0);
+    private final Point2D.Double translate = new Point2D.Double(0, 0);
     private int detailLevel;
-    private DrawingEditor editor;
+    DrawingEditor editor;
     private JLabel emptyDrawingLabel;
-    private FigureListener handleInvalidator = new FigureAdapter() {
+    private final FigureListener handleInvalidator = new FigureAdapter() {
         @Override
         public void figureHandlesChanged(FigureEvent e) {
             invalidateHandles();
@@ -120,94 +120,7 @@ public class DefaultDrawingView
         }
     }
 
-    private class EventHandler implements FigureListener, CompositeFigureListener, HandleListener, FocusListener {
-
-        public void figureAdded(CompositeFigureEvent evt) {
-            if (drawing.getChildCount() == 1 && getEmptyDrawingMessage() != null) {
-                repaint();
-            } else {
-                repaintDrawingArea(evt.getInvalidatedArea());
-            }
-            invalidateDimension();
-        }
-
-        public void figureRemoved(CompositeFigureEvent evt) {
-            if (drawing.getChildCount() == 0 && getEmptyDrawingMessage() != null) {
-                repaint();
-            } else {
-                repaintDrawingArea(evt.getInvalidatedArea());
-            }
-            removeFromSelection(evt.getChildFigure());
-            invalidateDimension();
-        }
-
-        public void areaInvalidated(FigureEvent evt) {
-            repaintDrawingArea(evt.getInvalidatedArea());
-            invalidateDimension();
-        }
-
-        public void areaInvalidated(HandleEvent evt) {
-            repaint(evt.getInvalidatedArea());
-            invalidateDimension();
-        }
-
-        public void handleRequestSecondaryHandles(HandleEvent e) {
-            secondaryHandleOwner = e.getHandle();
-            secondaryHandles.clear();
-            secondaryHandles.addAll(secondaryHandleOwner.createSecondaryHandles());
-            for (Handle h : secondaryHandles) {
-                h.setView(DefaultDrawingView.this);
-                h.addHandleListener(eventHandler);
-            }
-            repaint();
-        }
-
-        public void focusGained(FocusEvent e) {
-            //   repaintHandles();
-            if (editor != null) {
-                editor.setActiveView(DefaultDrawingView.this);
-            }
-        }
-
-        public void focusLost(FocusEvent e) {
-            //   repaintHandles();
-        }
-
-        public void handleRequestRemove(HandleEvent e) {
-            selectionHandles.remove(e.getHandle());
-            e.getHandle().dispose();
-            invalidateHandles();
-            repaint(e.getInvalidatedArea());
-        }
-
-        public void attributeChanged(FigureEvent e) {
-            if (e.getSource() == drawing) {
-                if (e.getAttribute().equals(CANVAS_HEIGHT) || e.getAttribute().equals(CANVAS_WIDTH)) {
-                    validateViewTranslation();
-                }
-                repaint();
-            } else {
-                repaintDrawingArea(e.getInvalidatedArea());
-            }
-        }
-
-        public void figureHandlesChanged(FigureEvent e) {
-        }
-
-        public void figureChanged(FigureEvent e) {
-            repaintDrawingArea(e.getInvalidatedArea());
-        }
-
-        public void figureAdded(FigureEvent e) {
-        }
-
-        public void figureRemoved(FigureEvent e) {
-        }
-
-        public void figureRequestRemove(FigureEvent e) {
-        }
-    }
-    private final EventHandler eventHandler;
+    final DrawingViewEventHandler eventHandler;
 
     /** Creates new instance. */
     public DefaultDrawingView() {
@@ -221,8 +134,8 @@ public class DefaultDrawingView
         //setBorder(new EmptyBorder(10,10,10,10));
     }
 
-    protected EventHandler createEventHandler() {
-        return new EventHandler();
+    protected DrawingViewEventHandler createEventHandler() {
+        return new DrawingViewEventHandler(this);
     }
 
     /** This method is called from within the constructor to
@@ -622,7 +535,7 @@ public class DefaultDrawingView
     /**
      * Invalidates the handles.
      */
-    private void invalidateHandles() {
+    void invalidateHandles() {
         if (handlesAreValid) {
             handlesAreValid = false;
 
@@ -834,7 +747,7 @@ public class DefaultDrawingView
      * Updates the view translation taking into account the current dimension
      * of the view JComponent, the size of the drawing, and the scale factor.
      */
-    private void validateViewTranslation() {
+    void validateViewTranslation() {
         if (getDrawing() == null) {
             translate.x = translate.y = 0;
             return;
