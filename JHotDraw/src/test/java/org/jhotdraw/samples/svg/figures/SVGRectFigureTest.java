@@ -5,12 +5,19 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.RoundRectangle2D.Double;
+import java.awt.image.BufferedImage;
+import java.util.Map;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.geom.Dimension2DDouble;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,6 +25,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.mockito.Mockito;
+import org.jhotdraw.draw.AttributeKeys;
+import org.mockito.ArgumentCaptor;
+import static org.mockito.Mockito.times;
 
 /**
  *
@@ -27,12 +38,14 @@ public class SVGRectFigureTest {
 
     private static SVGRectFigure instance;
     private static Graphics2D graph;
+    private BufferedImage image;
 
     public SVGRectFigureTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+
     }
 
     @AfterClass
@@ -41,8 +54,13 @@ public class SVGRectFigureTest {
 
     @Before
     public void setUp() {
+        graph = Mockito.mock(Graphics2D.class);  //Creating a mock of Graphics2D
         instance = new SVGRectFigure(10d, 10d, 100d, 100d);
         instance.setArc(50, 50);
+
+        //Creating something that can represent a graphic object with RGB values
+        image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        graph = image.createGraphics(); //assigning image to the graphics mock
 
     }
 
@@ -50,21 +68,67 @@ public class SVGRectFigureTest {
     public void tearDown() {
     }
 
-//Not done test
-//    @Test 
-//    public void testDrawFill() {
-//    }
-//    @Test
-//    public void testDrawStroke() {
-//
-//        SVGRectFigure rect = new SVGRectFigure(10,10,10,10);
-//        
-//        //Creating a mock of Graphics2D
-//        Graphics2D g = mock(Graphics2D.class);
-//
-//        //Creating test path
-//        GeneralPath path = new GeneralPath();
-//    }
+    @Test
+    public void testDrawFillNoArc() {
+        ArgumentCaptor<Rectangle2D.Double> argument = ArgumentCaptor.forClass(Rectangle2D.Double.class);
+        Rectangle2D testRect = new Rectangle2D.Double(1, 1, 5, 5);
+
+        Graphics2D mockG = Mockito.mock(Graphics2D.class);
+        mockG.fill(testRect);
+        SVGRectFigure noArcRect = new SVGRectFigure(1, 1, 5, 5);
+        noArcRect.drawFill(mockG);
+        Mockito.verify(mockG, times(2)).fill(argument.capture());
+
+        
+        assert (argument.getValue().getClass() == Rectangle2D.Double.class);
+
+    }
+
+    @Test
+    public void testDrawFillArc() {
+
+        ArgumentCaptor<RoundRectangle2D.Double> argumentRound = ArgumentCaptor.forClass(RoundRectangle2D.Double.class);
+        RoundRectangle2D roundRect = new RoundRectangle2D.Double(1, 1, 10, 10, 5, 5);
+
+        Graphics2D mockG = Mockito.mock(Graphics2D.class);
+
+        SVGRectFigure arcRect = new SVGRectFigure(0, 0, 100, 100, 10, 10);
+
+        mockG.fill(roundRect);
+       
+        //testing that arc height and width are more then 0
+        assert (arcRect.getArcHeight() > 0);
+        assert (arcRect.getArcWidth() > 0);
+
+        //Verify that that draw is called with the correct argument
+        Mockito.verify(mockG, times(1)).fill(argumentRound.capture());
+        //call draw 
+        arcRect.drawFill(mockG);
+      
+        assertEquals(arcRect.getArcHeight(), argumentRound.getValue().archeight, 0.0);
+
+    }
+
+    @Test
+    public void testDrawStroke() {
+
+        SVGRectFigure rect = new SVGRectFigure(10, 10, 10, 10);
+
+        rect.setAttribute(AttributeKeys.STROKE_COLOR, Color.orange);
+        Map<AttributeKey, Object> attributes = rect.getAttributes();
+
+        graph.setColor(new Color(255, 200, 0)); //Setting and creating orange color
+
+        //drawing a rectangle
+        rect.draw(graph);
+
+        //Asserting that the two graphics are the same stroke color.
+        assertEquals(attributes.get(AttributeKeys.STROKE_COLOR), graph.getPaint());
+        //Asserting the wrong color
+        assertNotEquals(new Color(10, 10, 10), graph.getPaint());
+        assertNotEquals(new Color(10, 10, 10), attributes.get(AttributeKeys.STROKE_COLOR));
+    }
+
     @Test
     public void testGetWidth() {
         double expResult = 100d;
@@ -96,7 +160,7 @@ public class SVGRectFigureTest {
         roundRect.setRoundRect(10, 10, 10, 10, 50, 50);
 
         //Expected arcWidth
-        Double expWidth = roundRect.arcwidth;
+        double expWidth = roundRect.arcwidth;
 
         //getArchWidth return half of the original width
         double result = instance.getArcHeight();
@@ -113,7 +177,7 @@ public class SVGRectFigureTest {
         roundRect.setRoundRect(10, 10, 10, 10, 50, 50);
 
         //Expected arcHeight
-        Double expHeight = roundRect.archeight;
+        double expHeight = roundRect.archeight;
 
         //getArchHeight return half of the original height
         double result = instance.getArcHeight();

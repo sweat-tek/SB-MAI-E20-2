@@ -107,7 +107,7 @@ public class SVGRectRadiusHandle extends AbstractHandle {
         fireUndoableEditHappened(new SVGRectRadiusUndoableEdit(svgRect, oldValue, newValue));
    }
     @Override
-    public void keyPressed(KeyEvent evt) {
+    public void keyPressed(KeyEvent evt) { 
         SVGRectFigure owner = (SVGRectFigure) getOwner();
         Dimension2DDouble oldArc = new Dimension2DDouble(owner.getArcWidth(), owner.getArcHeight());
         Dimension2DDouble newArc = new Dimension2DDouble(owner.getArcWidth(), owner.getArcHeight());
