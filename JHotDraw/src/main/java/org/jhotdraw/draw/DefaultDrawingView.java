@@ -374,16 +374,7 @@ public class DefaultDrawingView
             Set<Figure> newSelection = new HashSet<>(selectedFigures);
             Rectangle invalidatedArea = null;
             if (handlesAreValid && getEditor() != null) {
-                for (Handle h : figure.createHandles(detailLevel)) {
-                    h.setView(this);
-                    selectionHandles.add(h);
-                    h.addHandleListener(eventHandler);
-                    if (invalidatedArea == null) {
-                        invalidatedArea = h.getDrawingArea();
-                    } else {
-                        invalidatedArea.add(h.getDrawingArea());
-                    }
-                }
+                invalidatedArea = createHandles(null, figure, detailLevel);
             }
             fireSelectionChanged(oldSelection, newSelection);
             if (invalidatedArea != null) {
@@ -406,16 +397,7 @@ public class DefaultDrawingView
                 newSelection.add(figure);
                 figure.addFigureListener(handleInvalidator);
                 if (handlesAreValid && getEditor() != null) {
-                    for (Handle h : figure.createHandles(detailLevel)) {
-                        h.setView(this);
-                        selectionHandles.add(h);
-                        h.addHandleListener(eventHandler);
-                        if (invalidatedArea == null) {
-                            invalidatedArea = h.getDrawingArea();
-                        } else {
-                            invalidatedArea.add(h.getDrawingArea());
-                        }
-                    }
+                    invalidatedArea = createHandles(invalidatedArea, figure, detailLevel);
                 }
             }
         }
@@ -580,16 +562,7 @@ public class DefaultDrawingView
             int level = detailLevel;
             do {
                 for (Figure figure : getSelectedFigures()) {
-                    for (Handle handle : figure.createHandles(level)) {
-                        handle.setView(this);
-                        selectionHandles.add(handle);
-                        handle.addHandleListener(eventHandler);
-                        if (invalidatedArea == null) {
-                            invalidatedArea = handle.getDrawingArea();
-                        } else {
-                            invalidatedArea.add(handle.getDrawingArea());
-                        }
-                    }
+                    invalidatedArea = createHandles(invalidatedArea, figure, level);
                 }
             } while (level-- > 0 && selectionHandles.size() == 0);
             detailLevel = level + 1;
@@ -598,7 +571,20 @@ public class DefaultDrawingView
                 repaint(invalidatedArea);
             }
         }
+    }
 
+    private Rectangle createHandles(Rectangle invalidatedArea, Figure figure, int level) {
+        for (Handle handle : figure.createHandles(level)) {
+            handle.setView(this);
+            selectionHandles.add(handle);
+            handle.addHandleListener(eventHandler);
+            if (invalidatedArea == null) {
+                invalidatedArea = handle.getDrawingArea();
+            } else {
+                invalidatedArea.add(handle.getDrawingArea());
+            }
+        }
+        return invalidatedArea;
     }
 
     /**
