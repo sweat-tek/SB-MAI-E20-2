@@ -141,11 +141,11 @@ public class LinkHandleTest {
     public void testBasicGetBounds() {
         System.out.println("testBasicGetBounds()");
         Rectangle actualRectangle = linkHandleTest.basicGetBounds();
-
         Rectangle expectedRectangle = new Rectangle(222, 143, 14, 7);
         System.out.println("expected:" + expectedRectangle.toString());
         System.out.println("actual:" + actualRectangle.toString());
         assertEquals(expectedRectangle, actualRectangle);
+        System.out.println();
         // Expected Rectangle [222, 143, 14, 7];
     }
 }
