@@ -1,12 +1,17 @@
 package org.jhotdraw.samples.svg.figures;
 
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import org.jhotdraw.draw.BezierFigure;
+import org.jhotdraw.draw.BezierTool;
 import org.jhotdraw.draw.DefaultDrawingEditor;
 import org.jhotdraw.draw.DefaultDrawingView;
-import org.jhotdraw.draw.DrawingEditor;
-import org.jhotdraw.draw.DrawingView;
-import org.jhotdraw.geom.BezierPath;
+import org.jhotdraw.draw.Drawing;
+import org.jhotdraw.draw.GridConstrainer;
+import org.jhotdraw.draw.HandleAttributeKeys;
+import org.jhotdraw.draw.QuadTreeDrawing;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,25 +28,79 @@ import static org.junit.Assert.*;
  */
 public class LinkHandleTest {
 
-    private BezierFigure bezierFigure;
     @Mock
-    private LinkHandle linkHandle;
-    private LinkHandle linkHandleTest;
+    BezierFigure bezierFigure;
+    @Mock
+    LinkHandle linkHandle;
+    @Mock
+    LinkHandle linkHandleTest;
+    @Mock
+    DefaultDrawingView defaultDrawingView;
+    @Mock
+    DefaultDrawingEditor defaultDrawingEditor;
+    @Mock
+    GridConstrainer gridConstrainer;
+    @Mock
+    Drawing drawing;
+    @Mock
+    BezierTool bezierTool;
+    @Mock
+    int xAxis = 250;
+    @Mock
+    int yAxis = 150;
 
+//    public void setUpMock() {
+//        bezierFigure = new BezierFigure();
+//        bezierFigure.addNode(new BezierPath.Node(10, 10));
+//        bezierFigure.addNode(new BezierPath.Node(20, 20));
+//        linkHandleTest = spy(new LinkHandle(bezierFigure));
+//        defaultDrawingEditor = Mockito.mock(DefaultDrawingEditor.class);
+//        defaultDrawingView = Mockito.mock(DefaultDrawingView.class);
+//        Mockito.when(defaultDrawingEditor.getActiveView()).thenReturn(defaultDrawingView);
+//        Mockito.when(defaultDrawingEditor.findView(defaultDrawingView)).thenReturn(defaultDrawingView);
+//        Mockito.when(defaultDrawingView.viewToDrawing(new Point(250, 150))).thenReturn(new Point2D.Double(250, 150));
+//        //defaultDrawingEditor.setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7)
+//        Mockito.doNothing().when(defaultDrawingEditor).setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7);
+//
+//        linkHandle = Mockito.mock(LinkHandle.class);
+//        Mockito.doReturn(linkHandle).when(linkHandleTest).makeLinkHandle(bezierFigure);
+//
+//        defaultDrawingEditor.setActiveView(defaultDrawingView);
+//        linkHandleTest.setView(defaultDrawingView);
+//
+//    }
     public void setUpMock() {
-        bezierFigure = new BezierFigure();
-        bezierFigure.addNode(new BezierPath.Node(10, 10));
-        bezierFigure.addNode(new BezierPath.Node(20, 20));
-        linkHandleTest = spy(new LinkHandle(bezierFigure));
-        
-        DrawingView defaultDrawingView = new DefaultDrawingView();
-        DrawingEditor defaultDrawingEditor = new DefaultDrawingEditor();
+        bezierTool = new BezierTool(new BezierFigure());
+        defaultDrawingEditor = spy(new DefaultDrawingEditor());
+        defaultDrawingView = spy(new DefaultDrawingView());
+        gridConstrainer = Mockito.mock(GridConstrainer.class);
+        drawing = Mockito.mock(QuadTreeDrawing.class);
 
+        // view, drawing and editor mock for the figure. 
+        Mockito.when(defaultDrawingEditor.getActiveView()).thenReturn(defaultDrawingView);
+        Mockito.when(defaultDrawingEditor.findView(defaultDrawingView)).thenReturn(defaultDrawingView);
+        Mockito.when(defaultDrawingView.viewToDrawing(new Point(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
+        Mockito.when(gridConstrainer.constrainPoint(new Point2D.Double(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
+        bezierTool.activate(defaultDrawingEditor);
+        Mockito.when(defaultDrawingView.getConstrainer()).thenReturn(gridConstrainer);
+        Mockito.when(bezierTool.getDrawing()).thenReturn(drawing);
+        Mockito.when(bezierTool.getView()).thenReturn(defaultDrawingView);
+        Mockito.when(defaultDrawingView.getDrawing()).thenReturn(drawing);
+        // Creates path on BezierFigure, and sets points that is used in linkHandle
+        MouseEvent mouseEventMock = Mockito.mock(MouseEvent.class);
+        Mockito.when(mouseEventMock.getPoint()).thenReturn(new Point(xAxis, yAxis));
+        Mockito.when(mouseEventMock.getX()).thenReturn(xAxis);
+        Mockito.when(mouseEventMock.getY()).thenReturn(yAxis);
+        Mockito.when(mouseEventMock.getSource()).thenReturn(defaultDrawingView);
+        Mockito.when(defaultDrawingView.viewToDrawing(new Point(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
+        // Pressed on BezierFigure, that creates the figure so that we can call getCreatedFigure()
+        bezierTool.mousePressed(mouseEventMock);
+
+        bezierFigure = (BezierFigure) bezierTool.getCreatedFigure();
         linkHandle = Mockito.mock(LinkHandle.class);
+        linkHandleTest = spy(new LinkHandle(bezierFigure));
+        // LinkHandle mock
         Mockito.doReturn(linkHandle).when(linkHandleTest).makeLinkHandle(bezierFigure);
-
-        defaultDrawingEditor.setActiveView(defaultDrawingView);
-        linkHandleTest.setView(defaultDrawingView);
     }
 
     public LinkHandleTest() {
@@ -59,21 +118,34 @@ public class LinkHandleTest {
     @Before
     public void setUp() {
         setUpMock();
+        // Set the view, active handler, 
+        defaultDrawingEditor.setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7);
+        defaultDrawingView.setEditor(defaultDrawingEditor);
+        linkHandleTest.setView(defaultDrawingView);
+        defaultDrawingView.setActiveHandle(linkHandleTest);
     }
 
     @After
     public void tearDown() {
+        bezierTool = null;
+        defaultDrawingEditor = null;
+        defaultDrawingView = null;
+        gridConstrainer = null;
+        drawing = null;
+        bezierFigure = null;
+        xAxis = 0;
+        yAxis = 0;
     }
 
     @Test
     public void testBasicGetBounds() {
         System.out.println("testBasicGetBounds()");
         Rectangle actualRectangle = linkHandleTest.basicGetBounds();
-       
-        Rectangle expectedRectangle = new Rectangle(16, 19, 2, 1);
+
+        Rectangle expectedRectangle = new Rectangle(222, 143, 14, 7);
         System.out.println("expected:" + expectedRectangle.toString());
         System.out.println("actual:" + actualRectangle.toString());
         assertEquals(expectedRectangle, actualRectangle);
-        // Expected Rectangle [16, 19, 2, 1];
+        // Expected Rectangle [222, 143, 14, 7];
     }
 }

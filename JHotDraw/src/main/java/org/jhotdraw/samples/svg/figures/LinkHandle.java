@@ -29,9 +29,6 @@ import org.jhotdraw.util.ResourceBundleUtil;
  */
 public class LinkHandle extends AbstractHandle {
 
-    private int handleSize;
-    private boolean handleSizeSet;
-
     /**
      * Creates a new instance.
      *
@@ -96,15 +93,13 @@ public class LinkHandle extends AbstractHandle {
             TRANSFORM.get(getOwner()).transform(p, p);
         }
         Rectangle r = new Rectangle(view.drawingToView(p));
-        try {
-            handleSize = getHandlesize();
-        } catch (NullPointerException e) {
-            handleSize = 1; // Default random value
-        }
-        r.x -= handleSize * 4;
-        r.y -= handleSize;
-        r.width = handleSize * 2;
-        r.height = handleSize;
+
+        int h = getHandlesize();
+
+        r.x -= h * 4;
+        r.y -= h;
+        r.width = h * 2;
+        r.height = h;
         return r;
     }
 
@@ -124,7 +119,7 @@ public class LinkHandle extends AbstractHandle {
     public String getToolTipText(Point p) {
         String f = LINK.get(getOwner());
         return f != null
-                ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").//
+                ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").
                         getString("handle.link.toolTipText")
                 : "";
     }
