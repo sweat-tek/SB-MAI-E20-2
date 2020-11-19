@@ -231,8 +231,8 @@ public class ButtonFactory {
 
         a.add(null); // separator
 
-        a.add(new GroupAction(editor));
-        a.add(new UngroupAction(editor));
+        a.add(GroupAction.create(editor));
+        a.add(UngroupAction.create(editor));
 
         a.add(null); // separator
 
@@ -259,6 +259,7 @@ public class ButtonFactory {
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
 
         JToggleButton t;
+
         Tool tool;
         HashMap<String, Object> attributes;
 
@@ -273,6 +274,7 @@ public class ButtonFactory {
         // Selection tool
         editor.setTool(selectionTool);
         t = new JToggleButton();
+        t.setName("selectionTool");
         final JToggleButton defaultToolButton = t;
 
         ToolListener toolHandler;
@@ -318,6 +320,7 @@ public class ButtonFactory {
         ToolListener toolHandler = (ToolListener) tb.getClientProperty("toolHandler");
 
         JToggleButton t = new JToggleButton();
+        t.setName(labelKey);
         labels.configureToolBarButton(t, labelKey);
         t.addItemListener(new ToolButtonListener(tool, editor));
         t.setFocusable(false);
