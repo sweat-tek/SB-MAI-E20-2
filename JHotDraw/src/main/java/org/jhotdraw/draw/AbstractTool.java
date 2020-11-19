@@ -14,19 +14,24 @@
 
 package org.jhotdraw.draw;
 
-import javax.swing.*;
 import org.jhotdraw.app.action.*;
 import org.jhotdraw.beans.AbstractBean;
-import org.jhotdraw.draw.action.*;
+import org.jhotdraw.draw.action.DrawingEditorProxy;
+import org.jhotdraw.draw.action.IncreaseHandleDetailLevelAction;
+import org.jhotdraw.draw.action.MoveAction;
+import org.jhotdraw.draw.action.MoveConstrainedAction;
 import org.jhotdraw.geom.Insets2D;
 import org.jhotdraw.util.ResourceBundleUtil;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-import javax.swing.event.*;
+import javax.swing.*;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * AbstractTool.
@@ -462,37 +467,31 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
             final String oldText = typingTarget.getText();
             final String newText = textArea.getText();
 
+        return new AbstractUndoableEdit() {
 
-            UndoableEdit edit = new AbstractUndoableEdit() {
+            @Override
+            public String getPresentationName() {
+                ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+                return labels.getString("attribute.text.text");
+            }
 
-                @Override
-                public String getPresentationName() {
-                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-                    return labels.getString("attribute.text.text");
-                }
+            @Override
+            public void undo() {
+                super.undo();
+                editedFigure.willChange();
+                editedFigure.setText(oldText);
+                editedFigure.changed();
+            }
 
-                @Override
-                public void undo() {
-                    super.undo();
-                    editedFigure.willChange();
-                    editedFigure.setText(oldText);
-                    editedFigure.changed();
-                }
+            @Override
+            public void redo() {
+                super.redo();
+                editedFigure.willChange();
+                editedFigure.setText(newText);
+                editedFigure.changed();
+            }
+        };
 
-                @Override
-                public void redo() {
-                    super.redo();
-                    editedFigure.willChange();
-                    editedFigure.setText(newText);
-                    editedFigure.changed();
-                }
-            };
-            return edit;
-            /*getDrawing().fireUndoableEditHappened(edit);
-
-            typingTarget.changed();
-
-            textArea.endOverlay();*/
         }
 
 

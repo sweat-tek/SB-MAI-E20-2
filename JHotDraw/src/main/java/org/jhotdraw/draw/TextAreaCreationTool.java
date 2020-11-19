@@ -14,12 +14,14 @@
 package org.jhotdraw.draw;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-import java.util.*;
-
 import org.jhotdraw.app.JHotDrawFeatures;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.util.Map;
 
 /**
  * A tool to create new or edit existing figures that implement the TextHolderFigure
@@ -110,11 +112,11 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
 
         DrawingView v = getView();
         Point2D.Double p = v.viewToDrawing(e.getPoint());
-        Figure pressedFigure = null;
+        //Figure pressedFigure = null;
 
-        pressedFigure = getFigure(v, p, pressedFigure);
-        pressedFigure = searchFigureInDrawing(p, pressedFigure);
-        checkForTextHolderFigure(textHolder, pressedFigure);
+        Figure pressedFigure = getFigure(v, p);
+        pressedFigure = getFigureInDrawing(p, pressedFigure);
+        checkTextHolderFigure(textHolder, pressedFigure);
         isToolDone(e);
     }
 
@@ -129,7 +131,8 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         }
     }
 
-    private Figure getFigure(DrawingView v, Point2D.Double p, Figure pressedFigure) {
+    public Figure getFigure(DrawingView v, Point2D.Double p) {
+        Figure pressedFigure = null;
         for (Figure f : v.getSelectedFigures()) {
             if (f.contains(p)) {
                 pressedFigure = f;
@@ -139,7 +142,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         return pressedFigure;
     }
 
-    private void checkForTextHolderFigure(TextHolderFigure textHolder, Figure pressedFigure) {
+    private void checkTextHolderFigure(TextHolderFigure textHolder, Figure pressedFigure) {
         if (pressedFigure instanceof TextHolderFigure) {
             textHolder = (TextHolderFigure) pressedFigure;
         }
@@ -150,7 +153,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         }
     }
 
-    private Figure searchFigureInDrawing(Point2D.Double p, Figure pressedFigure) {
+    private Figure getFigureInDrawing(Point2D.Double p, Figure pressedFigure) {
         if (pressedFigure == null) {
             pressedFigure = getDrawing().findFigureInside(p);
         }
@@ -187,25 +190,24 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
     protected void endTextAreaEdit() {
         if (typingTarget != null) {
             typingTarget.willChange();
-
-            final TextHolderFigure editedFigure = typingTarget;
-            final String oldText = typingTarget.getText();
             final String newText = textArea.getText();
 
             if (newText.length() > 0) {
                 typingTarget.setText(newText);
             } else {
-                if (createdFigure != null) {
-                    getDrawing().remove((Figure) getAddedFigure());
-                    // XXX - Fire undoable edit here!!
-                } else {
-                    typingTarget.setText("");
-                }
+                removeFigure();
             }
             endEdit(textArea, typingTarget);
-            //Call End edit in abstract tool
         }
-        //	        view().checkDamage();
+    }
+
+    private void removeFigure() {
+        if (createdFigure != null) {
+            getDrawing().remove((Figure) getAddedFigure());
+            // XXX - Fire undoable edit here!!
+        } else {
+            typingTarget.setText("");
+        }
     }
 
     public void actionPerformed(ActionEvent event) {

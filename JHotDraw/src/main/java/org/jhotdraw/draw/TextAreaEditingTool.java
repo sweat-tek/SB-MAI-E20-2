@@ -13,15 +13,11 @@
  */
 package org.jhotdraw.draw;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-
-import org.jhotdraw.geom.*;
-import org.jhotdraw.util.ResourceBundleUtil;
-
-import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 /**
  * A tool to edit existing figures that implement the TextHolderFigure
@@ -87,19 +83,11 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
         UndoableEdit edit = null;
         if (typingTarget != null) {
             typingTarget.willChange();
-
-            final TextHolderFigure editedFigure = typingTarget;
-            final String oldText = typingTarget.getText();
             final String newText = textArea.getText();
 
-            if (newText.length() > 0) {
-                typingTarget.setText(newText);
-            } else {
-                typingTarget.setText("");
-            }
+            setTypingTargetText(newText);
             edit = endEdit(textArea, typingTarget);
         }
-        //getDrawing().fireUndoableEditHappened(edit);
 
         getDrawing().fireUndoableEditHappened(edit);
 
@@ -109,6 +97,14 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
         textArea.endOverlay();
     }
 
+    private void setTypingTargetText(String newText) {
+        if (newText.length() > 0) {
+            typingTarget.setText(newText);
+        } else {
+            typingTarget.setText("");
+        }
+    }
+
 
     protected void beginEdit(TextHolderFigure textHolder) {
         if (textArea == null) {
@@ -116,54 +112,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
         }
         beginEdit(typingTarget, textArea, typingTarget);
     }
-/*
-    protected void endEdit() {
-        if (typingTarget != null) {
-            typingTarget.willChange();
 
-            final TextHolderFigure editedFigure = typingTarget;
-            final String oldText = typingTarget.getText();
-            final String newText = textArea.getText();
-
-            if (newText.length() > 0) {
-                typingTarget.setText(newText);
-            } else {
-                typingTarget.setText("");
-            }
-
-            UndoableEdit edit = new AbstractUndoableEdit() {
-
-                @Override
-                public String getPresentationName() {
-                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-                    return labels.getString("attribute.text.text");
-                }
-
-                @Override
-                public void undo() {
-                    super.undo();
-                    editedFigure.willChange();
-                    editedFigure.setText(oldText);
-                    editedFigure.changed();
-                }
-
-                @Override
-                public void redo() {
-                    super.redo();
-                    editedFigure.willChange();
-                    editedFigure.setText(newText);
-                    editedFigure.changed();
-                }
-            };
-            getDrawing().fireUndoableEditHappened(edit);
-
-            typingTarget.changed();
-            typingTarget = null;
-
-            textArea.endOverlay();
-        }
-        //	        view().checkDamage();
-    }*/
 
     public void actionPerformed(ActionEvent event) {
         endTextAreaEdit();
