@@ -1,0 +1,84 @@
+{
+  "className": "org.jhotdraw.draw.UndoBehaviorTest",
+  "name": "Undo Behavior",
+  "scenarios": [
+    {
+      "className": "org.jhotdraw.draw.UndoBehaviorTest",
+      "testMethodName": "undoingAFigure",
+      "description": "Undoing a figure",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "a bezier figure",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a bezier figure"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 19635932
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "FAILED",
+          "errorMessage": "java.lang.InternalError: unable to create view",
+          "stackTrace": [
+            "org.jhotdraw.app.DefaultApplicationModel.createView(DefaultApplicationModel.java:117)",
+            "org.jhotdraw.app.AbstractApplication.basicCreateView(AbstractApplication.java:110)",
+            "org.jhotdraw.app.AbstractApplication.createView(AbstractApplication.java:90)",
+            "org.jhotdraw.draw.WhenUndoing.before(WhenUndoing.java:31)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.before$accessor$xA9igeJD(Unknown Source)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT$auxiliary$w5IB9efD.call(Unknown Source)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.before(Unknown Source)",
+            "com.tngtech.jgiven.impl.util.ReflectionUtil.invokeMethod(ReflectionUtil.java:160)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor$1.act(ScenarioExecutor.java:323)",
+            "com.tngtech.jgiven.impl.util.ReflectionUtil.lambda$forEachMethod$1(ReflectionUtil.java:53)",
+            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachSuperClass(ReflectionUtil.java:65)",
+            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachSuperClass(ReflectionUtil.java:68)",
+            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachMethod(ReflectionUtil.java:50)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor.executeAnnotatedMethods(ScenarioExecutor.java:320)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor.executeBeforeStageSteps(ScenarioExecutor.java:353)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor$StageTransitionHandlerImpl.enterStage(ScenarioExecutor.java:191)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.undoingFigure(Unknown Source)",
+            "org.jhotdraw.draw.UndoBehaviorTest.undoingAFigure(UndoBehaviorTest.java:10)",
+            "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)",
+            "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
+            "org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)",
+            "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
+            "com.tngtech.jgiven.junit.JGivenMethodRule$1.evaluate(JGivenMethodRule.java:73)",
+            "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)",
+            "org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)",
+            "org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)",
+            "org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)",
+            "org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)",
+            "org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)",
+            "org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:55)",
+            "org.junit.rules.RunRules.evaluate(RunRules.java:20)",
+            "org.junit.runners.ParentRunner.run(ParentRunner.java:363)",
+            "org.junit.runner.JUnitCore.run(JUnitCore.java:137)",
+            "com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)",
+            "com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:33)",
+            "com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:220)",
+            "com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:53)"
+          ],
+          "durationInNanos": 446749760
+        }
+      ],
+      "durationInNanos": 446749760
+    }
+  ],
+  "tagMap": {}
+}

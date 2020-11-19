@@ -9,8 +9,8 @@ import static org.junit.Assert.*;
 
 public class BezierToolTest {
 
-    private DefaultDrawing drawing;
-    private BezierFigure bezierFigure;
+    private Drawing drawing;
+    private Figure bezierFigure;
 
     @Before
     public void setUp() throws Exception {

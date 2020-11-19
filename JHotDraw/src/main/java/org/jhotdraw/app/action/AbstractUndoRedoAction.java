@@ -13,8 +13,19 @@ import java.beans.PropertyChangeListener;
 
 public abstract class AbstractUndoRedoAction extends AbstractViewAction{
 
-    private PropertyChangeListener redoActionPropertyListener;
+    private PropertyChangeListener redoActionPropertyListener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            String name = evt.getPropertyName();
+            if (name.equals(AbstractAction.NAME)) {
+                putValue(AbstractAction.NAME, evt.getNewValue());
+            } else if (name.equals("enabled")) {
+                updateEnabledState();
+            }
+        }
+    };
     private String ID;
+    private ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
 
     /**
      * Creates a new instance.
@@ -24,9 +35,7 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
     public AbstractUndoRedoAction(Application app, String id) {
         super(app);
         this.ID = id;
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
         labels.configureAction(this, ID);
-        setPropertyChangeListener();
     }
 
     protected void updateEnabledState() {
@@ -77,20 +86,5 @@ public abstract class AbstractUndoRedoAction extends AbstractViewAction{
 
     private Action getRealRedoAction() {
         return (getActiveView() == null) ? null : getActiveView().getAction(ID);
-    }
-
-    public PropertyChangeListener setPropertyChangeListener() {
-        redoActionPropertyListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                String name = evt.getPropertyName();
-                if (name.equals(AbstractAction.NAME)) {
-                    putValue(AbstractAction.NAME, evt.getNewValue());
-                } else if (name.equals("enabled")) {
-                    updateEnabledState();
-                }
-            }
-        };
-        return redoActionPropertyListener;
     }
 }
