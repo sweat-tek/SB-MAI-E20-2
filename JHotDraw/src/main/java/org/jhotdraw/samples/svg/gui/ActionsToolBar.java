@@ -13,25 +13,19 @@
  */
 package org.jhotdraw.samples.svg.gui;
 
-import java.beans.*;
-import java.util.prefs.*;
-import javax.swing.border.*;
-import org.jhotdraw.gui.*;
-import org.jhotdraw.samples.svg.*;
-import org.jhotdraw.undo.*;
-import org.jhotdraw.util.*;
-import org.jhotdraw.gui.plaf.palette.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import org.jhotdraw.app.action.*;
-import org.jhotdraw.draw.*;
+import org.jhotdraw.draw.DrawingEditor;
 import org.jhotdraw.draw.action.*;
-import org.jhotdraw.samples.svg.action.*;
-import org.jhotdraw.samples.svg.figures.*;
-import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
+import org.jhotdraw.gui.JPopupButton;
+import org.jhotdraw.gui.plaf.palette.PaletteButtonUI;
+import org.jhotdraw.samples.svg.figures.SVGGroupFigure;
+import org.jhotdraw.undo.UndoRedoManager;
+import org.jhotdraw.util.ResourceBundleUtil;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.util.prefs.Preferences;
 
 /**
  * ActionsToolBar.
@@ -140,8 +134,8 @@ public class ActionsToolBar extends AbstractToolBar {
                 labels.configureToolBarButton(pb, "actions");
                 pb.add(new DuplicateAction());
                 pb.addSeparator();
-                pb.add(new GroupAction(editor, new SVGGroupFigure()));
-                pb.add(new UngroupAction(editor, new SVGGroupFigure()));
+                pb.add(GroupAction.create(editor, new SVGGroupFigure()));
+                pb.add(UngroupAction.create(editor, new SVGGroupFigure()));
                 pb.addSeparator();
                 pb.add(new CutAction());
                 pb.add(new CopyAction());
