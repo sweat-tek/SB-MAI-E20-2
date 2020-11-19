@@ -43,6 +43,7 @@ public class FigureToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
     private ResourceBundleUtil labels;
+    private String id = "figure";
 
     /**
      * Creates new instance.
@@ -115,7 +116,8 @@ public class FigureToolBar extends AbstractToolBar {
     @FeatureEntryPoint(JHotDrawFeatures.FIGURE_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
         JPanel p = null;
-
+        
+        //Run only if state is 1 or 2
         if (state == 1 || state == 2) {
 
             p = new JPanel();
@@ -127,6 +129,7 @@ public class FigureToolBar extends AbstractToolBar {
             addSliderToButton(opacityPopupButton, opacitySlider);
             OpacityButtonConfig(opacityPopupButton);
             new SelectionComponentRepainter(editor, opacityPopupButton);
+            
             GridBagConstraints gbc = createGridBagConstraints(2, 0, 1);
             p.add(opacityPopupButton, gbc);
             opacitySlider.setUI((SliderUI) PaletteSliderUI.createUI(opacitySlider));
@@ -134,6 +137,7 @@ public class FigureToolBar extends AbstractToolBar {
             new FigureAttributeEditorHandler<Double>(OPACITY, opacitySlider, editor);
 
             if (state == 2) {
+                
                 // Creates opacity field and adds it to the panel
                 JAttributeTextField<Double> opacityField = opacityFieldSetup();
                 gbc = createGridBagConstraints(1, 0, 1d);
@@ -145,7 +149,7 @@ public class FigureToolBar extends AbstractToolBar {
 
     @Override
     protected String getID() {
-        return "figure";
+        return this.id;
     }
 
     /**
