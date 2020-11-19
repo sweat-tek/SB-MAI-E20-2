@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 public class GivenSomeFigures extends Stage<GivenSomeFigures> {
 
     @ProvidedScenarioState
-    List<Figure> figures = new ArrayList<>();
+    ArrayList<Figure> figures = new ArrayList<>();
 
     @ProvidedScenarioState
     @Mock

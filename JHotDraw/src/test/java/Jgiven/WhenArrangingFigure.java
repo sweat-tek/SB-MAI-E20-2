@@ -1,17 +1,22 @@
 package Jgiven;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.QuadTreeDrawing;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
 
+    @ProvidedScenarioState
+    QuadTreeDrawing qtd;
+
     @ExpectedScenarioState
-    List<Figure> figures;
+    ArrayList<Figure> figures;
 
     @ExpectedScenarioState
     @Mock
@@ -25,8 +30,12 @@ public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
     @Mock
     Figure square;
 
-    @ProvidedScenarioState
-    QuadTreeDrawing qtd = new QuadTreeDrawing();
+    @BeforeStage
+    public void before() {
+         qtd = new QuadTreeDrawing();
+         qtd.setChildren(figures);
+    }
+
 
     public WhenArrangingFigure selecting_triangle_and_sending_to_back() {
         qtd.sendToBack(triangle);
