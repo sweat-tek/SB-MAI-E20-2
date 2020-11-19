@@ -783,7 +783,7 @@ public class DefaultDrawingView
      *  Notify all listenerList that have registered interest for
      * notification on this event type.
      */
-    protected void fireSelectionChanged(
+    public void fireSelectionChanged(
             Set<Figure> oldValue,
             Set<Figure> newValue) {
         if (listenerList.getListenerCount() > 0) {

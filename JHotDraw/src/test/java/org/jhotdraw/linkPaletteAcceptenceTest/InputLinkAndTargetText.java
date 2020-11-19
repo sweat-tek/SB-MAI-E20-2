@@ -4,7 +4,6 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.draw.BezierFigure;
-import org.jhotdraw.draw.BezierTool;
 import org.jhotdraw.draw.DefaultDrawingEditor;
 import org.jhotdraw.draw.DefaultDrawingView;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.LINK;
@@ -20,11 +19,9 @@ class InputLinkAndTargetText extends Stage<InputLinkAndTargetText> {
     String link = "www.google.com";
     @ProvidedScenarioState
     String target = "Google";
-    @ProvidedScenarioState
-    BezierFigure bezierFigure;
 
     @ExpectedScenarioState
-    BezierTool bezierTool;
+    BezierFigure bezierFigure;
     @ExpectedScenarioState
     DefaultDrawingEditor defaultDrawingEditor;
     @ExpectedScenarioState
@@ -40,7 +37,6 @@ class InputLinkAndTargetText extends Stage<InputLinkAndTargetText> {
     }
 
     public void addLinkToFigure() {
-        bezierFigure = (BezierFigure) bezierTool.getCreatedFigure();
         bezierFigure.setAttribute(LINK, link);
         bezierFigure.setAttribute(LINK_TARGET, target);
     }

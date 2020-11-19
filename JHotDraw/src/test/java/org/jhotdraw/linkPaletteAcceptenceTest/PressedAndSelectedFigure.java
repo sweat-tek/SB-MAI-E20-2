@@ -14,6 +14,7 @@ import org.jhotdraw.draw.GridConstrainer;
 import org.jhotdraw.draw.QuadTreeDrawing;
 import org.mockito.Mockito;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.spy;
 
 /**
  * @author Aleksander G. Duszkiewicz
@@ -29,8 +30,11 @@ class PressedAndSelectedFigure extends Stage<PressedAndSelectedFigure> {
     int yAxis = 150;
     @ProvidedScenarioState
     BezierTool bezierTool;
-
+    @ProvidedScenarioState
+    BezierFigure bezierFigure;
+    @ProvidedScenarioState
     DefaultDrawingEditor defaultDrawingEditor;
+
     GridConstrainer gridConstrainer;
     Drawing drawing;
 
@@ -45,14 +49,15 @@ class PressedAndSelectedFigure extends Stage<PressedAndSelectedFigure> {
         assertNotNull(drawing);
 
         givenMousePressed();
+        getSelection();
 
         return this;
     }
 
     public void setUpMock() {
         bezierTool = new BezierTool(new BezierFigure());
-        defaultDrawingEditor = Mockito.mock(DefaultDrawingEditor.class);
-        defaultDrawingView = Mockito.mock(DefaultDrawingView.class);
+        defaultDrawingEditor = spy(new DefaultDrawingEditor());
+        defaultDrawingView = spy(new DefaultDrawingView());
         gridConstrainer = Mockito.mock(GridConstrainer.class);
         drawing = Mockito.mock(QuadTreeDrawing.class);
 
@@ -66,6 +71,16 @@ class PressedAndSelectedFigure extends Stage<PressedAndSelectedFigure> {
         Mockito.when(bezierTool.getView()).thenReturn(defaultDrawingView);
         Mockito.when(defaultDrawingView.getDrawing()).thenReturn(drawing);
 
+    }
+
+    public void getSelection() {
+        bezierFigure = (BezierFigure) bezierTool.getCreatedFigure();
+        defaultDrawingView.addToSelection(bezierFigure);
+
+        Object[] selectedfigures = defaultDrawingView.getSelectedFigures().toArray();
+        for (int i = 0; i < selectedfigures.length; i++) {
+            bezierFigure = (BezierFigure) selectedfigures[i];
+        }
     }
 
     public MouseEvent getMouseEvent(int x, int y) {

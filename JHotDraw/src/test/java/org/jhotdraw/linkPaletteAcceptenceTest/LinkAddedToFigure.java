@@ -37,9 +37,10 @@ class LinkAddedToFigure extends Stage<LinkAddedToFigure> {
         
         assertEquals(figureExpected, figureActual);
 
-        // Test size of the attributes, should be 3 where the 2 included are link and target
+        // Test size of the attributes, should be 6 where the 2 included are link and target, the 4 others are
+        // the color stroke and figure color added when they are selected
         System.out.println("Assert attribute size");
-        int attributeSizeExpected = 3;
+        int attributeSizeExpected = 6;
         int attributeSizeActual = result.getAttributes().size();
         
         System.out.println("attributeSizeExpected: " + attributeSizeExpected);
