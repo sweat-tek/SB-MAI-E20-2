@@ -22,7 +22,7 @@ public class QuadTreeDrawingTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        //MockitoAnnotations.initMocks(this);
         ArrayList<Figure> children = new ArrayList<>();
         children.add(figure1);
         children.add(figure2);
