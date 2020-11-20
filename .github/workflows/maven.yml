@@ -21,6 +21,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file JHotDraw/pom.xml
     - name: Run the Maven verify phase
-      run: mvn -B verify --file pom-ci.xml
+      run: mvn -B verify --file JHotDraw/pom-ci.xml
