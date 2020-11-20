@@ -5,11 +5,11 @@
  * and all its contributors.
  * All rights reserved.
  *
- * The copyright of this software is owned by the authors and  
- * contributors of the JHotDraw project ("the copyright holders").  
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * the copyright holders. For details see accompanying license terms. 
+ * The copyright of this software is owned by the authors and
+ * contributors of the JHotDraw project ("the copyright holders").
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * the copyright holders. For details see accompanying license terms.
  */
 package org.jhotdraw.samples.svg.figures;
 
@@ -146,13 +146,14 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
             setMargins(shape, font, isUnderlined, textRect);
         }
     }
-
+        //TODO:margins er ikke fejlen og heller ikke tabs
     private void setMargins(GeneralPath shape, Font font, boolean isUnderlined, Rectangle2D.Double textRect) {
         float[] margins = {(float) textRect.x, (float) Math.max(textRect.x + 1, textRect.x + textRect.width)};
         float verticalPos = (float) textRect.y;
         float maxVerticalPos = (float) (textRect.y + textRect.height);
         if (margins[0] < margins[1]) {
             float[] tabStops = getTabStops(font, textRect);
+
 
             if (getText() != null) {
                 String[] paragraphs = getText().split("\n");//Strings.split(getText(), '\n');
@@ -167,6 +168,10 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
             }
         }
     }
+
+
+
+
 
     private float getVerticalPos(Rectangle2D.Double paragraphBounds1, float verticalPos) {
         verticalPos = (float) (paragraphBounds1.y + paragraphBounds1.height);
@@ -218,9 +223,9 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
     /**
      * Appends a paragraph of text at the specified y location and returns
      * the bounds of the paragraph.
-     * 
      *
-     * @param shape Shape to which to add the glyphs of the paragraph. This 
+     *
+     * @param shape Shape to which to add the glyphs of the paragraph. This
      * parameter is null, if we only want to measure the size of the paragraph.
      * @param styledText the text of the paragraph.
      * @param verticalPos the top bound of the paragraph
@@ -350,10 +355,10 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
     }
 
     public void setBounds(Point2D.Double anchor, Point2D.Double lead) {
-        bounds.x = Math.min(anchor.getX(), lead.getY());
-        bounds.y = Math.min(anchor.getX(), lead.getY());
-        bounds.width = Math.max(0.1, Math.abs(lead.getX() - anchor.getX()));
-        bounds.height = Math.max(0.1, Math.abs(lead.getY() - anchor.getY()));
+        bounds.x = Math.min(anchor.x, lead.x);
+        bounds.y = Math.min(anchor.y, lead.y);
+        bounds.width = Math.max(0.1, Math.abs(lead.x - anchor.x));
+        bounds.height = Math.max(0.1, Math.abs(lead.y - anchor.y));
         invalidate();
     }
 
@@ -599,7 +604,7 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      * <p>
      * If you want to use this method to determine the bounds of the TextAreaFigure,
      * you need to add the insets of the TextAreaFigure to the size.
-     * 
+     *
      * @param maxWidth the maximal width to use. Specify Double.MAX_VALUE
      * if you want the width to be unlimited.
      * @return width and height needed to lay out the text.
@@ -614,13 +619,24 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
             float verticalPos = 0;
             float maxVerticalPos = Float.MAX_VALUE;
             if (leftMargin < rightMargin) {
-                float[] tabStops = getTabStops(font, textRect);
+                float tabWidth = (float) (getTabSize() * font.getStringBounds("m", getFontRenderContext()).getWidth());
+                float[] tabStops = new float[(int) (textRect.width / tabWidth)];
+                for (int i = 0; i < tabStops.length; i++) {
+                    tabStops[i] = (float) (textRect.x + (int) (tabWidth * (i + 1)));
+                }
 
                 if (getText() != null) {
                     String[] paragraphs = getText().split("\n");//Strings.split(getText(), '\n');
 
                     for (int i = 0; i < paragraphs.length; i++) {
-                        AttributedString as = getAttributedString(font, isUnderlined, paragraphs, i);
+                        if (paragraphs[i].length() == 0) {
+                            paragraphs[i] = " ";
+                        }
+                        AttributedString as = new AttributedString(paragraphs[i]);
+                        as.addAttribute(TextAttribute.FONT, font);
+                        if (isUnderlined) {
+                            as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+                        }
                         int tabCount = paragraphs[i].split("\t").length - 1;
                         Rectangle2D.Double paragraphBounds = appendParagraph(null, as.getIterator(), verticalPos, maxVerticalPos, leftMargin, rightMargin, tabStops, tabCount);
                         verticalPos = (float) (paragraphBounds.y + paragraphBounds.height);

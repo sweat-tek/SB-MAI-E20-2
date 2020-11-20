@@ -1,4 +1,4 @@
-package TextAreaTool;
+package textareatool;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
