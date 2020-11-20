@@ -7,7 +7,7 @@ import java.awt.Color;
 import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.draw.CreationTool;
 import org.jhotdraw.draw.Figure;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
@@ -26,9 +26,8 @@ public class ThenSomeOutcomeRect extends Stage<ThenSomeOutcomeRect> {
     protected Figure provided;
 
     public ThenSomeOutcomeRect rectangleCreated() {
-        assertNotNull(provided);
-
-        assertEquals(expected.getBounds(), provided.getBounds());
+        assertThat(provided).isNotNull();
+        assertThat(expected.getBounds()).isEqualTo(provided.getBounds());
 
         return self();
     }

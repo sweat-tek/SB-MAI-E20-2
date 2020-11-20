@@ -10,7 +10,7 @@ import org.jhotdraw.draw.CreationTool;
 import org.jhotdraw.draw.DefaultDrawingView;
 import org.jhotdraw.draw.Figure;
 import org.mockito.Mockito;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
@@ -47,7 +47,7 @@ public class WhenSomeActionRect extends Stage<WhenSomeActionRect> {
 
         //simulate mouse press
         tool.mousePressed(mouse);
-        assertTrue(tool.getCreatedFigure() != null);
+        assertThat(tool.getCreatedFigure()).isNotNull();
 
         //simulate mouse drag
         for (int i = 0; i < 20; i++) {
