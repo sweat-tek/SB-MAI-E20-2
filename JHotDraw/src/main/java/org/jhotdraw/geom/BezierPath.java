@@ -478,7 +478,7 @@ public class BezierPath extends ArrayList<BezierPath.Node>
             Double[] rectCoordinates = new Double[4];
             int size = size();
             if (size == 0) {
-                Arrays.fill(rectCoordinates, 0.0f);
+                Arrays.fill(rectCoordinates, 0.0);
             } else {
                 // handle first node
                 Node node = get(0);
@@ -492,7 +492,7 @@ public class BezierPath extends ArrayList<BezierPath.Node>
                     setCoordinatesBasedOnNode(get(i), rectCoordinates);
                 }
             }
-            bounds = new Rectangle2D.Double(rectCoordinates[0], rectCoordinates[1], rectCoordinates[0] - rectCoordinates[2], rectCoordinates[1] - rectCoordinates[3]);
+            bounds = new Rectangle2D.Double(rectCoordinates[0], rectCoordinates[1], rectCoordinates[2] - rectCoordinates[0], rectCoordinates[3] - rectCoordinates[1]);
         }
         return (Rectangle2D.Double) bounds.clone();
     }

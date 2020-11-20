@@ -69,6 +69,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
 
     @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
     public void draw(Graphics2D g) {
+        assert(g != null);
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
@@ -97,6 +98,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
                     g.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
                             2 + (int) drawingArea.width, 2 + (int) drawingArea.height, null);
                     g.setComposite(savedComposite);
+
                 }
             } else {
                 drawFigure(g);
@@ -256,6 +258,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
 
     public void transform(AffineTransform tx) {
         if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
+            System.out.println("if");
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSetClone(this, tx);
             } else {
@@ -264,6 +267,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
                 TRANSFORM.basicSet(this, t);
             }
         } else {
+            System.out.println("else");
             for (Figure f : getChildren()) {
                 f.transform(tx);
             }
