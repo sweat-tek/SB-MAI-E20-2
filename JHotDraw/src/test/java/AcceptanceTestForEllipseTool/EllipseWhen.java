@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jhotdraw.samples.svg.figures;
+package AcceptanceTestForEllipseTool;
+
+import com.tngtech.jgiven.Stage;
 
 /**
  *
  * @author Jonas
  */
-public class AcceptanceTest {
+public class EllipseWhen extends Stage<EllipseWhen> {
     
 }
