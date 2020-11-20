@@ -1,0 +1,72 @@
+{
+  "className": "org.jhotdraw.draw.InsertMultipleLinesTest",
+  "name": "Insert Multiple Lines",
+  "scenarios": [
+    {
+      "className": "org.jhotdraw.draw.InsertMultipleLinesTest",
+      "testMethodName": "insertMultipleLines",
+      "description": "Insert multiple lines",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "text area figures made",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "text area figures made"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 220130800
+            },
+            {
+              "name": "a text area is written to",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a text area is written to"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 979700
+            },
+            {
+              "name": "multiple lines have been added",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "multiple lines have been added"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 114255100
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 838015800
+        }
+      ],
+      "durationInNanos": 838015800,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}

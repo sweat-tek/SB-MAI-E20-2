@@ -28,46 +28,47 @@ public class Geom {
 
     private Geom() {
     } // never instantiated
-
-    /**
-     * Tests if a point is on a line.
-     */
-    public static boolean lineContainsPoint(int x1, int y1,
-            int x2, int y2,
-            int px, int py) {
-        return lineContainsPoint(x1, y1, x2, y2, px, py, 3d);
-    }
-
     /**
      * Tests if a point is on a line.
      * <p>changed Werner Randelshofer 2003-11-26
+     * @deprecated use {@link #lineContainsPoint(Point, Point, Point, double)}
      */
-    public static boolean lineContainsPoint(int x1, int y1,
+    @Deprecated
+   public static boolean lineContainsPoint(int x1, int y1,
             int x2, int y2,
             int px, int py, double tolerance) {
 
-        Rectangle r = new Rectangle(new Point(x1, y1));
-        r.add(x2, y2);
+        return lineContainsPoint(new Point(x1,y1), new Point(x2,y2), new Point(px,py), tolerance);
+    }
+    
+    public static boolean lineContainsPoint(Point startPoint,
+                                            Point endPoint,
+                                            Point checkpoint, double tolerance) {
+
+        Rectangle r = new Rectangle(startPoint);
+        r.add(endPoint.getX(), endPoint.getY());
         r.grow(max(2, (int) ceil(tolerance)), max(2, (int) ceil(tolerance)));
-        if (!r.contains(px, py)) {
+        if (!r.contains(checkpoint.getX(), checkpoint.getY())) {
             return false;
         }
+        if (startPoint.getX() == endPoint.getX()) {
+            return (abs(checkpoint.getX() - startPoint.getX()) <= tolerance);
+        }
+        if (startPoint.getY() == endPoint.getY()) {
+            return (abs(checkpoint.getY() - startPoint.getY()) <= tolerance);
+        }
+        double distance = calculateDistance(startPoint, endPoint, checkpoint);
+        return (distance <= tolerance);
+    }
 
+    private static double calculateDistance(Point startPoint, Point endPoint, Point checkpoint) {
         double a, b, x, y;
+        a = (double) (startPoint.getY() - endPoint.getY()) / (double) (startPoint.getX() - endPoint.getX());
+        b = (double) startPoint.getY() - a * (double) startPoint.getX();
+        x = (checkpoint.getY() - b) / a;
+        y = a * checkpoint.getX() + b;
 
-        if (x1 == x2) {
-            return (abs(px - x1) <= tolerance);
-        }
-        if (y1 == y2) {
-            return (abs(py - y1) <= tolerance);
-        }
-
-        a = (double) (y1 - y2) / (double) (x1 - x2);
-        b = (double) y1 - a * (double) x1;
-        x = (py - b) / a;
-        y = a * px + b;
-
-        return (min(abs(x - px), abs(y - py)) <= tolerance);
+        return min(abs(x - checkpoint.getX()), abs(y - checkpoint.getY()));
     }
 
     /**
