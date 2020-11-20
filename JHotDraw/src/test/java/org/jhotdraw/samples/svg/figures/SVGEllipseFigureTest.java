@@ -25,6 +25,9 @@ import static org.junit.Assert.*;
  * @author Jonas
  */
 public class SVGEllipseFigureTest {
+    SVGEllipseFigure testFigure;
+    Dimensions d;
+    
     
     public SVGEllipseFigureTest() {
     }
@@ -39,37 +42,14 @@ public class SVGEllipseFigureTest {
     
     @Before
     public void setUp() {
+        d = new Dimensions(1, 2, 3, 4);
+        testFigure = new SVGEllipseFigure(d);
     }
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of drawFill method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testDrawFill() {
-        System.out.println("drawFill");
-        Graphics2D g = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.drawFill(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of drawStroke method, of class SVGEllipseFigure.
-     */
-    
-    @Test
-    public void testDrawStroke() {
-        System.out.println("drawStroke");
-        Graphics2D g = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.drawStroke(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        d = null;
+        testFigure = null;
     }
 
     /**
@@ -77,253 +57,35 @@ public class SVGEllipseFigureTest {
      */
     @Test
     public void testGetX() {
-        System.out.println("getX");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        double expResult = 0.0;
-        double result = instance.getX();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
+        assertEquals(expected.getX(), testFigure.getX(),1.0);
     }
 
+    @Test
+    public void testGetBounds() {
+        SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
+        Rectangle2D.Double result = expected.getBounds();
+        assertEquals(expected.getBounds(), result);
+    }
     /**
      * Test of getY method, of class SVGEllipseFigure.
      */
     @Test
     public void testGetY() {
-        System.out.println("getY");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        double expResult = 0.0;
-        double result = instance.getY();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
+        assertEquals(expected.getY(), testFigure.getY(),2.0);
     }
 
-    /**
-     * Test of getWidth method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testGetWidth() {
-        System.out.println("getWidth");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        double expResult = 0.0;
-        double result = instance.getWidth();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getHeight method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testGetHeight() {
-        System.out.println("getHeight");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        double expResult = 0.0;
-        double result = instance.getHeight();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getBounds method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testGetBounds() {
-        System.out.println("getBounds");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Rectangle2D.Double expResult = null;
-        Rectangle2D.Double result = instance.getBounds();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getDrawingArea method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testGetDrawingArea() {
-        System.out.println("getDrawingArea");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Rectangle2D.Double expResult = null;
-        Rectangle2D.Double result = instance.getDrawingArea();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of contains method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testContains() {
-        System.out.println("contains");
-        Point2D.Double p = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        boolean expResult = false;
-        boolean result = instance.contains(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setBounds method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testSetBounds() {
-        System.out.println("setBounds");
-        Point2D.Double anchor = null;
-        Point2D.Double lead = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.setBounds(anchor, lead);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of transform method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testTransform() {
-        System.out.println("transform");
-        AffineTransform tx = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.transform(tx);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of restoreTransformTo method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testRestoreTransformTo() {
-        System.out.println("restoreTransformTo");
-        Object geometry = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.restoreTransformTo(geometry);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getTransformRestoreData method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testGetTransformRestoreData() {
-        System.out.println("getTransformRestoreData");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Object expResult = null;
-        Object result = instance.getTransformRestoreData();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of createHandles method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testCreateHandles() {
-        System.out.println("createHandles");
-        int detailLevel = 0;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Collection<Handle> expResult = null;
-        Collection<Handle> result = instance.createHandles(detailLevel);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of canConnect method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testCanConnect() {
-        System.out.println("canConnect");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        boolean expResult = false;
-        boolean result = instance.canConnect();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of findConnector method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testFindConnector() {
-        System.out.println("findConnector");
-        Point2D.Double p = null;
-        ConnectionFigure prototype = null;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Connector expResult = null;
-        Connector result = instance.findConnector(p, prototype);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of findCompatibleConnector method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testFindCompatibleConnector() {
-        System.out.println("findCompatibleConnector");
-        Connector c = null;
-        boolean isStartConnector = false;
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        Connector expResult = null;
-        Connector result = instance.findCompatibleConnector(c, isStartConnector);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of clone method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testClone() {
-        System.out.println("clone");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        SVGEllipseFigure expResult = null;
-        SVGEllipseFigure result = instance.clone();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of isEmpty method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testIsEmpty() {
-        System.out.println("isEmpty");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        boolean expResult = false;
-        boolean result = instance.isEmpty();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of invalidate method, of class SVGEllipseFigure.
-     */
-    @Test
-    public void testInvalidate() {
-        System.out.println("invalidate");
-        SVGEllipseFigure instance = new SVGEllipseFigure();
-        instance.invalidate();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+//    /**
+//     * Test of transform method, of class SVGEllipseFigure.
+//     */
+//    @Test
+//    public void testTransform() {
+//        System.out.println("transform");
+//        AffineTransform tx = null;
+//        SVGEllipseFigure instance = new SVGEllipseFigure();
+//        instance.transform(tx);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 }

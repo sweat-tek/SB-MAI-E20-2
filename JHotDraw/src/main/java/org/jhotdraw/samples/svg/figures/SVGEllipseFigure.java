@@ -22,6 +22,8 @@ import org.jhotdraw.draw.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import org.jhotdraw.geom.*;
 import org.jhotdraw.samples.svg.*;
+import org.jhotdraw.samples.svg.figures.Dimensions;
+
 
 /**
  * SVGEllipse represents a SVG ellipse and a SVG circle element.
@@ -37,6 +39,7 @@ import org.jhotdraw.samples.svg.*;
 public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
 
     private Ellipse2D.Double ellipse;
+
     /**
      * This is used to perform faster drawing and hit testing.
      */
@@ -46,17 +49,13 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      */
     private transient Shape cachedHitShape;
 
-    /** Creates a new instance. */
-    public SVGEllipseFigure() {
-        this(0, 0, 0, 0);
-    }
-
+     //lav parse-object for dimentions
     @FeatureEntryPoint(JHotDrawFeatures.ELLIPSE_TOOL)
-    public SVGEllipseFigure(double x, double y, double width, double height) {
-        ellipse = new Ellipse2D.Double(x, y, width, height);
+    public SVGEllipseFigure(Dimensions dimensions) {
+        ellipse = new Ellipse2D.Double(dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight());
         SVGAttributeKeys.setDefaults(this);
     }
-
+    
     // DRAWING
     protected void drawFill(Graphics2D g) {
         if (ellipse.width > 0 && ellipse.height > 0) {
@@ -154,7 +153,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * moved dublicated code up in the superclass for a shortned method here and in SVGTextAreaFigure
      * that uses the same piece of code
      */
-
+    
     public void transform(AffineTransform tx) {
         if (TRANSFORM.get(this) != null ||
                 (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
