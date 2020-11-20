@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ThenFigureIsSentToBack extends Stage<ThenFigureIsSentToBack> {
+public class ThenFigureIsRearanged extends Stage<ThenFigureIsRearanged> {
 
 
     @ExpectedScenarioState
@@ -25,12 +25,18 @@ public class ThenFigureIsSentToBack extends Stage<ThenFigureIsSentToBack> {
 
     Figure figure;
 
-    public ThenFigureIsSentToBack the_figure(String figureName){
+    public ThenFigureIsRearanged the_figure(String figureName){
         figure = figureMap.get(figureName);
         return self();
     }
-    public ThenFigureIsSentToBack is_sent_to_back(){
+    public ThenFigureIsRearanged is_sent_to_back(){
         Figure result = qtd.getChildren().get(0);
+        assertThat(figure).isEqualTo(result);
+        return self();
+    }
+
+    public ThenFigureIsRearanged is_brought_to_front(){
+        Figure result = qtd.getChildren().get(qtd.getChildCount()-1);
         assertThat(figure).isEqualTo(result);
         return self();
     }

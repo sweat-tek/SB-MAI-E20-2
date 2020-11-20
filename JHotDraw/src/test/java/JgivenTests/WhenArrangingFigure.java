@@ -45,4 +45,9 @@ public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
         qtd.sendToBack(figure);
         return self();
     }
+
+    public WhenArrangingFigure bring_to_front(){
+        qtd.bringToFront(figure);
+        return self();
+    }
 }
