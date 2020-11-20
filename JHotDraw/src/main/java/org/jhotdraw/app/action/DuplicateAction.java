@@ -41,9 +41,7 @@ public class DuplicateAction extends AbstractBasicEditingAction {
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
+        Component focusOwner = getComponent();
         if (focusOwner != null) {
             if (focusOwner instanceof EditableComponent) {
                 ((EditableComponent) focusOwner).duplicate();

@@ -20,6 +20,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.util.*;
+
 /**
  * Cuts the selected region and places its contents into the system clipboard.
  * Acts on the EditableComponent or JTextComponent which had the focus when
@@ -40,9 +41,7 @@ public class CutAction extends AbstractBasicEditingAction {
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
+        Component focusOwner = getComponent();
         if (focusOwner != null && focusOwner instanceof JComponent) {
             JComponent component = (JComponent) focusOwner;
             component.getTransferHandler().exportToClipboard(

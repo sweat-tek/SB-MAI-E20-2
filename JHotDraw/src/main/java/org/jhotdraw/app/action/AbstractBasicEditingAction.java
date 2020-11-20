@@ -21,4 +21,11 @@ public abstract class AbstractBasicEditingAction extends AbstractAction {
         labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
         labels.configureAction(this, ID);
     }
+    
+    public Component component;
+
+    public Component getComponent(){
+        component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+        return component;
+    }
 }

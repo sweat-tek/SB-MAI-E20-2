@@ -44,9 +44,7 @@ public class DeleteAction extends AbstractBasicEditingAction {
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
+        Component focusOwner = getComponent();
         if (focusOwner != null && focusOwner instanceof EditableComponent) {
             ((EditableComponent) focusOwner).delete();
         } else {

@@ -18,6 +18,7 @@ import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.io.Console;
 import javax.swing.*;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.util.*;
@@ -41,9 +42,7 @@ public class PasteAction extends AbstractBasicEditingAction {
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
+        Component focusOwner = getComponent();
         if (focusOwner != null && focusOwner instanceof JComponent) {
             JComponent component = (JComponent) focusOwner;
             Transferable t = component.getToolkit().getSystemClipboard().getContents(component);

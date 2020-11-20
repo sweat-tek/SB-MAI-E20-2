@@ -39,10 +39,8 @@ public class CopyAction extends AbstractBasicEditingAction {
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
-   public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
+    public void actionPerformed(ActionEvent evt) {
+        Component focusOwner = getComponent();
         if (focusOwner != null && focusOwner instanceof JComponent) {
             JComponent component = (JComponent) focusOwner;
             component.getTransferHandler().exportToClipboard(
