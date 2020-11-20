@@ -52,9 +52,6 @@ public class SVGEllipseFigureTest {
         testFigure = null;
     }
 
-    /**
-     * Test of getX method, of class SVGEllipseFigure.
-     */
     @Test
     public void testGetX() {
         SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
@@ -67,9 +64,7 @@ public class SVGEllipseFigureTest {
         Rectangle2D.Double result = expected.getBounds();
         assertEquals(expected.getBounds(), result);
     }
-    /**
-     * Test of getY method, of class SVGEllipseFigure.
-     */
+
     @Test
     public void testGetY() {
         SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
