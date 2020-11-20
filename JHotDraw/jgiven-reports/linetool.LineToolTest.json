@@ -1,0 +1,169 @@
+{
+  "className": "linetool.LineToolTest",
+  "name": "Line Tool",
+  "scenarios": [
+    {
+      "className": "linetool.LineToolTest",
+      "testMethodName": "TestLineToolLineDrawn",
+      "description": "Test line tool line drawn",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "an image",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "an image"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 31900
+            },
+            {
+              "name": "an image manipulator",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "an image manipulator"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 28900
+            },
+            {
+              "name": "a color",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a color"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16100
+            },
+            {
+              "name": "a path",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a path"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 20400
+            },
+            {
+              "name": "an svg path figure",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "an svg path figure"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 47363700
+            },
+            {
+              "name": "setting the path",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "setting the path"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 39300
+            },
+            {
+              "name": "setting the color",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "setting the color"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 14900
+            },
+            {
+              "name": "drawing the line",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "drawing the line"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 7241800
+            },
+            {
+              "name": "line is drawn at correct location",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "line is drawn at correct location"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 19500
+            },
+            {
+              "name": "line is drawn with correct color",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "line is drawn with correct color"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 335700
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "durationInNanos": 218494800
+        }
+      ],
+      "durationInNanos": 218494800,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}
