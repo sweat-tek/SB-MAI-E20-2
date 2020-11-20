@@ -1,3 +1,4 @@
+package testRunner;
 
 import org.jhotdraw.linkPaletteAcceptenceTest.AcceptanceTestLinkPalette;
 import org.jhotdraw.samples.svg.figures.LinkHandleTest;
@@ -11,7 +12,6 @@ import org.junit.runners.Suite;
     LinkHandleTest.class,
     LinkToolBarTest.class,
     AcceptanceTestLinkPalette.class
-
 })
 /**
  * @author Aleksander G. Duszkiewicz

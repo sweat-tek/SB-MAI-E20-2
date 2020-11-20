@@ -25,6 +25,7 @@ class LinkAddedToFigure extends Stage<LinkAddedToFigure> {
     public LinkAddedToFigure linkAddedToFigure() {
         BezierFigure result = bezierFigure;
 
+        // Assert not null
         assertNotNull(result);
 
         // Assert figure size
@@ -32,32 +33,22 @@ class LinkAddedToFigure extends Stage<LinkAddedToFigure> {
         Rectangle figureExpected = new Rectangle(250, 150, 0, 0);
         Rectangle figureActual = result.getBezierPath().getBounds();
 
-        System.out.println("figureExpected: " + figureExpected);
-        System.out.println("figureActual: " + figureActual);
-        
         assertEquals(figureExpected, figureActual);
 
         // Test size of the attributes, should be 6 where the 2 included are link and target, the 4 others are
-        // the color stroke and figure color added when they are selected
+        // the color stroke and figure color added when it is selected
         System.out.println("Assert attribute size");
         int attributeSizeExpected = 6;
         int attributeSizeActual = result.getAttributes().size();
-        
-        System.out.println("attributeSizeExpected: " + attributeSizeExpected);
-        System.out.println("attributeSizeActual: " + attributeSizeActual);
-        
+
         assertEquals(attributeSizeExpected, attributeSizeActual);
 
         // Test that link is added to the figure
         System.out.println("Assert link added to figure");
         assertEquals(link, result.getAttribute(LINK));
-        System.out.println("linkExpected: " + link);
-        System.out.println("linkActual: " + result.getAttribute(LINK));
-        
+
         assertEquals(target, result.getAttribute(LINK_TARGET));
-        System.out.println("targetExpected: " + target);
-        System.out.println("targetActual: " + result.getAttribute(LINK_TARGET));
-        
+
         return self();
 
     }

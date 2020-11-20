@@ -49,26 +49,6 @@ public class LinkHandleTest {
     @Mock
     int yAxis = 150;
 
-//    public void setUpMock() {
-//        bezierFigure = new BezierFigure();
-//        bezierFigure.addNode(new BezierPath.Node(10, 10));
-//        bezierFigure.addNode(new BezierPath.Node(20, 20));
-//        linkHandleTest = spy(new LinkHandle(bezierFigure));
-//        defaultDrawingEditor = Mockito.mock(DefaultDrawingEditor.class);
-//        defaultDrawingView = Mockito.mock(DefaultDrawingView.class);
-//        Mockito.when(defaultDrawingEditor.getActiveView()).thenReturn(defaultDrawingView);
-//        Mockito.when(defaultDrawingEditor.findView(defaultDrawingView)).thenReturn(defaultDrawingView);
-//        Mockito.when(defaultDrawingView.viewToDrawing(new Point(250, 150))).thenReturn(new Point2D.Double(250, 150));
-//        //defaultDrawingEditor.setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7)
-//        Mockito.doNothing().when(defaultDrawingEditor).setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7);
-//
-//        linkHandle = Mockito.mock(LinkHandle.class);
-//        Mockito.doReturn(linkHandle).when(linkHandleTest).makeLinkHandle(bezierFigure);
-//
-//        defaultDrawingEditor.setActiveView(defaultDrawingView);
-//        linkHandleTest.setView(defaultDrawingView);
-//
-//    }
     public void setUpMock() {
         bezierTool = new BezierTool(new BezierFigure());
         defaultDrawingEditor = spy(new DefaultDrawingEditor());
@@ -118,7 +98,7 @@ public class LinkHandleTest {
     @Before
     public void setUp() {
         setUpMock();
-        // Set the view, active handler, 
+        // Set the view, editor, active handler and handleAtrribute
         defaultDrawingEditor.setHandleAttribute(HandleAttributeKeys.HANDLE_SIZE, 7);
         defaultDrawingView.setEditor(defaultDrawingEditor);
         linkHandleTest.setView(defaultDrawingView);
@@ -142,8 +122,6 @@ public class LinkHandleTest {
         System.out.println("testBasicGetBounds()");
         Rectangle actualRectangle = linkHandleTest.basicGetBounds();
         Rectangle expectedRectangle = new Rectangle(222, 143, 14, 7);
-        System.out.println("expected:" + expectedRectangle.toString());
-        System.out.println("actual:" + actualRectangle.toString());
         assertEquals(expectedRectangle, actualRectangle);
         System.out.println();
         // Expected Rectangle [222, 143, 14, 7];

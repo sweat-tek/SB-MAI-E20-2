@@ -48,8 +48,6 @@ public class LinkToolBarTest {
         // ResourceBundle.getBundle("org/jhotdraw/samples/svg/Labels").getString("link.toolbar")
         String expected = rbu.getString("link.toolbar");
         String actual = ltb.getLabel("org.jhotdraw.samples.svg.Labels").getString("link.toolbar");
-        System.out.println("Expected: " + expected);
-        System.out.println("Actual: " + actual);
         assertEquals(expected, actual);
         System.out.println();
     }

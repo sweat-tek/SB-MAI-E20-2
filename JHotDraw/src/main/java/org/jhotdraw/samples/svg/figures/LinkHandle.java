@@ -53,54 +53,54 @@ public class LinkHandle extends AbstractHandle {
     }
 
     @Override
-    public boolean contains(Point p) {
+    public boolean contains(Point point) {
         return false;
     }
 
-    public void setDrawingEditor(DrawingEditor d) {
-        this.view.setEditor(d);
+    public void setDrawingEditor(DrawingEditor drawingEditor) {
+        this.view.setEditor(drawingEditor);
     }
 
     /**
      * Draws this handle.
      *
-     * @param g Graphics2D
+     * @param graphics Graphics2D
      */
     @FeatureEntryPoint(JHotDrawFeatures.LINK_PALETTE)
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D graphics) {
         if (LINK.get(getOwner()) != null && LINK.get(getOwner()).trim().length() > 0) {
-            g.setColor((Color) getEditor().getHandleAttribute(HandleAttributeKeys.OVERFLOW_HANDLE_STROKE_COLOR));
-            Rectangle r = basicGetBounds();
-            g.drawLine(r.x + (r.width / 2) - 1, r.y, r.x, r.y);
-            g.drawLine(r.x, r.y, r.x, r.y + r.height - 1);
-            g.drawLine(r.x, r.y + r.height - 1, r.x + (r.width / 2) - 1, r.y + r.height - 1);
-            g.drawLine(r.x + (r.width / 3), r.y + r.height / 2, r.x + r.width - 1, r.y + r.height / 2);
-            g.drawLine(r.x + r.width - 1, r.y + r.height / 2, (int) (r.x + r.width * .75 - 1), (int) (r.y + r.height * .25));
-            g.drawLine(r.x + r.width - 1, r.y + r.height / 2, (int) (r.x + r.width * .75 - 1), (int) (r.y + r.height * .75));
+            graphics.setColor((Color) getEditor().getHandleAttribute(HandleAttributeKeys.OVERFLOW_HANDLE_STROKE_COLOR));
+            Rectangle rectangle = basicGetBounds();
+            graphics.drawLine(rectangle.x + (rectangle.width / 2) - 1, rectangle.y, rectangle.x, rectangle.y);
+            graphics.drawLine(rectangle.x, rectangle.y, rectangle.x, rectangle.y + rectangle.height - 1);
+            graphics.drawLine(rectangle.x, rectangle.y + rectangle.height - 1, rectangle.x + (rectangle.width / 2) - 1, rectangle.y + rectangle.height - 1);
+            graphics.drawLine(rectangle.x + (rectangle.width / 3), rectangle.y + rectangle.height / 2, rectangle.x + rectangle.width - 1, rectangle.y + rectangle.height / 2);
+            graphics.drawLine(rectangle.x + rectangle.width - 1, rectangle.y + rectangle.height / 2, (int) (rectangle.x + rectangle.width * .75 - 1), (int) (rectangle.y + rectangle.height * .25));
+            graphics.drawLine(rectangle.x + rectangle.width - 1, rectangle.y + rectangle.height / 2, (int) (rectangle.x + rectangle.width * .75 - 1), (int) (rectangle.y + rectangle.height * .75));
         }
     }
 
     /**
      *
-     * @return
+     * @return Rectangle of basic bounds
      */
     @Override
     protected Rectangle basicGetBounds() {
-        Rectangle2D.Double b = getOwner().getBounds();
-        Point2D.Double p = new Point2D.Double(b.x + b.width, b.y + b.height);
+        Rectangle2D.Double rectangleDoubleBoundsDouble = getOwner().getBounds();
+        Point2D.Double pointDouble = new Point2D.Double(rectangleDoubleBoundsDouble.x + rectangleDoubleBoundsDouble.width, rectangleDoubleBoundsDouble.y + rectangleDoubleBoundsDouble.height);
         if (TRANSFORM.get(getOwner()) != null) {
-            TRANSFORM.get(getOwner()).transform(p, p);
+            TRANSFORM.get(getOwner()).transform(pointDouble, pointDouble);
         }
-        Rectangle r = new Rectangle(view.drawingToView(p));
+        Rectangle rectangle = new Rectangle(view.drawingToView(pointDouble));
 
-        int h = getHandlesize();
+        int handleSize = getHandlesize();
 
-        r.x -= h * 4;
-        r.y -= h;
-        r.width = h * 2;
-        r.height = h;
-        return r;
+        rectangle.x -= handleSize * 4;
+        rectangle.y -= handleSize;
+        rectangle.width = handleSize * 2;
+        rectangle.height = handleSize;
+        return rectangle;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class LinkHandle extends AbstractHandle {
     }
 
     @Override
-    public String getToolTipText(Point p) {
+    public String getToolTipText(Point point) {
         String f = LINK.get(getOwner());
         return f != null
                 ? ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels").

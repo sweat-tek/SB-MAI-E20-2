@@ -58,22 +58,30 @@ public abstract class AbstractHandle implements Handle, FigureListener {
 
     /**
      * Adds a listener for this handle.
+     *
+     * @param handleListener
      */
-    public void addHandleListener(HandleListener l) {
-        listenerList.add(HandleListener.class, l);
+    @Override
+    public void addHandleListener(HandleListener handleListener) {
+        listenerList.add(HandleListener.class, handleListener);
     }
 
     /**
      * Removes a listener for this handle.
+     *
+     * @param handleListener
      */
-    public void removeHandleListener(HandleListener l) {
-        listenerList.remove(HandleListener.class, l);
+    @Override
+    public void removeHandleListener(HandleListener handleListener) {
+        listenerList.remove(HandleListener.class, handleListener);
     }
 
+    @Override
     public Figure getOwner() {
         return owner;
     }
 
+    @Override
     public void setView(DrawingView view) {
         this.view = view;
     }
@@ -89,6 +97,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     /**
      * Notify all listenerList that have registered interest for notification on
      * this event type.
+     *
+     * @param invalidatedArea
      */
     protected void fireAreaInvalidated(Rectangle invalidatedArea) {
         HandleEvent event = null;
@@ -111,6 +121,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     /**
      * Notify all listenerList that have registered interest for notification on
      * this event type.
+     *
+     * @param edit
      */
     protected void fireUndoableEditHappened(UndoableEdit edit) {
         view.getDrawing().fireUndoableEditHappened(edit);
@@ -119,6 +131,8 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     /**
      * Notify all listenerList that have registered interest for notification on
      * this event type.
+     *
+     * @param invalidatedArea
      */
     protected void fireHandleRequestRemove(Rectangle invalidatedArea) {
         HandleEvent event = null;
@@ -162,80 +176,83 @@ public abstract class AbstractHandle implements Handle, FigureListener {
 
     /**
      * Draws this handle.
+     *
+     * @param graphics2D
      */
-    public void draw(Graphics2D g) {
-        drawCircle(g,
+    @Override
+    public void draw(Graphics2D graphics2D) {
+        drawCircle(graphics2D,
                 (Color) getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_FILL_COLOR),
                 (Color) getEditor().getHandleAttribute(HandleAttributeKeys.HANDLE_STROKE_COLOR));
     }
 
-    protected void drawCircle(Graphics2D g, Color fill, Color stroke) {
-        Rectangle r = getBounds();
+    protected void drawCircle(Graphics2D graphics2D, Color fill, Color stroke) {
+        Rectangle rectangle = getBounds();
         if (fill != null) {
-            g.setColor(fill);
-            g.fillOval(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
+            graphics2D.setColor(fill);
+            graphics2D.fillOval(rectangle.x + 1, rectangle.y + 1, rectangle.width - 2, rectangle.height - 2);
         }
         if (stroke != null) {
-            g.setStroke(new BasicStroke());
-            g.setColor(stroke);
-            g.drawOval(r.x, r.y, r.width - 1, r.height - 1);
+            graphics2D.setStroke(new BasicStroke());
+            graphics2D.setColor(stroke);
+            graphics2D.drawOval(rectangle.x, rectangle.y, rectangle.width - 1, rectangle.height - 1);
 
             if (getView().getActiveHandle() == this) {
-                g.fillOval(r.x + 2, r.y + 2, r.width - 4, r.height - 4);
+                graphics2D.fillOval(rectangle.x + 2, rectangle.y + 2, rectangle.width - 4, rectangle.height - 4);
             }
         }
     }
 
-    protected void drawRectangle(Graphics2D g, Color fill, Color stroke) {
+    protected void drawRectangle(Graphics2D graphics2D, Color fill, Color stroke) {
         if (fill != null) {
-            Rectangle r = getBounds();
-            g.setColor(fill);
-            r.x += 1;
-            r.y += 1;
-            r.width -= 2;
-            r.height -= 2;
-            g.fill(r);
+            Rectangle rectangle = getBounds();
+            graphics2D.setColor(fill);
+            rectangle.x += 1;
+            rectangle.y += 1;
+            rectangle.width -= 2;
+            rectangle.height -= 2;
+            graphics2D.fill(rectangle);
         }
-        g.setStroke(new BasicStroke());
+        graphics2D.setStroke(new BasicStroke());
         if (stroke != null) {
-            Rectangle r = getBounds();
-            r.width -= 1;
-            r.height -= 1;
-            g.setColor(stroke);
-            g.draw(r);
+            Rectangle rectangle = getBounds();
+            rectangle.width -= 1;
+            rectangle.height -= 1;
+            graphics2D.setColor(stroke);
+            graphics2D.draw(rectangle);
             if (getView().getActiveHandle() == this) {
-                r.x += 2;
-                r.y += 2;
-                r.width -= 3;
-                r.height -= 3;
-                g.fill(r);
+                rectangle.x += 2;
+                rectangle.y += 2;
+                rectangle.width -= 3;
+                rectangle.height -= 3;
+                graphics2D.fill(rectangle);
             }
         }
     }
 
-    protected void drawDiamond(Graphics2D g, Color fill, Color stroke) {
+    protected void drawDiamond(Graphics2D graphics2D, Color fill, Color stroke) {
         if (stroke != null) {
-            Rectangle r = getBounds();
-            r.grow(1, 1);
-            GeneralPath p = new GeneralPath();
-            p.moveTo(r.x + r.width / 2f, r.y);
-            p.lineTo(r.x + r.width, r.y + r.height / 2f);
-            p.lineTo(r.x + r.width / 2f, r.y + r.height);
-            p.lineTo(r.x, r.y + r.height / 2f);
-            p.closePath();
-            g.setColor(stroke);
-            g.fill(p);
+            Rectangle rectangle = getBounds();
+            rectangle.grow(1, 1);
+            GeneralPath generalPath = new GeneralPath();
+            generalPath.moveTo(rectangle.x + rectangle.width / 2f, rectangle.y);
+            generalPath.lineTo(rectangle.x + rectangle.width, rectangle.y + rectangle.height / 2f);
+            generalPath.lineTo(rectangle.x + rectangle.width / 2f, rectangle.y + rectangle.height);
+            generalPath.lineTo(rectangle.x, rectangle.y + rectangle.height / 2f);
+            generalPath.closePath();
+            graphics2D.setColor(stroke);
+            graphics2D.fill(generalPath);
         }
         if (fill != null) {
             Rectangle r = getBounds();
-            GeneralPath p = new GeneralPath();
-            p.moveTo(r.x + r.width / 2f, r.y);
-            p.lineTo(r.x + r.width, r.y + r.height / 2f);
-            p.lineTo(r.x + r.width / 2f, r.y + r.height);
-            p.lineTo(r.x, r.y + r.height / 2f);
-            p.closePath();
-            g.setColor(fill);
-            g.fill(p);
+            GeneralPath generalPath = new GeneralPath();
+            generalPath.moveTo(r.x + r.width / 2f, r.y);
+            generalPath.lineTo(r.x + r.width, r.y + r.height / 2f);
+            generalPath.lineTo(r.x + r.width / 2f, r.y + r.height);
+            generalPath.lineTo(r.x, r.y + r.height / 2f);
+            generalPath.closePath();
+            graphics2D.setColor(fill);
+            graphics2D.fill(generalPath);
         }
         if (stroke != null && getView().getActiveHandle() == this) {
             Rectangle r = getBounds();
@@ -246,65 +263,85 @@ public abstract class AbstractHandle implements Handle, FigureListener {
             p.lineTo(r.x + r.width / 2f, r.y + r.height);
             p.lineTo(r.x, r.y + r.height / 2f);
             p.closePath();
-            g.setColor(stroke);
-            g.fill(p);
+            graphics2D.setColor(stroke);
+            graphics2D.fill(p);
         }
     }
 
-    public boolean contains(Point p) {
-        return getBounds().contains(p);
+    @Override
+    public boolean contains(Point point) {
+        return getBounds().contains(point);
     }
 
+    @Override
     public void invalidate() {
         bounds = null;
     }
 
+    @Override
     public void dispose() {
         owner.removeFigureListener(this);
         //owner = null;
     }
 
     /**
-     * Sent when a region used by the figure needs to be repainted. The
+     * Sent when a region used by the figure needs to be repainted.The
      * implementation of this method assumes that the handle is located on the
      * bounds of the figure or inside the figure. If the handle is located
      * elsewhere this method must be reimpleted by the subclass.
+     *
+     * @param figureEvent
      */
-    public void areaInvalidated(FigureEvent evt) {
+    @Override
+    public void areaInvalidated(FigureEvent figureEvent) {
         updateBounds();
     }
 
     /**
      * Sent when a figure was added.
+     *
+     * @param figureEvent
      */
-    public void figureAdded(FigureEvent e) {
+    @Override
+    public void figureAdded(FigureEvent figureEvent) {
         // Empty
     }
 
     /**
      * Sent when a figure was removed.
+     * @param figureEvent
      */
-    public void figureRemoved(FigureEvent e) {
+    @Override
+    public void figureRemoved(FigureEvent figureEvent) {
         // Empty
     }
 
     /**
      * Sent when a figure requests to be removed.
+     *
+     * @param figureEvent
      */
-    public void figureRequestRemove(FigureEvent e) {
+    @Override
+    public void figureRequestRemove(FigureEvent figureEvent) {
         // Empty
     }
 
     /**
      * Sent when the bounds or shape of a figure has changed.
+     *
+     * @param figureEvent
      */
-    public void figureChanged(FigureEvent evt) {
+    @Override
+    public void figureChanged(FigureEvent figureEvent) {
         updateBounds();
     }
 
     /**
      * Returns a cursor for the handle.
+     *
+     * @return Cursor
      */
+    @Override
     public Cursor getCursor() {
         return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
@@ -312,20 +349,28 @@ public abstract class AbstractHandle implements Handle, FigureListener {
     /**
      * Returns true, if the given handle is an instance of the same class or of
      * a subclass of this handle,.
+     *
+     * @param handle
+     * @return boolean
      */
+    @Override
     public boolean isCombinableWith(Handle handle) {
         return getClass().isAssignableFrom(handle.getClass());
     }
 
+    @Override
     public void keyTyped(KeyEvent evt) {
     }
 
+    @Override
     public void keyReleased(KeyEvent evt) {
     }
 
+    @Override
     public void keyPressed(KeyEvent evt) {
     }
 
+    @Override
     public final Rectangle getBounds() {
         if (bounds == null) {
             bounds = basicGetBounds();
@@ -333,11 +378,12 @@ public abstract class AbstractHandle implements Handle, FigureListener {
         return (Rectangle) bounds.clone();
     }
 
+    @Override
     public Rectangle getDrawingArea() {
-        Rectangle r = getBounds();
-        r.grow(2, 2); // grow by two pixels to take antialiasing into account
+        Rectangle rectangle = getBounds();
+        rectangle.grow(2, 2); // grow by two pixels to take antialiasing into account
 
-        return r;
+        return rectangle;
     }
 
     protected abstract Rectangle basicGetBounds();
@@ -355,25 +401,38 @@ public abstract class AbstractHandle implements Handle, FigureListener {
 
     /**
      * Tracks a double click.
+     *
+     * @param point
+     * @param modifiersEx
      */
-    public void trackDoubleClick(Point p, int modifiersEx) {
+    @Override
+    public void trackDoubleClick(Point point, int modifiersEx) {
     }
 
-    public void attributeChanged(FigureEvent e) {
+    @Override
+    public void attributeChanged(FigureEvent figureEvent) {
     }
 
+    @Override
     public void viewTransformChanged() {
         invalidate();
     }
 
+    @Override
     public Collection<Handle> createSecondaryHandles() {
         return Collections.emptyList();
     }
 
-    public String getToolTipText(Point p) {
+    @Override
+    public String getToolTipText(Point point) {
         return null;
     }
 
-    public void figureHandlesChanged(FigureEvent e) {
+    /**
+     * 
+     * @param figureEvent
+     */
+    @Override
+    public void figureHandlesChanged(FigureEvent figureEvent) {
     }
 }
