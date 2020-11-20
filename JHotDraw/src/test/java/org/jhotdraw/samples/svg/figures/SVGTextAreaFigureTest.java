@@ -57,10 +57,6 @@ public class SVGTextAreaFigureTest {
     @Test
     public void contains() throws NoninvertibleTransformException {
 
-       // System.out.println((Point2D.Double) TRANSFORM.get(svgTextAreaFigure).inverseTransform(p, new Point2D.Double()));
-        //when(svgTextAreaFigure.getTextShape().getBounds2D()).thenReturn(new Rectangle());
-
-        System.out.println("halløjsa");
         when(r.getBounds2D()).thenReturn(new Rectangle((int) 0.0, (int) 0.0,
                 (int) 0.0, (int) 0.0){
         });
@@ -70,33 +66,10 @@ public class SVGTextAreaFigureTest {
         when(p.getY()).thenReturn(2.0);
         //p = (Point2D.Double) TRANSFORM.get(svgTextAreaFigure).inverseTransform(p, new Point2D.Double());
 
-
         Assert.assertEquals(r.getBounds2D(), svgTextAreaFigure.getTextShape().getBounds2D());
         Assert.assertTrue(svgTextAreaFigure.isEmpty());
-
-
-
-        //System.out.println(r.getBounds2D());
-        //System.out.println(svgTextAreaFigure.getTextShape().getBounds2D());
-
-        //Assert.assertEquals(new Rectangle(), svgTextAreaFigure.getTextShape().getBounds2D());
-
-        /*
-        if (TRANSFORM.get(this) != null) {
-            try {
-                p = (Point2D.Double) TRANSFORM.get(this).inverseTransform(p, new Point2D.Double());
-            } catch (NoninvertibleTransformException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        Rectangle2D r = getTextShape().getBounds2D();
-        return r.isEmpty() ? getBounds().contains(p) : r.contains(p);
-
-
-
-         */
     }
+
     @Test
     public void isTextOverflow() {
         svgTextAreaFigure.setBounds(new Point2D.Double(2.0, 2.0), new Point2D.Double(5.0, 3.0));

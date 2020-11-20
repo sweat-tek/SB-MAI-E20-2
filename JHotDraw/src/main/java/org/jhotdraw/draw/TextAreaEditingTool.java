@@ -110,7 +110,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
         if (textArea == null) {
             textArea = new FloatingTextArea();
         }
-        beginEdit(typingTarget, textArea, typingTarget);
+        beginEdit(textHolder, textArea, typingTarget);
     }
 
 
