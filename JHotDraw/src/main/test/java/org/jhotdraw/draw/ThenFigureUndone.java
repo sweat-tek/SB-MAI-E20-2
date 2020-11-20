@@ -8,10 +8,10 @@ import static org.junit.Assert.assertEquals;
 public class ThenFigureUndone extends Stage<ThenFigureUndone> {
 
     @ExpectedScenarioState
-    private Drawing drawing;
+    private DrawingView drawingView;
 
     public ThenFigureUndone figureIsUndone() {
-        assertEquals(0,drawing.getChildCount());
+        assertEquals(0,drawingView.getDrawing().getChildCount());
         return this;
     }
 }

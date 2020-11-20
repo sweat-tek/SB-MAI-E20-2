@@ -4,36 +4,32 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import org.jhotdraw.app.Application;
-import org.jhotdraw.app.DefaultApplicationModel;
-import org.jhotdraw.app.DefaultSDIApplication;
-import org.jhotdraw.app.action.AbstractViewAction;
-import org.jhotdraw.app.action.UndoAction;
-import org.jhotdraw.samples.svg.SVGApplicationModel;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class WhenUndoing extends Stage<WhenUndoing> {
 
     @ExpectedScenarioState
+    private DrawingView drawingView;
+    @ExpectedScenarioState
+    private BezierFigure figure;
+    @ExpectedScenarioState
+    private DrawingEditor editor;
+
     @ProvidedScenarioState
-    private Application application;
-    private AbstractViewAction undoAction;
-    private DefaultApplicationModel model;
+    private BezierTool bezierTool;
 
     @BeforeStage
     public void before() {
         System.out.println("Setting up when state");
-        application = new DefaultSDIApplication();
-        undoAction = new UndoAction(application);
-        model = new SVGApplicationModel();
-        application.setModel(model);
-        application.createView().activate();
-        assertNotNull(application.getActiveView());
+        bezierTool = new BezierTool(figure);
+        bezierTool.activate(editor);
     }
 
     public WhenUndoing undoingFigure() {
-        undoAction.actionPerformed(null);
+        bezierTool.fireUndoEvent(figure, drawingView);
+        assertFalse(drawingView.getDrawing().contains(figure));
         return this;
     }
 }

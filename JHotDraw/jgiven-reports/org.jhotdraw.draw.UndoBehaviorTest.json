@@ -26,31 +26,50 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 19635932
+              "durationInNanos": 59895231
+            },
+            {
+              "name": "undoing figure",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "undoing figure"
+                }
+              ],
+              "status": "FAILED",
+              "durationInNanos": 2869446
+            },
+            {
+              "name": "figure is undone",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "figure is undone"
+                }
+              ],
+              "status": "SKIPPED",
+              "durationInNanos": 0
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "FAILED",
-          "errorMessage": "java.lang.InternalError: unable to create view",
+          "errorMessage": "java.lang.AssertionError: null",
           "stackTrace": [
-            "org.jhotdraw.app.DefaultApplicationModel.createView(DefaultApplicationModel.java:117)",
-            "org.jhotdraw.app.AbstractApplication.basicCreateView(AbstractApplication.java:110)",
-            "org.jhotdraw.app.AbstractApplication.createView(AbstractApplication.java:90)",
-            "org.jhotdraw.draw.WhenUndoing.before(WhenUndoing.java:31)",
-            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.before$accessor$xA9igeJD(Unknown Source)",
-            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT$auxiliary$w5IB9efD.call(Unknown Source)",
-            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.before(Unknown Source)",
-            "com.tngtech.jgiven.impl.util.ReflectionUtil.invokeMethod(ReflectionUtil.java:160)",
-            "com.tngtech.jgiven.impl.ScenarioExecutor$1.act(ScenarioExecutor.java:323)",
-            "com.tngtech.jgiven.impl.util.ReflectionUtil.lambda$forEachMethod$1(ReflectionUtil.java:53)",
-            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachSuperClass(ReflectionUtil.java:65)",
-            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachSuperClass(ReflectionUtil.java:68)",
-            "com.tngtech.jgiven.impl.util.ReflectionUtil.forEachMethod(ReflectionUtil.java:50)",
-            "com.tngtech.jgiven.impl.ScenarioExecutor.executeAnnotatedMethods(ScenarioExecutor.java:320)",
-            "com.tngtech.jgiven.impl.ScenarioExecutor.executeBeforeStageSteps(ScenarioExecutor.java:353)",
-            "com.tngtech.jgiven.impl.ScenarioExecutor$StageTransitionHandlerImpl.enterStage(ScenarioExecutor.java:191)",
-            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$mQ8hhCFT.undoingFigure(Unknown Source)",
+            "org.junit.Assert.fail(Assert.java:86)",
+            "org.junit.Assert.assertTrue(Assert.java:41)",
+            "org.junit.Assert.assertFalse(Assert.java:64)",
+            "org.junit.Assert.assertFalse(Assert.java:74)",
+            "org.jhotdraw.draw.WhenUndoing.undoingFigure(WhenUndoing.java:31)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$izp7k1OH.undoingFigure$accessor$ITnbtxre(Unknown Source)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$izp7k1OH$auxiliary$ur8IMwUv.call(Unknown Source)",
+            "org.jhotdraw.draw.WhenUndoing$ByteBuddy$izp7k1OH.undoingFigure(Unknown Source)",
             "org.jhotdraw.draw.UndoBehaviorTest.undoingAFigure(UndoBehaviorTest.java:10)",
             "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)",
             "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
@@ -74,10 +93,10 @@
             "com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:220)",
             "com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:53)"
           ],
-          "durationInNanos": 446749760
+          "durationInNanos": 589116799
         }
       ],
-      "durationInNanos": 446749760
+      "durationInNanos": 589116799
     }
   ],
   "tagMap": {}
