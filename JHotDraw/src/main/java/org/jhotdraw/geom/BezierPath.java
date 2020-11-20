@@ -406,7 +406,7 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         return generalPath.contains(p);
     }
 
-    ;
+    
 
     /**
      * Returns true, if the outline of this bezier path contains the specified
