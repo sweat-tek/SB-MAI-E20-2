@@ -14,15 +14,14 @@
 package org.jhotdraw.draw;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
 import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.geom.*;
-import org.jhotdraw.util.ResourceBundleUtil;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.util.Map;
 
 /**
  * A tool to create new or edit existing figures that implement the TextHolderFigure
@@ -98,7 +97,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
 
     @Override
     public void deactivate(DrawingEditor editor) {
-        endEdit();
+       //endEdit();
         super.deactivate(editor);
     }
 
@@ -111,42 +110,19 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
     public void mousePressed(MouseEvent e) {
         TextHolderFigure textHolder = null;
 
-        // Note: The search sequence used here, must be
-        // consistent with the search sequence used by the
-        // HandleTracker, SelectAreaTracker, DelegationSelectionTool, SelectionTool.
-
-        // If possible, continue to work with the current selection
         DrawingView v = getView();
         Point2D.Double p = v.viewToDrawing(e.getPoint());
-        Figure pressedFigure = null;
-        if (true /*isSelectBehindEnabled()*/) {
-            for (Figure f : v.getSelectedFigures()) {
-                if (f.contains(p)) {
-                    pressedFigure = f;
-                    break;
-                }
-            }
-        }
+        //Figure pressedFigure = null;
 
-        // If the point is not contained in the current selection,
-        // search for a figure in the drawing.
-        if (pressedFigure == null) {
-            pressedFigure = getDrawing().findFigureInside(p);
-        }
+        Figure pressedFigure = getFigure(v, p);
+        pressedFigure = getFigureInDrawing(p, pressedFigure);
+        checkTextHolderFigure(textHolder, pressedFigure);
+        isToolDone(e);
+    }
 
-        // 
-        if (pressedFigure instanceof TextHolderFigure) {
-            textHolder = (TextHolderFigure) pressedFigure;
-                textHolder = null;
-        }
-
-        if (textHolder != null) {
-            createdFigure = null;
-            beginEdit(textHolder);
-            return;
-        }
+    private void isToolDone(MouseEvent e) {
         if (typingTarget != null) {
-            endEdit();
+            endTextAreaEdit();
             if (isToolDoneAfterCreation()) {
                 fireToolDone();
             }
@@ -154,6 +130,36 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
             super.mousePressed(e);
         }
     }
+
+    public Figure getFigure(DrawingView v, Point2D.Double p) {
+        Figure pressedFigure = null;
+        for (Figure f : v.getSelectedFigures()) {
+            if (f.contains(p)) {
+                pressedFigure = f;
+                break;
+            }
+        }
+        return pressedFigure;
+    }
+
+    private void checkTextHolderFigure(TextHolderFigure textHolder, Figure pressedFigure) {
+        if (pressedFigure instanceof TextHolderFigure) {
+            textHolder = (TextHolderFigure) pressedFigure;
+        }
+
+        if (textHolder != null) {
+            createdFigure = null;
+            beginEdit(textHolder, textArea, typingTarget);
+        }
+    }
+
+    private Figure getFigureInDrawing(Point2D.Double p, Figure pressedFigure) {
+        if (pressedFigure == null) {
+            pressedFigure = getDrawing().findFigureInside(p);
+        }
+        return pressedFigure;
+    }
+
 
     /**
      * This method allows subclasses to do perform additonal user interactions
@@ -164,7 +170,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
     protected void creationFinished(Figure createdFigure) {
         getView().clearSelection();
         getView().addToSelection(createdFigure);
-        beginEdit((TextHolderFigure) createdFigure);
+        //beginEdit((TextHolderFigure) createdFigure);
     }
     /*
     public void mouseDragged(java.awt.event.MouseEvent e) {
@@ -179,94 +185,33 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         }
     }
 
-    @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
-    protected void beginEdit(TextHolderFigure textHolder) {
-        if (textArea == null) {
-            textArea = new FloatingTextArea();
-
-        //textArea.addActionListener(this);
-        }
-
-        if (textHolder != typingTarget && typingTarget != null) {
-            endEdit();
-        }
-        textArea.createOverlay(getView(), textHolder);
-        textArea.setBounds(getFieldBounds(textHolder), textHolder.getText());
-        textArea.requestFocus();
-        typingTarget = textHolder;
-    }
-
-    private Rectangle2D.Double getFieldBounds(TextHolderFigure figure) {
-        Rectangle2D.Double r = figure.getDrawingArea();
-        Insets2D.Double insets = figure.getInsets();
-        insets.subtractTo(r);
-
-        // FIXME - Find a way to determine the parameters for grow.
-        //r.grow(1,2);
-        //r.width += 16;
-        r.x -= 1;
-        r.y -= 2;
-        r.width += 18;
-        r.height += 4;
-        return r;
-    }
 
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
-    protected void endEdit() {
+    protected void endTextAreaEdit() {
         if (typingTarget != null) {
             typingTarget.willChange();
-
-            final TextHolderFigure editedFigure = typingTarget;
-            final String oldText = typingTarget.getText();
             final String newText = textArea.getText();
 
             if (newText.length() > 0) {
                 typingTarget.setText(newText);
             } else {
-                if (createdFigure != null) {
-                    getDrawing().remove((Figure) getAddedFigure());
-                // XXX - Fire undoable edit here!!
-                } else {
-                    typingTarget.setText("");
-                }
+                removeFigure();
             }
-
-            UndoableEdit edit = new AbstractUndoableEdit() {
-
-                @Override
-                public String getPresentationName() {
-                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-                    return labels.getString("attribute.text.text");
-                }
-
-                @Override
-                public void undo() {
-                    super.undo();
-                    editedFigure.willChange();
-                    editedFigure.setText(oldText);
-                    editedFigure.changed();
-                }
-
-                @Override
-                public void redo() {
-                    super.redo();
-                    editedFigure.willChange();
-                    editedFigure.setText(newText);
-                    editedFigure.changed();
-                }
-            };
-            getDrawing().fireUndoableEditHappened(edit);
-
-            typingTarget.changed();
-            typingTarget = null;
-
-            textArea.endOverlay();
+            endEdit(textArea, typingTarget);
         }
-    //	        view().checkDamage();
+    }
+
+    private void removeFigure() {
+        if (createdFigure != null) {
+            getDrawing().remove((Figure) getAddedFigure());
+            // XXX - Fire undoable edit here!!
+        } else {
+            typingTarget.setText("");
+        }
     }
 
     public void actionPerformed(ActionEvent event) {
-        endEdit();
+        //endEdit();
         if (isToolDoneAfterCreation()) {
             fireToolDone();
         }
