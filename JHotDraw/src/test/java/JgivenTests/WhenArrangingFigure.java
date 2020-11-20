@@ -1,4 +1,5 @@
 package JgivenTests;
+
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -8,6 +9,7 @@ import org.jhotdraw.draw.QuadTreeDrawing;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
 
@@ -18,34 +20,29 @@ public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
     ArrayList<Figure> figures;
 
     @ExpectedScenarioState
-    @Mock
-    Figure triangle;
+    HashMap<String, Figure> figureMap;
 
-    @ExpectedScenarioState
-    @Mock
-    Figure circle;
+    @ProvidedScenarioState
+    String figureName;
 
-    @ExpectedScenarioState
-    @Mock
-    Figure square;
+    Figure figure;
+
 
     @BeforeStage
     public void before() {
-         qtd = new QuadTreeDrawing();
-         qtd.setChildren(figures);
+        qtd = new QuadTreeDrawing();
+        qtd.setChildren(figures);
     }
 
 
-    public WhenArrangingFigure selecting_triangle_and_sending_to_back() {
-        qtd.sendToBack(triangle);
-        return this;
+    public WhenArrangingFigure selecting_figure(String figureName) {
+        this.figureName = figureName;
+        figure = figureMap.get(figureName);
+        return self();
     }
-    public WhenArrangingFigure selecting_square_and_sending_to_back() {
-        qtd.sendToBack(square);
-        return this;
-    }
-    public WhenArrangingFigure selecting_circle_and_sending_to_back() {
-        qtd.sendToBack(circle);
-        return this;
+
+    public WhenArrangingFigure send_to_back() {
+        qtd.sendToBack(figure);
+        return self();
     }
 }

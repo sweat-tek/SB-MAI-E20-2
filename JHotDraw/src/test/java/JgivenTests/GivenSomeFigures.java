@@ -4,6 +4,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.draw.Figure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.mockito.Mockito.mock;
 
@@ -13,30 +14,16 @@ public class GivenSomeFigures extends Stage<GivenSomeFigures> {
     ArrayList<Figure> figures = new ArrayList<>();
 
     @ProvidedScenarioState
-    Figure triangle;
-    // brug hashmap?
-    @ProvidedScenarioState
-    Figure square;
+    HashMap<String,Figure> figureMap = new HashMap<>();
 
-    @ProvidedScenarioState
-    Figure circle;
 
-    public GivenSomeFigures a_triangle() {
-        triangle = mock(Figure.class);
-        figures.add(triangle);
-        triangle.
+
+
+    public GivenSomeFigures the_figure(String figureName){
+        Figure figure = mock(Figure.class);
+        figures.add(figure);
+        figureMap.put(figureName,figure);
         return self();
     }
 
-    public GivenSomeFigures a_square() {
-        square = mock(Figure.class);
-        figures.add(square);
-        return self();
-    }
-
-    public GivenSomeFigures a_circle() {
-        circle = mock(Figure.class);
-        figures.add(circle);
-        return self();
-    }
 }
