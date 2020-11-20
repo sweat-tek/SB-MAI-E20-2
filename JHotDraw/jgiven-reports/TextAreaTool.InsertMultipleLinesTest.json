@@ -1,0 +1,72 @@
+{
+  "className": "TextAreaTool.InsertMultipleLinesTest",
+  "name": "Insert Multiple Lines",
+  "scenarios": [
+    {
+      "className": "TextAreaTool.InsertMultipleLinesTest",
+      "testMethodName": "insertMultipleLines",
+      "description": "Insert multiple lines",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "text area figures made",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "text area figures made"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 219653700
+            },
+            {
+              "name": "a text area is written to",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "a text area is written to"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 1542500
+            },
+            {
+              "name": "multiple lines have been added",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "multiple lines have been added"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 122372100
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 846930300
+        }
+      ],
+      "durationInNanos": 846930300,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}

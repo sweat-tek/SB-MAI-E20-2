@@ -1,0 +1,108 @@
+{
+  "className": "org.jhotdraw.InsertMultipleLinesTest",
+  "name": "Insert Multiple Lines",
+  "scenarios": [
+    {
+      "className": "org.jhotdraw.InsertMultipleLinesTest",
+      "testMethodName": "insertMultipleLines",
+      "description": "Insert multiple lines",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "text area is pressed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "text area is pressed"
+                }
+              ],
+              "status": "FAILED",
+              "durationInNanos": 161518200
+            },
+            {
+              "name": "when a text area has been created",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "when a text area has been created"
+                }
+              ],
+              "status": "SKIPPED",
+              "durationInNanos": 0
+            },
+            {
+              "name": "insert multiple lines",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "insert multiple lines"
+                }
+              ],
+              "status": "SKIPPED",
+              "durationInNanos": 0
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "FAILED",
+          "success": false,
+          "errorMessage": "java.lang.NullPointerException: null",
+          "stackTrace": [
+            "org.jhotdraw.draw.AbstractTool.getView(AbstractTool.java:115)",
+            "org.jhotdraw.draw.TextAreaCreationTool.mousePressed(TextAreaCreationTool.java:113)",
+            "org.jhotdraw.GivenTextAreaIsPressed.textAreaIsPressed(GivenTextAreaIsPressed.java:24)",
+            "org.jhotdraw.GivenTextAreaIsPressed$ByteBuddy$lSDGtfaS.textAreaIsPressed$accessor$cEKG995y(Unknown Source)",
+            "org.jhotdraw.GivenTextAreaIsPressed$ByteBuddy$lSDGtfaS$auxiliary$aWMEPwPN.call(Unknown Source)",
+            "org.jhotdraw.GivenTextAreaIsPressed$ByteBuddy$lSDGtfaS.textAreaIsPressed(Unknown Source)",
+            "org.jhotdraw.InsertMultipleLinesTest.insertMultipleLines(InsertMultipleLinesTest.java:10)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)",
+            "java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
+            "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)",
+            "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
+            "org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)",
+            "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
+            "com.tngtech.jgiven.junit.JGivenMethodRule$1.evaluate(JGivenMethodRule.java:73)",
+            "org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)",
+            "org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)",
+            "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)",
+            "org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)",
+            "org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)",
+            "org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)",
+            "org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)",
+            "org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)",
+            "org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:61)",
+            "org.junit.rules.RunRules.evaluate(RunRules.java:20)",
+            "org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)",
+            "org.junit.runners.ParentRunner.run(ParentRunner.java:413)",
+            "org.junit.runner.JUnitCore.run(JUnitCore.java:137)",
+            "com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)",
+            "com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:33)",
+            "com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:220)",
+            "com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:53)"
+          ],
+          "durationInNanos": 189815200
+        }
+      ],
+      "durationInNanos": 189815200
+    }
+  ],
+  "tagMap": {}
+}
