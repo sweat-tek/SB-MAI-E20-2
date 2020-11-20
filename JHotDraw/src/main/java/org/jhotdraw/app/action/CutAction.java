@@ -14,12 +14,9 @@
 
 package org.jhotdraw.app.action;
 
-import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.util.*;
 
 /**
  * Cuts the selected region and places its contents into the system clipboard.
@@ -39,14 +36,13 @@ public class CutAction extends AbstractBasicEditingAction {
         super(ID);
     }
 
-    @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
-    public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = getComponent();
-        if (focusOwner != null && focusOwner instanceof JComponent) {
-            JComponent component = (JComponent) focusOwner;
-            component.getTransferHandler().exportToClipboard(
-                    component,
-                    component.getToolkit().getSystemClipboard(),
+    @Override
+    protected void preformAction(ActionEvent event, Component component) {
+        if (component instanceof JComponent) {
+            JComponent jComponent = (JComponent) component;
+            jComponent.getTransferHandler().exportToClipboard(
+                    jComponent,
+                    jComponent.getToolkit().getSystemClipboard(),
                     TransferHandler.MOVE
                     );
         }

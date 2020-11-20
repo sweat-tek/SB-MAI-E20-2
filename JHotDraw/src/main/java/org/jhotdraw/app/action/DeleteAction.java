@@ -14,17 +14,10 @@
 
 package org.jhotdraw.app.action;
 
-import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.app.EditableComponent;
-import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.util.ResourceBundleUtil;
-
-import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
 
 /**
  * Deletes the region at (or after) the caret position.
@@ -42,15 +35,6 @@ public class DeleteAction extends AbstractBasicEditingAction {
         super(ID);
     }
 
-    @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
-    public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = getComponent();
-        if (focusOwner != null && focusOwner instanceof EditableComponent) {
-            ((EditableComponent) focusOwner).delete();
-        } else {
-            deleteNextChar(evt);
-        }
-    }
     /** This method was copied from
      * DefaultEditorKit.DeleteNextCharAction.actionPerformed(ActionEvent).
      */
@@ -85,6 +69,15 @@ public class DeleteAction extends AbstractBasicEditingAction {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void preformAction(ActionEvent event, Component component) {
+        if (component instanceof EditableComponent) {
+            ((EditableComponent) component).delete();
+        } else {
+            deleteNextChar(event);
+        }
     }
 }
 

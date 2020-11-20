@@ -18,10 +18,8 @@ import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.io.Console;
 import javax.swing.*;
 import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.util.*;
 /**
  * Pastes the contents of the system clipboard at the caret position.
  * Acts on the EditableComponent or JTextComponent which had the focus when
@@ -43,12 +41,17 @@ public class PasteAction extends AbstractBasicEditingAction {
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
         Component focusOwner = getComponent();
-        if (focusOwner != null && focusOwner instanceof JComponent) {
-            JComponent component = (JComponent) focusOwner;
-            Transferable t = component.getToolkit().getSystemClipboard().getContents(component);
-            if (t != null && component.getTransferHandler() != null) {
-                component.getTransferHandler().importData(
-                        component,
+        
+    }
+
+    @Override
+    protected void preformAction(ActionEvent event, Component component) {
+        if (component instanceof JComponent) {
+            JComponent jComponent = (JComponent) component;
+            Transferable t = jComponent.getToolkit().getSystemClipboard().getContents(jComponent);
+            if (t != null && jComponent.getTransferHandler() != null) {
+                jComponent.getTransferHandler().importData(
+                        jComponent,
                         t
                         );
             }
