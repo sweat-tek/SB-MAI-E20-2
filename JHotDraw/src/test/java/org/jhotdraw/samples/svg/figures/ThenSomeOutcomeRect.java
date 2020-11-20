@@ -1,9 +1,13 @@
 package org.jhotdraw.samples.svg.figures;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import java.awt.event.MouseEvent;
-import org.mockito.Mockito;
+import java.awt.Color;
+import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.CreationTool;
+import org.jhotdraw.draw.Figure;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -12,11 +16,27 @@ import org.mockito.Mockito;
 public class ThenSomeOutcomeRect extends Stage<ThenSomeOutcomeRect> {
 
     @ExpectedScenarioState
-    protected SVGRectFigure rect;
+    protected SVGRectFigure expected;
+    private Color defaultColor;
 
-    public ThenSomeOutcomeRect rectangleMoved() {
-        
-     
+    @ExpectedScenarioState
+    protected CreationTool tool;
+
+    @ExpectedScenarioState
+    protected Figure provided;
+
+    public ThenSomeOutcomeRect rectangleCreated() {
+        assertNotNull(provided);
+
+        assertEquals(expected.getBounds(), provided.getBounds());
+
         return self();
+    }
+
+    @BeforeStage
+    private void setExpected() {
+        expected = new SVGRectFigure(5, 5, 14, 19);
+        expected.setAttribute(AttributeKeys.STROKE_COLOR, Color.BLACK);
+        defaultColor = expected.getAttribute(AttributeKeys.STROKE_COLOR);
     }
 }

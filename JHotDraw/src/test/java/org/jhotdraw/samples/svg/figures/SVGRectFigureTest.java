@@ -77,6 +77,7 @@ public class SVGRectFigureTest {
         mockG.fill(testRect);
         SVGRectFigure noArcRect = new SVGRectFigure(1, 1, 5, 5);
         noArcRect.drawFill(mockG);
+        
         Mockito.verify(mockG, times(2)).fill(argument.capture());
 
         

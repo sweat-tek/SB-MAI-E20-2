@@ -1,7 +1,6 @@
 
 package org.jhotdraw.samples.svg.figures;
 
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
 
@@ -12,12 +11,12 @@ import org.junit.Test;
 public class JGivenRectangleToolTest extends ScenarioTest<GivenSomeStateRect, WhenSomeActionRect, ThenSomeOutcomeRect> {
 
     @Test
-    public void movingRectangleTest() {
+    public void rectangleCreationTest() {
 
-        given().some_rectangleFigure();
+        given().iWantToDrawARectangle();
 
-        when().selectRectangle().and().pressArrowKeys();
+        when().clickAndDragMouse();
 
-        then().rectangleMoved();
+        then().rectangleCreated();
     }
 }

@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
+import org.jhotdraw.samples.svg.figures.SVGRectFigure;
 import org.jhotdraw.util.*;
 
 /**
@@ -91,6 +92,8 @@ public class CreationTool extends AbstractTool {
      * after a new Figure has been created. This allows to create multiple
      * figures consecutively.
      */
+    
+    protected Figure testFigure;
     private boolean isToolDoneAfterCreation = true;
 
     /** Creates a new instance. */
@@ -171,7 +174,7 @@ public class CreationTool extends AbstractTool {
     @Override
     public void activate(DrawingEditor editor) {
         super.activate(editor);
-        //getView().clearSelection();
+        getView().clearSelection();
         getView().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
@@ -273,7 +276,7 @@ public class CreationTool extends AbstractTool {
         return f;
     }
 
-    protected Figure getCreatedFigure() {
+    public Figure getCreatedFigure() {
         return createdFigure;
     }
 
