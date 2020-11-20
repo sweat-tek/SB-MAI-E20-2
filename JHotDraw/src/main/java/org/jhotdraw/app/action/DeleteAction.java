@@ -15,15 +15,17 @@
 package org.jhotdraw.app.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.beans.*;
-import java.util.*;
-import org.jhotdraw.util.*;
 import org.jhotdraw.app.EditableComponent;
 import org.jhotdraw.app.JHotDrawFeatures;
+import org.jhotdraw.util.ResourceBundleUtil;
+
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.*;
+import java.util.*;
+
 /**
  * Deletes the region at (or after) the caret position.
  * Acts on the EditableComponent or JTextComponent which had the focus when
@@ -32,14 +34,12 @@ import org.jhotdraw.app.JHotDrawFeatures;
  * @author Werner Randelshofer
  * @version 1.0 October 9, 2005 Created.
  */
-public class DeleteAction extends TextAction {
+public class DeleteAction extends AbstractBasicEditingAction {
     public final static String ID = "edit.delete";
     
     /** Creates a new instance. */
     public DeleteAction() {
         super(ID);
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
@@ -77,6 +77,16 @@ public class DeleteAction extends TextAction {
         if (beep) {
             Toolkit.getDefaultToolkit().beep();
         }
+    }
+    
+    protected final JTextComponent getTextComponent(ActionEvent e) {
+        if (e != null) {
+            Object o = e.getSource();
+            if (o instanceof JTextComponent) {
+                return (JTextComponent) o;
+            }
+        }
+        return null;
     }
 }
 

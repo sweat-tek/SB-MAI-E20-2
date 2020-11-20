@@ -31,13 +31,12 @@ import org.jhotdraw.app.JHotDrawFeatures;
  * @author Werner Randelshofer.
  * @version 1.0 February 27, 2006 Created.
  */
-public class DuplicateAction extends AbstractAction {
+public class DuplicateAction extends AbstractBasicEditingAction {
     public final static String ID = "edit.duplicate";
     
     /** Creates a new instance. */
     public DuplicateAction() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
+        super(ID);
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)

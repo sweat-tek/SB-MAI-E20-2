@@ -30,13 +30,12 @@ import org.jhotdraw.util.*;
  * interface EditableComponent. 
  * <br>1.0 October 9, 2005 Created.
  */
-public class CutAction extends AbstractAction {
+public class CutAction extends AbstractBasicEditingAction {
     public final static String ID = "edit.cut";
    
     /** Creates a new instance. */
     public CutAction() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
+        super(ID);
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
