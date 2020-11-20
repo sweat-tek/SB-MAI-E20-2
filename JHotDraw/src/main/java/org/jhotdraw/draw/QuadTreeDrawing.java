@@ -250,6 +250,7 @@ public class QuadTreeDrawing extends AbstractDrawing {
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
     public void bringToFront(Figure figure) {
+        assert children != null : "Children is null";
         if (children.remove(figure)) {
             children.add(figure);
             needsSorting = true;
@@ -260,6 +261,7 @@ public class QuadTreeDrawing extends AbstractDrawing {
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
     public void sendToBack(Figure figure) {
+        assert children != null : "Children is null";
         if (children.remove(figure)) {
             children.add(0, figure);
             needsSorting = true;
@@ -334,5 +336,9 @@ public class QuadTreeDrawing extends AbstractDrawing {
     @Override
     protected void drawStroke(Graphics2D g) {
         // throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setChildren(ArrayList<Figure> list){
+        this.children = list;
     }
 }
