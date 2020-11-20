@@ -69,7 +69,7 @@ public class BringToFrontAction extends AbstractSelectedAction {
                 SendToBackAction.sendToBackAction(view, figures);
             }
         }
-        ); 
+        );
     }
 
     protected static void bringToFrontAction(DrawingView view, Collection<Figure> figures) {
