@@ -1,4 +1,4 @@
-package Jgiven;
+package JgivenTests;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -8,7 +8,6 @@ import org.jhotdraw.draw.QuadTreeDrawing;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WhenArrangingFigure extends Stage<WhenArrangingFigure> {
 

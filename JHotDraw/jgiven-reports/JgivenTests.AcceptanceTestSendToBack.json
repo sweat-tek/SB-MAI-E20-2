@@ -1,0 +1,64 @@
+{
+  "className": "JgivenTests.AcceptanceTestSendToBack",
+  "name": "Acceptance Test Send To Back",
+  "scenarios": [
+    {
+      "className": "JgivenTests.AcceptanceTestSendToBack",
+      "testMethodName": "something_should_happen",
+      "description": "something should happen",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "FAILED",
+          "errorMessage": "com.tngtech.jgiven.exception.AmbiguousResolutionException: Ambiguous fields with same TYPE detected. Field 1: org.jhotdraw.draw.Figure JgivenTests.GivenSomeFigures.triangle, field 2: org.jhotdraw.draw.Figure JgivenTests.GivenSomeFigures.square. This exception indicates that you used JGiven in a wrong way. Please consult the JGiven documentation at http://jgiven.org/docs and the JGiven API documentation at http://jgiven.org/javadoc/ for further information.",
+          "stackTrace": [
+            "com.tngtech.jgiven.impl.inject.ValueInjector.validateFields(ValueInjector.java:58)",
+            "com.tngtech.jgiven.impl.inject.ValueInjector.updateValues(ValueInjector.java:98)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor.updateScenarioState(ScenarioExecutor.java:258)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor.access$500(ScenarioExecutor.java:48)",
+            "com.tngtech.jgiven.impl.ScenarioExecutor$StageTransitionHandlerImpl.enterStage(ScenarioExecutor.java:186)",
+            "JgivenTests.GivenSomeFigures$ByteBuddy$FNz2anjx.a_circle(Unknown Source)",
+            "JgivenTests.AcceptanceTestSendToBack.something_should_happen(AcceptanceTestSendToBack.java:13)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
+            "java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)",
+            "java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
+            "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)",
+            "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
+            "org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)",
+            "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
+            "com.tngtech.jgiven.junit.JGivenMethodRule$1.evaluate(JGivenMethodRule.java:73)",
+            "org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)",
+            "org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)",
+            "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)",
+            "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)",
+            "org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)",
+            "org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)",
+            "org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)",
+            "org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)",
+            "org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)",
+            "org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:61)",
+            "org.junit.rules.RunRules.evaluate(RunRules.java:20)",
+            "org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)",
+            "org.junit.runners.ParentRunner.run(ParentRunner.java:413)",
+            "org.junit.runner.JUnitCore.run(JUnitCore.java:137)",
+            "com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)",
+            "com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:33)",
+            "com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:220)",
+            "com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:53)"
+          ],
+          "durationInNanos": 14525900
+        }
+      ],
+      "durationInNanos": 14525900
+    }
+  ],
+  "tagMap": {}
+}
