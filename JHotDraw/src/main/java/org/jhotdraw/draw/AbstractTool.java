@@ -111,7 +111,7 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         return isActive;
     }
     
-    protected DrawingView getView() {
+    public DrawingView getView() {
 
         return editor.getActiveView() != null ? editor.getActiveView() : new DefaultDrawingView();
     }
