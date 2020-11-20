@@ -237,6 +237,7 @@ public class DefaultDrawingEditor extends AbstractBean implements DrawingEditor,
         return Collections.unmodifiableMap(defaultAttributes);
     }
 
+    @Override
     public void setHandleAttribute(AttributeKey key, Object value) {
         handleAttributes.put(key, value);
     }

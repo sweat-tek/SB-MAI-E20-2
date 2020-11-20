@@ -25,8 +25,8 @@ import org.jhotdraw.draw.*;
 /**
  * AbstractToolBar.
  *
- * @author Werner Randelshofer
- * @version 2.0 2008-05-24 Reworked to create panels lazily.
+ * @author Werner Randelshofer  @version 2.0 2008-05-24 Reworked to create
+ * panels lazily.
  * <br>1.0 2008-04-13 Created.
  */
 public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
@@ -36,7 +36,9 @@ public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
     protected Preferences prefs;
     protected PropertyChangeListener eventHandler;
 
-    /** Creates new form. */
+    /**
+     * Creates new form.
+     */
     @FeatureEntryPoint(JHotDrawFeatures.TOOL_PALETTE)
     public AbstractToolBar() {
         initComponents();
@@ -47,35 +49,35 @@ public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
         }
     }
 
-    /** This should be an abstract method, but the NetBeans GUI builder
-     * doesn't support abstract beans.
+    /**
+     * This should be an abstract method, but the NetBeans GUI builder doesn't
+     * support abstract beans.
+     *
      * @return The ID used to retrieve labels and store user preferences.
      */
     protected String getID() {
         return "";
     }
 
-    /** This should be an abstract method, but the NetBeans GUI builder
-     * doesn't support abstract beans.
+    /**
+     * This should be an abstract method, but the NetBeans GUI builder doesn't
+     * support abstract beans.
      */
     protected void init() {
     }
 
     protected PropertyChangeListener getEventHandler() {
         if (eventHandler == null) {
-            eventHandler = new PropertyChangeListener() {
-
-                public void propertyChange(PropertyChangeEvent evt) {
-                    String name = evt.getPropertyName();
-                    if (name == DISCLOSURE_STATE_PROPERTY) {
-                        try {
-                            prefs.putInt(getID() + ".disclosureState", (Integer) evt.getNewValue());
-                        } catch (IllegalStateException e) {
-                            // This happens, due to a bug in Apple's implementation
-                            // of the Preferences class.
-                            System.err.println("Warning AbstractToolBar caught IllegalStateException of Preferences class");
-                            e.printStackTrace();
-                        }
+            eventHandler = (PropertyChangeEvent evt) -> {
+                String name1 = evt.getPropertyName();
+                if (name1.equals(DISCLOSURE_STATE_PROPERTY)) {
+                    try {
+                        prefs.putInt(getID() + ".disclosureState", (Integer) evt.getNewValue());
+                    } catch (IllegalStateException e) {
+                        // This happens, due to a bug in Apple's implementation
+                        // of the Preferences class.
+                        System.err.println("Warning AbstractToolBar caught IllegalStateException of Preferences class");
+                        e.printStackTrace();
                     }
                 }
             };
@@ -138,13 +140,14 @@ public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
             if (runner == null) {
                 runner = new Runnable() {
 
+                    @Override
                     public void run() {
                         try {
-                        // long start = System.currentTimeMillis();
-                        panels[state] = createDisclosedComponent(state);
+                            // long start = System.currentTimeMillis();
+                            panels[state] = createDisclosedComponent(state);
                         } catch (Throwable t) {
                             t.printStackTrace();
-                            panels[state]=null;
+                            panels[state] = null;
                         }
                         // long end = System.currentTimeMillis();
                         // System.out.println(AbstractToolBar.this.getClass()+" state:"+state+" elapsed:"+(end-start));
@@ -155,13 +158,13 @@ public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
 
                             parent.remove(ProxyPanel.this);
                             if (getDisclosureState() == state) {
-                            if (panels[state] != null) {
-                                parent.add(panels[state], gbc);
-                            } else {
-                                JPanel empty = new JPanel(new BorderLayout());
-                                empty.setOpaque(false);
-                                parent.add(empty, gbc);
-                            }
+                                if (panels[state] != null) {
+                                    parent.add(panels[state], gbc);
+                                } else {
+                                    JPanel empty = new JPanel(new BorderLayout());
+                                    empty.setOpaque(false);
+                                    parent.add(empty, gbc);
+                                }
                             }
                             parent.revalidate();
                             ((JComponent) parent.getRootPane().getContentPane()).revalidate();
@@ -174,10 +177,10 @@ public /*abstract*/ class AbstractToolBar extends JDisclosureToolBar {
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
