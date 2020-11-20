@@ -18,7 +18,7 @@ public class ThenWriteMultipleLines extends Stage<ThenWriteMultipleLines> {
         for (Figure figure: editor.getActiveView().getDrawing().getChildren()) {
             assertThat(text.equals(((SVGTextAreaFigure) figure).getText()));
         }
-        return self();
+        return this;
     }
 
 }

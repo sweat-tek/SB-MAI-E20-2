@@ -4,7 +4,6 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import org.jhotdraw.draw.DrawingEditor;
 import org.jhotdraw.draw.Figure;
-import org.jhotdraw.draw.Tool;
 import org.jhotdraw.samples.svg.figures.SVGTextAreaFigure;
 
 import java.awt.geom.Point2D;
@@ -24,8 +23,6 @@ public class WhenATextAreaHasBeenCreated extends Stage<WhenATextAreaHasBeenCreat
         for (Figure figure : figures) {
             SVGTextAreaFigure svg = (SVGTextAreaFigure) figure;
             svg.setText(text);
-            figure.getToolTipText(figure.getStartPoint());
-            Tool tool = editor.getActiveView().getDrawing().getTool(p);
         }
         return this;
     }
