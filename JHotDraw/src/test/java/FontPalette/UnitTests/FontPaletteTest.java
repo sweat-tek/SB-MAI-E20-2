@@ -1,4 +1,4 @@
-package FontPalette;
+package FontPalette.UnitTests;
 
 import java.awt.Font;
 import static org.jhotdraw.draw.AttributeKeys.FONT_BOLD;
