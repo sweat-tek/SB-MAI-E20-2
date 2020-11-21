@@ -23,6 +23,7 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
+import org.jhotdraw.geom.Insets2D;
 import org.jhotdraw.util.ResourceBundleUtil;
 
 /**
@@ -451,12 +452,43 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         return false;
     }
 
-    public void undoRedoEdit(FloatingTextField textField, TextHolderFigure typingTarget) {
-        final TextHolderFigure editedFigure = typingTarget;
-        final String oldText = typingTarget.getText();
-        final String newText = textField.getText();
+    protected void beginEdit(TextHolderFigure textHolder, FloatingTextArea textArea, TextHolderFigure typingTarget) {
+        if (textArea == null) {
+            textArea = new FloatingTextArea();
 
-        UndoableEdit edit = new AbstractUndoableEdit() {
+            //textArea.addActionListener(this);
+        }
+
+        if (textHolder != typingTarget && typingTarget != null) {
+            textAreaEndEdit(textArea, typingTarget);
+        }
+        textArea.createOverlay(getView(), textHolder);
+        textArea.setBounds(getFieldBounds(textHolder), textHolder.getText());
+        textArea.requestFocus();
+        typingTarget = textHolder;
+
+    }
+    protected UndoableEdit textFieldEndEdit(FloatingTextField textField, TextHolderFigure typingTarget) {
+            final TextHolderFigure editedFigure = typingTarget;
+            final String oldText = typingTarget.getText();
+            final String newText = textField.getText();
+        
+        return commonEventEdit(editedFigure, oldText, newText);
+            
+    }
+    
+    protected UndoableEdit textAreaEndEdit(FloatingTextArea textArea, TextHolderFigure typingTarget) {
+            final TextHolderFigure editedFigure = typingTarget;
+            final String oldText = typingTarget.getText();
+            final String newText = textArea.getText();
+
+        return commonEventEdit(editedFigure, oldText, newText);
+
+        }
+    
+    private UndoableEdit commonEventEdit(TextHolderFigure editedFigure, String oldText, String newText){
+        
+        return new AbstractUndoableEdit() {
 
             @Override
             public String getPresentationName() {
@@ -480,6 +512,22 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
                 editedFigure.changed();
             }
         };
-        getDrawing().fireUndoableEditHappened(edit);
+    }
+
+
+    private Rectangle2D.Double getFieldBounds(TextHolderFigure figure) {
+        Rectangle2D.Double r = figure.getDrawingArea();
+        Insets2D.Double insets = figure.getInsets();
+        insets.subtractTo(r);
+
+        // FIXME - Find a way to determine the parameters for grow.
+        //r.grow(1,2);
+        //r.width += 16;
+        r.x -= 1;
+        r.y -= 2;
+        r.width += 18;
+        r.height += 4;
+        return r;
     }
 }
+

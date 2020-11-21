@@ -157,7 +157,7 @@ public class TextCreationTool extends CreationTool implements ActionListener {
                 }
             }
             
-            undoRedoEdit(textField, typingTarget);
+            textFieldEndEdit(textField, typingTarget);
 
             typingTarget.changed();
             typingTarget = null;

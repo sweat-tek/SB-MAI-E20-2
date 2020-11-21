@@ -85,7 +85,7 @@ public class TextEditingTool extends AbstractTool implements ActionListener {
                 typingTarget.setText(newText);
             }
             
-            undoRedoEdit(textField, typingTarget);
+            textFieldEndEdit(textField, typingTarget);
 
             typingTarget.changed();
             typingTarget = null;
