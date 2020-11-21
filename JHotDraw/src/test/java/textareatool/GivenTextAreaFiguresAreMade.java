@@ -8,8 +8,6 @@ import org.jhotdraw.samples.svg.figures.SVGTextAreaFigure;
 
 
 public class GivenTextAreaFiguresAreMade extends Stage<GivenTextAreaFiguresAreMade> {
-    TextHolderFigure textHolderFigure;
-    TextAreaCreationTool textAreaCreationTool;
     @ProvidedScenarioState
     DrawingView view;
 
