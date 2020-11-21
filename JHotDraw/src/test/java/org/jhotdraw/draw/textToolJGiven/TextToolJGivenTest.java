@@ -1,4 +1,4 @@
-package org.jhotdraw.draw;
+package org.jhotdraw.draw.textToolJGiven;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
