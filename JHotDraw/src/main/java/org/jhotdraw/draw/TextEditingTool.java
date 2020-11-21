@@ -48,7 +48,6 @@ public class TextEditingTool extends AbstractTool implements ActionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         if (typingTarget != null) {
-            System.out.println("typingTarget: " + typingTarget);
             beginEdit(typingTarget);
             updateCursor(getView(), e.getPoint());
         }
