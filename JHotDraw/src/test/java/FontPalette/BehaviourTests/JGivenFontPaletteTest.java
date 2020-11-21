@@ -17,4 +17,22 @@ public class JGivenFontPaletteTest extends ScenarioTest<GivenTextToModify, WhenM
         
         then().theFontSizeHasChanged();
     }
+    
+    @Test
+    public void selectingFontFamilyResultsInNewTextFont() {
+        given().someSelectedText();
+        
+        when().modifyingFontFamily();
+        
+        then().theFontFamilyHasChanged();
+    }
+    
+    @Test
+    public void pressingItalicResultsInItalicText() {
+        given().someSelectedText();
+        
+        when().setFontToItalic();
+        
+        then().theTextIsItalic();
+    }
 }
