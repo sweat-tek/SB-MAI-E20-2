@@ -73,8 +73,7 @@ public class TextAreaCreationToolTest {
         when(typingTarget.getText()).thenReturn("TypingTargetText");
         when(textArea.getText()).thenReturn("TextAreaText");
         // TODO Solve how to check if the returned value is correct
-        System.out.println(textAreaCreationTool.endEdit(textArea, typingTarget));
-        Assert.assertNotNull(textAreaCreationTool.endEdit(textArea, typingTarget));
+        Assert.assertNotNull(textAreaCreationTool.textAreaEndEdit(textArea, typingTarget));
     }
 
 }

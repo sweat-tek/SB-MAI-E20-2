@@ -78,7 +78,7 @@ public class Geom {
     public static boolean lineContainsPoint(double x1, double y1,
             double x2, double y2,
             double px, double py, double tolerance) {
-
+        
         Rectangle2D.Double r = new Rectangle2D.Double(x1, y1, 0, 0);
         r.add(x2, y2);
         double grow = max(2, (int) ceil(tolerance));
@@ -98,7 +98,6 @@ public class Geom {
         if (y1 == y2) {
             return (abs(py - y1) <= tolerance);
         }
-
         a = (double) (y1 - y2) / (double) (x1 - x2);
         b = (double) y1 - a * (double) x1;
         x = (py - b) / a;

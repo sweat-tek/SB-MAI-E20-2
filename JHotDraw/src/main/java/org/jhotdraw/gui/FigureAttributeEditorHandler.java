@@ -26,6 +26,7 @@ import org.jhotdraw.draw.Figure;
  *
  * @author Werner Randelshofer
  * @version 1.0 2009-04-14 Created.
+ * @param <T>
  */
 public class FigureAttributeEditorHandler<T> extends AbstractAttributeEditorHandler<T> {
 
