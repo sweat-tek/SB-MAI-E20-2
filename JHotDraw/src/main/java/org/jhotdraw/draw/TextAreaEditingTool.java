@@ -86,7 +86,8 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
             final String newText = textArea.getText();
 
             setTypingTargetText(newText);
-            edit = endEdit(textArea, typingTarget);
+            edit = textAreaEndEdit(textArea, typingTarget);
+
         }
 
         getDrawing().fireUndoableEditHappened(edit);
@@ -116,8 +117,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
 
     public void actionPerformed(ActionEvent event) {
         endTextAreaEdit();
-        //endEdit();
-            fireToolDone();
+        fireToolDone();
     }
 
     public void mouseDragged(MouseEvent e) {

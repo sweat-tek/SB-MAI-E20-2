@@ -5,9 +5,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ feature_textareatool ]
+    branches: [ master ]
   pull_request:
-    branches: [ feature_textareatool ]
+    branches: [ master ]
 
 jobs:
   build:
