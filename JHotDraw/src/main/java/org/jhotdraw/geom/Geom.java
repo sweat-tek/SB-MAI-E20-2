@@ -60,10 +60,8 @@ public class Geom {
         if (endPoint.getX() == endPoint.getY()) {
             return (abs(checkPoint.getY() - startPoint.getY()) <= tolerance);
         }
-
         double distance = calculateDistance(startPoint, endPoint, checkPoint);
         return (distance <= tolerance); 
-        
     }
     
     private static double calculateDistance(Point startPoint, Point endPoint, Point checkpoint){

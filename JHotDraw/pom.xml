@@ -34,5 +34,30 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.6</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.junitrunner</groupId>
+            <artifactId>junitrunner-mockito</artifactId>
+            <version>0.0.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.tngtech.jgiven/jgiven-junit -->
+        <dependency>
+            <groupId>com.tngtech.jgiven</groupId>
+            <artifactId>jgiven-junit</artifactId>
+            <version>1.0.0-RC6</version>
+        </dependency>
     </dependencies>   
- </project>
+</project>
