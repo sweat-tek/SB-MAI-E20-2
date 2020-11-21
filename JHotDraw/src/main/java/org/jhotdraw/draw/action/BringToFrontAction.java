@@ -11,12 +11,10 @@
  * accordance with the license agreement you entered into with  
  * the copyright holders. For details see accompanying license terms. 
  */
-
 package org.jhotdraw.draw.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import org.jhotdraw.util.*;
-import javax.swing.*;
+
 import java.util.*;
 import javax.swing.undo.*;
 import org.jhotdraw.app.JHotDrawFeatures;
@@ -25,16 +23,18 @@ import org.jhotdraw.draw.*;
 /**
  * ToFrontAction.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version 2.0 2008-05-30 Renamed from MoveToFrontAction to BringToFrontAction
- * for consistency with the API of Drawing. 
- * <br>1.0 24. November 2003  Created.
+ * for consistency with the API of Drawing.
+ * <br>1.0 24. November 2003 Created.
  */
 public class BringToFrontAction extends AbstractSelectedAction {
-    
-       public static String ID = "edit.bringToFront";
-       
-    /** Creates a new instance. */
+
+    public static String ID = "edit.bringToFront";
+
+    /**
+     * Creates a new instance.
+     */
     public BringToFrontAction(DrawingEditor editor) {
         super(editor);
         labels.configureAction(this, ID);
@@ -43,28 +43,36 @@ public class BringToFrontAction extends AbstractSelectedAction {
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();
+        assert view != null: "View is null";
         final LinkedList<Figure> figures = new LinkedList<Figure>(view.getSelectedFigures());
-        bringToFront(view, figures);
+        bringToFrontAction(view, figures);
+        makeUndoable(view, figures);
+
+    }
+
+    private void makeUndoable(DrawingView view,Collection figures) {
         fireUndoableEditHappened(new AbstractUndoableEdit() {
             @Override
             public String getPresentationName() {
-       return labels.getTextProperty(ID);
+                return labels.getTextProperty(ID);
             }
+
             @Override
             public void redo() throws CannotRedoException {
                 super.redo();
-                BringToFrontAction.bringToFront(view, figures);
+                BringToFrontAction.bringToFrontAction(view, figures);
             }
+
             @Override
             public void undo() throws CannotUndoException {
                 super.undo();
-                SendToBackAction.sendToBack(view, figures);
+                SendToBackAction.sendToBackAction(view, figures);
             }
         }
-        
         );
     }
-    public static void bringToFront(DrawingView view, Collection<Figure> figures) {
+
+    protected static void bringToFrontAction(DrawingView view, Collection<Figure> figures) {
         Drawing drawing = view.getDrawing();
         Iterator i = drawing.sort(figures).iterator();
         while (i.hasNext()) {
@@ -72,5 +80,5 @@ public class BringToFrontAction extends AbstractSelectedAction {
             drawing.bringToFront(figure);
         }
     }
-    
+
 }
