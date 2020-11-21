@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.jhotdraw.samples.svg.figures;
 
 import java.awt.Graphics2D;
@@ -20,10 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Jonas
- */
 public class SVGEllipseFigureTest {
     SVGEllipseFigure testFigure;
     Dimensions d;
@@ -70,17 +61,4 @@ public class SVGEllipseFigureTest {
         SVGEllipseFigure expected = new SVGEllipseFigure(new Dimensions(1, 2, 3, 4));
         assertEquals(expected.getY(), testFigure.getY(),2.0);
     }
-
-//    /**
-//     * Test of transform method, of class SVGEllipseFigure.
-//     */
-//    @Test
-//    public void testTransform() {
-//        System.out.println("transform");
-//        AffineTransform tx = null;
-//        SVGEllipseFigure instance = new SVGEllipseFigure();
-//        instance.transform(tx);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
 }

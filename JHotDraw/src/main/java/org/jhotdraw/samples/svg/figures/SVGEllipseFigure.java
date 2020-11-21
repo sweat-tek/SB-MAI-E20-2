@@ -48,11 +48,13 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * This is used to perform faster hit testing.
      */
     private transient Shape cachedHitShape;
-
-     //lav parse-object for dimentions
+    
     @FeatureEntryPoint(JHotDrawFeatures.ELLIPSE_TOOL)
     public SVGEllipseFigure(Dimensions dimensions) {
-        ellipse = new Ellipse2D.Double(dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight());
+        ellipse = new Ellipse2D.Double(dimensions.getX(), 
+                dimensions.getY(), 
+                dimensions.getWidth(), 
+                dimensions.getHeight());
         SVGAttributeKeys.setDefaults(this);
     }
     
