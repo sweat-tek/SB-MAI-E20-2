@@ -87,6 +87,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
 
             setTypingTargetText(newText);
             edit = textAreaEndEdit(textArea, typingTarget);
+
         }
 
         getDrawing().fireUndoableEditHappened(edit);

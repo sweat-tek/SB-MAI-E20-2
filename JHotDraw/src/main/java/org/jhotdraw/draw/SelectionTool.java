@@ -264,7 +264,7 @@ public class SelectionTool extends AbstractTool
      * Method to get a {@code HandleTracker} which handles user interaction
      * for the specified handle.
      */
-    protected HandleTracker getHandleTracker(Handle handle) {
+    private HandleTracker getHandleTracker(Handle handle) {
         if (handleTracker == null) {
             handleTracker = new DefaultHandleTracker();
         }
@@ -276,7 +276,7 @@ public class SelectionTool extends AbstractTool
      * Method to get a {@code DragTracker} which handles user interaction
      * for dragging the specified figure.
      */
-    protected DragTracker getDragTracker(Figure f) {
+    private DragTracker getDragTracker(Figure f) {
         if (dragTracker == null) {
             dragTracker = new DefaultDragTracker();
         }
@@ -288,7 +288,7 @@ public class SelectionTool extends AbstractTool
      * Method to get a {@code SelectAreaTracker} which handles user interaction
      * for selecting an area on the drawing.
      */
-    protected SelectAreaTracker getSelectAreaTracker() {
+    private SelectAreaTracker getSelectAreaTracker() {
         if (selectAreaTracker == null) {
             selectAreaTracker = new DefaultSelectAreaTracker();
         }

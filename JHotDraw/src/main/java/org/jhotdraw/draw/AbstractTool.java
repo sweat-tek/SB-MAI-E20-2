@@ -13,18 +13,29 @@
  */
 package org.jhotdraw.draw;
 
-import javax.swing.*;
 import org.jhotdraw.app.action.*;
 import org.jhotdraw.beans.AbstractBean;
-import org.jhotdraw.draw.action.*;
+import org.jhotdraw.draw.action.DrawingEditorProxy;
+import org.jhotdraw.draw.action.IncreaseHandleDetailLevelAction;
+import org.jhotdraw.draw.action.MoveAction;
+import org.jhotdraw.draw.action.MoveConstrainedAction;
+import org.jhotdraw.geom.Insets2D;
+import org.jhotdraw.util.ResourceBundleUtil;
+
+import javax.swing.*;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.UndoableEdit;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 import org.jhotdraw.geom.Insets2D;
 import org.jhotdraw.util.ResourceBundleUtil;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * AbstractTool.
@@ -105,15 +116,16 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         return isActive;
     }
 
-    protected DrawingView getView() {
-        return editor.getActiveView();
+    public DrawingView getView() {
+
+        return editor.getActiveView() != null ? editor.getActiveView() : new DefaultDrawingView();
     }
 
     protected DrawingEditor getEditor() {
         return editor;
     }
 
-    protected Drawing getDrawing() {
+    public Drawing getDrawing() {
         return getView().getDrawing();
     }
 
@@ -466,8 +478,8 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         textArea.setBounds(getFieldBounds(textHolder), textHolder.getText());
         textArea.requestFocus();
         typingTarget = textHolder;
-
     }
+    
     protected UndoableEdit textFieldEndEdit(FloatingTextField textField, TextHolderFigure typingTarget) {
             final TextHolderFigure editedFigure = typingTarget;
             final String oldText = typingTarget.getText();
@@ -487,7 +499,7 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         }
     
     private UndoableEdit commonEventEdit(TextHolderFigure editedFigure, String oldText, String newText){
-        
+
         return new AbstractUndoableEdit() {
 
             @Override

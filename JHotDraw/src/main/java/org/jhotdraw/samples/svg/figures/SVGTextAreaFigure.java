@@ -5,25 +5,35 @@
  * and all its contributors.
  * All rights reserved.
  *
- * The copyright of this software is owned by the authors and  
- * contributors of the JHotDraw project ("the copyright holders").  
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * the copyright holders. For details see accompanying license terms. 
+ * The copyright of this software is owned by the authors and
+ * contributors of the JHotDraw project ("the copyright holders").
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * the copyright holders. For details see accompanying license terms.
  */
 package org.jhotdraw.samples.svg.figures;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-import java.text.*;
-import java.util.*;
 import org.jhotdraw.app.JHotDrawFeatures;
-import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import org.jhotdraw.draw.*;
-import org.jhotdraw.samples.svg.*;
-import org.jhotdraw.geom.*;
+import org.jhotdraw.geom.Dimension2DDouble;
+import org.jhotdraw.geom.Geom;
+import org.jhotdraw.geom.Insets2D;
+import org.jhotdraw.samples.svg.Gradient;
+import org.jhotdraw.samples.svg.SVGAttributeKeys;
+
+import java.awt.*;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
+import java.awt.geom.*;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 
 /**
  * SVGTextArea.
@@ -113,67 +123,109 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
         }
 
         Rectangle2D r = getTextShape().getBounds2D();
+
         return r.isEmpty() ? getBounds().contains(p) : r.contains(p);
     }
 
-    private Shape getTextShape() {
+    public Shape getTextShape() {
         if (cachedTextShape == null) {
             GeneralPath shape;
             cachedTextShape = shape = new GeneralPath();
-            if (getText() != null || isEditable()) {
+            createTextShape(shape);
+        }
+        return cachedTextShape;
+    }
 
-                Font font = getFont();
-                boolean isUnderlined = FONT_UNDERLINE.get(this);
-                Insets2D.Double insets = getInsets();
-                Rectangle2D.Double textRect = new Rectangle2D.Double(
-                        bounds.x + insets.left,
-                        bounds.y + insets.top,
-                        bounds.width - insets.left - insets.right,
-                        bounds.height - insets.top - insets.bottom);
-                float leftMargin = (float) textRect.x;
-                float rightMargin = (float) Math.max(leftMargin + 1, textRect.x + textRect.width);
-                float verticalPos = (float) textRect.y;
-                float maxVerticalPos = (float) (textRect.y + textRect.height);
-                if (leftMargin < rightMargin) {
-                    float tabWidth = (float) (getTabSize() * font.getStringBounds("m", getFontRenderContext()).getWidth());
-                    float[] tabStops = new float[(int) (textRect.width / tabWidth)];
-                    for (int i = 0; i < tabStops.length; i++) {
-                        tabStops[i] = (float) (textRect.x + (int) (tabWidth * (i + 1)));
-                    }
+    private void createTextShape(GeneralPath shape) {
+        if (getText() != null || isEditable()) {
 
-                    if (getText() != null) {
-                        String[] paragraphs = getText().split("\n");//Strings.split(getText(), '\n');
-                        for (int i = 0; i < paragraphs.length; i++) {
-                            if (paragraphs[i].length() == 0) {
-                                paragraphs[i] = " ";
-                            }
-                            AttributedString as = new AttributedString(paragraphs[i]);
-                            as.addAttribute(TextAttribute.FONT, font);
-                            if (isUnderlined) {
-                                as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
-                            }
-                            int tabCount = paragraphs[i].split("\t").length - 1;
-                            Rectangle2D.Double paragraphBounds = appendParagraph(
-                                    shape, as.getIterator(),
-                                    verticalPos, maxVerticalPos, leftMargin, rightMargin, tabStops, tabCount);
-                            verticalPos = (float) (paragraphBounds.y + paragraphBounds.height);
-                            if (verticalPos > textRect.y + textRect.height) {
-                                break;
-                            }
-                        }
-                    }
+            Font font = getFont();
+            boolean isUnderlined = FONT_UNDERLINE.get(this);
+            Insets2D.Double insets = getInsets();
+            Rectangle2D.Double textRect = createRectangle2D(insets);
+            setMargins(shape, font, isUnderlined, textRect);
+        }
+    }
+        //TODO:margins er ikke fejlen og heller ikke tabs
+    private void setMargins(GeneralPath shape, Font font, boolean isUnderlined, Rectangle2D.Double textRect) {
+        float[] margins = {(float) textRect.x, (float) Math.max(textRect.x + 1, textRect.x + textRect.width)};
+        float verticalPos = (float) textRect.y;
+        float maxVerticalPos = (float) (textRect.y + textRect.height);
+        if (margins[0] < margins[1]) {
+            float[] tabStops = getTabStops(font, textRect);
+
+
+            if (getText() != null) {
+                String[] paragraphs = getText().split("\n");//Strings.split(getText(), '\n');
+                for (int i = 0; i < paragraphs.length; i++) {
+                    AttributedString as = getAttributedString(font, isUnderlined, paragraphs, i);
+                    int tabCount = paragraphs[i].split("\t").length - 1;
+                    verticalPos = getVerticalPos(appendParagraph(
+                            shape, as.getIterator(),
+                            verticalPos, maxVerticalPos, margins[0], margins[1], tabStops, tabCount), verticalPos);
+                    if (isVerticalPositionMax(textRect, verticalPos)) break;
                 }
             }
         }
-        return cachedTextShape;
+    }
+
+
+
+
+
+    private float getVerticalPos(Rectangle2D.Double paragraphBounds1, float verticalPos) {
+        verticalPos = (float) (paragraphBounds1.y + paragraphBounds1.height);
+        return verticalPos;
+    }
+
+    private AttributedString getAttributedString(Font font, boolean isUnderlined, String[] paragraphs, int i) {
+        checkParagraphLength(paragraphs, i);
+        AttributedString as = addFont(font, paragraphs[i]);
+        addUnderline(isUnderlined, as);
+        return as;
+    }
+
+    private boolean isVerticalPositionMax(Rectangle2D.Double textRect, float verticalPos) {
+        return verticalPos > textRect.y + textRect.height;
+    }
+
+
+    private AttributedString addFont(Font font, String paragraph) {
+        AttributedString as = new AttributedString(paragraph);
+        as.addAttribute(TextAttribute.FONT, font);
+        return as;
+    }
+
+    private void checkParagraphLength(String[] paragraphs, int i) {
+        if (paragraphs[i].length() == 0) {
+            paragraphs[i] = " ";
+        }
+    }
+
+
+    private float[] getTabStops(Font font, Rectangle2D.Double textRect) {
+        float tabWidth = (float) (getTabSize() * font.getStringBounds("m", getFontRenderContext()).getWidth());
+        float[] tabStops = new float[(int) (textRect.width / tabWidth)];
+        for (int i = 0; i < tabStops.length; i++) {
+            tabStops[i] = (float) (textRect.x + (int) (tabWidth * (i + 1)));
+        }
+        return tabStops;
+    }
+
+    private Rectangle2D.Double createRectangle2D(Insets2D.Double insets) {
+        return new Rectangle2D.Double(
+                bounds.x + insets.left,
+                bounds.y + insets.top,
+                bounds.width - insets.left - insets.right,
+                bounds.height - insets.top - insets.bottom);
     }
 
     /**
      * Appends a paragraph of text at the specified y location and returns
      * the bounds of the paragraph.
-     * 
      *
-     * @param shape Shape to which to add the glyphs of the paragraph. This 
+     *
+     * @param shape Shape to which to add the glyphs of the paragraph. This
      * parameter is null, if we only want to measure the size of the paragraph.
      * @param styledText the text of the paragraph.
      * @param verticalPos the top bound of the paragraph
@@ -181,7 +233,7 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      * @param leftMargin the left bound of the paragraph
      * @param rightMargin the right bound of the paragraph
      * @param tabStops an array with tab stops
-     * @param tabCounts the number of entries in tabStops which contain actual
+     * @param tabCount the number of entries in tabStops which contain actual
      *        values
      * @return Returns the actual bounds of the paragraph.
      */
@@ -503,8 +555,7 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      */
     public Tool getTool(Point2D.Double p) {
         if (isEditable() && contains(p)) {
-            TextAreaEditingTool tool = new TextAreaEditingTool(this);
-            return tool;
+            return new TextAreaEditingTool(this);
         }
         return null;
     }
@@ -553,7 +604,7 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      * <p>
      * If you want to use this method to determine the bounds of the TextAreaFigure,
      * you need to add the insets of the TextAreaFigure to the size.
-     * 
+     *
      * @param maxWidth the maximal width to use. Specify Double.MAX_VALUE
      * if you want the width to be unlimited.
      * @return width and height needed to lay out the text.
@@ -595,6 +646,12 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
             }
         }
         return new Dimension2DDouble(Math.abs(textRect.x) + textRect.width, Math.abs(textRect.y) + textRect.height);
+    }
+
+    private void addUnderline(boolean isUnderlined, AttributedString as) {
+        if (isUnderlined) {
+            as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+        }
     }
 
     public SVGTextAreaFigure clone() {
