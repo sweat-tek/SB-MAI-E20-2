@@ -6,7 +6,7 @@
 package org.jhotdraw.samples.svg.gui;
 
 import javax.swing.JComponent;
-import org.jhotdraw.draw.DrawingEditor;
+import org.jhotdraw.draw.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,6 +25,7 @@ public class FigureToolBarTest {
 
     @BeforeClass
     public static void setUpClass() {
+
     }
 
     @AfterClass
@@ -39,10 +40,9 @@ public class FigureToolBarTest {
     public void tearDown() {
     }
 
-
     /**
-     * Tests of createDisclosedComponent method, of class FigureToolBar. Tests if
-     * the method creates the component as it should.
+     * Tests of createDisclosedComponent method, of class FigureToolBar. Tests
+     * if the method creates the component as it should.
      */
     @Test
     public void testCreateDisclosedComponentState1() {
@@ -63,14 +63,31 @@ public class FigureToolBarTest {
     }
 
     @Test
-    public void testCreateDisclosedComponentUndefinedState() {
-        //state 3 does not define anything. Component should be null
-        int state = 3;
-        FigureToolBar instance = new FigureToolBar();
-        JComponent component = instance.createDisclosedComponent(state);
-        assertNull(component);
+    public void testCreateDisclosedComponentBoundaries() {
+        //Tests whether the component is created or not, given different states. Includes boundary cases.
+        for (int i = -5; i < 6; i++) {
+            if(i<1){
+                int state = i;
+                FigureToolBar instance = new FigureToolBar();
+                JComponent component = instance.createDisclosedComponent(state);
+                assertNull(component);
+            }
+            else if(i>2){
+                int state = i;
+                FigureToolBar instance = new FigureToolBar();
+                JComponent component = instance.createDisclosedComponent(state);
+                assertNull(component);
+            }
+            else{
+                int state = i;
+                FigureToolBar instance = new FigureToolBar();
+                JComponent component = instance.createDisclosedComponent(state);
+                assertNotNull(component);
+            }
+        }
+        
     }
-    
+
     //Components tests
     @Test
     public void testAmountOfComponentsCreatedAtState1() {
@@ -93,7 +110,7 @@ public class FigureToolBarTest {
         JComponent component = instance.createDisclosedComponent(state);
         assertEquals(expectedResult, component.getComponents().length);
     }
-    
+
     /**
      * Test of getID method, of class FigureToolBar.
      */
@@ -106,5 +123,6 @@ public class FigureToolBarTest {
         assertEquals(expResult, result);
 
     }
+
 
 }
