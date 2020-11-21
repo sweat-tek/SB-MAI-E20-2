@@ -1,9 +1,9 @@
 {
-  "className": "TextAreaTool.InsertMultipleLinesTest",
+  "className": "textareatool.InsertMultipleLinesTest",
   "name": "Insert Multiple Lines",
   "scenarios": [
     {
-      "className": "TextAreaTool.InsertMultipleLinesTest",
+      "className": "textareatool.InsertMultipleLinesTest",
       "testMethodName": "insertMultipleLines",
       "description": "Insert multiple lines",
       "tagIds": [],
@@ -26,7 +26,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 219653700
+              "durationInNanos": 3694560100
             },
             {
               "name": "a text area is written to",
@@ -40,7 +40,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 1542500
+              "durationInNanos": 1216300
             },
             {
               "name": "multiple lines have been added",
@@ -54,17 +54,17 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 122372100
+              "durationInNanos": 73943900
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 846930300
+          "durationInNanos": 6047371300
         }
       ],
-      "durationInNanos": 846930300,
+      "durationInNanos": 6047371300,
       "executionStatus": "SUCCESS"
     }
   ],

@@ -112,7 +112,6 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
 
         DrawingView v = getView();
         Point2D.Double p = v.viewToDrawing(e.getPoint());
-        //Figure pressedFigure = null;
 
         Figure pressedFigure = getFigure(v, p);
         pressedFigure = getFigureInDrawing(p, pressedFigure);

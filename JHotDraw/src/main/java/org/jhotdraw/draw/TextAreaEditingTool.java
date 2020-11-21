@@ -116,8 +116,7 @@ public class TextAreaEditingTool extends AbstractTool implements ActionListener 
 
     public void actionPerformed(ActionEvent event) {
         endTextAreaEdit();
-        //endEdit();
-            fireToolDone();
+        fireToolDone();
     }
 
     public void mouseDragged(MouseEvent e) {

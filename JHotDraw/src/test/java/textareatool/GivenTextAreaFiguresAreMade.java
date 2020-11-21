@@ -35,8 +35,6 @@ public class GivenTextAreaFiguresAreMade extends Stage<GivenTextAreaFiguresAreMa
         editor.getActiveView().getDrawing().add(figure2);
         editor.getActiveView().getDrawing().add(figure3);
 
-        textAreaCreationTool = new TextAreaCreationTool(textHolderFigure);
-
         return this;
     }
 }

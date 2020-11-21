@@ -8,13 +8,13 @@ import org.jhotdraw.samples.svg.figures.SVGTextAreaFigure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ThenWriteMultipleLines extends Stage<ThenWriteMultipleLines> {
+public class ThenTextAreaContainsText extends Stage<ThenTextAreaContainsText> {
     @ExpectedScenarioState
     String text;
     @ExpectedScenarioState
     private DrawingEditor editor;
 
-    public ThenWriteMultipleLines multipleLinesHaveBeenAdded(){
+    public ThenTextAreaContainsText multipleLinesHaveBeenAdded(){
         for (Figure figure: editor.getActiveView().getDrawing().getChildren()) {
             assertThat(text.equals(((SVGTextAreaFigure) figure).getText()));
         }

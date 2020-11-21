@@ -10,15 +10,14 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 
-public class WhenATextAreaHasBeenCreated extends Stage<WhenATextAreaHasBeenCreated> {
+public class WhenTextHasBeenAdded extends Stage<WhenTextHasBeenAdded> {
 
     @ExpectedScenarioState
     private DrawingEditor editor;
     @ExpectedScenarioState
     private String text;
 
-    public WhenATextAreaHasBeenCreated aTextAreaIsWrittenTo(){
-        Point2D.Double p = new Point2D.Double(5, 5);
+    public WhenTextHasBeenAdded aTextAreaIsWrittenTo(){
         List<Figure> figures = editor.getActiveView().getDrawing().getChildren();
         for (Figure figure : figures) {
             SVGTextAreaFigure svg = (SVGTextAreaFigure) figure;
