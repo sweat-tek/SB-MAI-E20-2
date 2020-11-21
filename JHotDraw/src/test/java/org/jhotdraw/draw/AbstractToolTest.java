@@ -54,12 +54,12 @@ public class AbstractToolTest {
         when(typingTarget.getText()).thenReturn("TypingTargetText");
         when(floatingTextArea.getText()).thenReturn("FloatingTextAreaText");
 
-        Assert.assertNotNull(abstractTool.endEdit(floatingTextArea, typingTarget));
+        Assert.assertNotNull(abstractTool.textAreaEndEdit(floatingTextArea, typingTarget));
         verify(typingTarget, times(1)).getText();
         verify(floatingTextArea, times(1)).getText();
 
 
-        Assert.assertNotNull(abstractTool.endEdit(floatingTextArea, typingTarget));
+        Assert.assertNotNull(abstractTool.textAreaEndEdit(floatingTextArea, typingTarget));
 
     }
 }
