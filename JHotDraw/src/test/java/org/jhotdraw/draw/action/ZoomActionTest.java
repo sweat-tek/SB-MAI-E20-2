@@ -9,49 +9,66 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.jhotdraw.draw.DrawingView;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import static org.mockito.Mockito.*;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  *
  * @author Simon Holland Flarup
  */
+@RunWith(JUnitParamsRunner.class)
 public class ZoomActionTest {
 
-    private static DrawingView view;
-    private static AbstractButton button;
+    @Captor ArgumentCaptor<Rectangle> captor;
+    
+    private DrawingView view;
+    private AbstractButton button;
+    private JComponent mockJComponent;
 
     public ZoomActionTest() {
+
+    }
+
+    @Before
+    public void setUp() {
         view = mock(DrawingView.class);
         button = mock(AbstractButton.class);
-        Rectangle rectangle = new Rectangle();
-        JComponent mockJComponent = mock(JComponent.class);
+        Rectangle rectangle = new Rectangle(10, 20, 120, 480);
+        mockJComponent = mock(JComponent.class);
         when(mockJComponent.getVisibleRect()).thenReturn(rectangle);
 
         when(view.getComponent()).thenReturn(mockJComponent);
         when(view.getScaleFactor()).thenReturn((double) 1);
+        
+        
+        captor = ArgumentCaptor.forClass(Rectangle.class);
     }
 
     private Rectangle setupViewRectangleCopy(Rectangle vRect) {
-        Rectangle oldVRect = new Rectangle();
-        oldVRect.x = vRect.x;
-        oldVRect.y = vRect.y;
-        oldVRect.width = vRect.width;
-        oldVRect.height = vRect.height;
+        Rectangle oldVRect = (Rectangle) vRect.clone();
 
         return oldVRect;
     }
 
     private void assertFalseZoom(Rectangle oldVRect, Rectangle vRect) {
-        System.out.println("");
+        /*System.out.println("");
         System.out.println("oldVRect:");
         System.out.println(oldVRect);
         System.out.println("vRect:");
         System.out.println(vRect);
-        System.out.println("");
+        System.out.println("");*/
         assertFalse(oldVRect.x == vRect.x && oldVRect.y == vRect.y && oldVRect.width == vRect.width && oldVRect.height == vRect.height);
     }
 
@@ -59,79 +76,48 @@ public class ZoomActionTest {
         assertTrue(oldVRect.x == vRect.x && oldVRect.y == vRect.y && oldVRect.width == vRect.width && oldVRect.height == vRect.height);
     }
 
-    private void testActionPerformed(double scaleFactor) {
+    @Test
+    @Parameters({"2.0", "3.0", "4.0", "5.0", "10.0", "100.0", "1000.0", "9999.0", "1.1", "-1", "0.1", "" + Double.MAX_VALUE, "" + Double.MIN_VALUE})
+    public void testActionPerformed(double scaleFactor) {
         ZoomAction instance = new ZoomAction(view, scaleFactor, button);
 
         final Rectangle vRect = view.getComponent().getVisibleRect();
         Rectangle oldVRect = setupViewRectangleCopy(vRect);
 
-        System.out.println("actionPerformed");
         ActionEvent e = mock(ActionEvent.class);
+        
         instance.actionPerformed(e);
+        
+        verify(view).setScaleFactor(scaleFactor);
+        
+        verify(mockJComponent, timeout(1000).times(1)).scrollRectToVisible(captor.capture());
 
-        assertFalseZoom(oldVRect, vRect);
+        assertFalseZoom(oldVRect, captor.getValue());
     }
 
+    @Test
     public void testActionPerformedOnSameScale() {
         ZoomAction instance = new ZoomAction(view, 1, button);
 
         final Rectangle vRect = view.getComponent().getVisibleRect();
         Rectangle oldVRect = setupViewRectangleCopy(vRect);
 
-        System.out.println("actionPerformedOnSameScale");
         ActionEvent e = mock(ActionEvent.class);
         instance.actionPerformed(e);
 
         assertTrueZoom(oldVRect, vRect);
     }
 
-    private void testButtonLabel(double scaleFactor) {
+    @Test
+    @Parameters({"1.0", "2.0", "3.0", "4.0", "5.0", "10.0", "100.0", "1000.0", "9999.0", "1.1", "-1", "0.1", "" + Double.MAX_VALUE, "" + Double.MIN_VALUE})
+    public void testButtonLabel(double scaleFactor) {
         ZoomAction instance = new ZoomAction(view, scaleFactor, button);
         //Expected format
         String label = (int) (scaleFactor * 100) + " %";
 
-        System.out.println("ButtonLabel");
         ActionEvent e = mock(ActionEvent.class);
         instance.actionPerformed(e);
 
         verify(button, atLeast(1)).setText(label);
-    }
-    
-    private void setupVRect() {
-        Rectangle vRect = view.getComponent().getVisibleRect();
-        vRect.x = 10;
-        vRect.y = 10;
-        vRect.height = 120;
-        vRect.width = 480;
-    }
-
-    private double[] scaleFactors = new double[]{1.0, 2.0, 3.0, 4.0, 5.0, 10.0, 100.0, 1000.0, 9999.0, 1.1, -1, 0.1, Double.MAX_VALUE, Double.MIN_VALUE, Double.MIN_VALUE + 0.1};
-
-    /**
-     * Test of actionPerformed method, of class ZoomAction.
-     */
-    @Test
-    public void testZoomAction() {
-        for (double scaleFactor : scaleFactors) {
-            System.out.println("\nScaleFactor: " + scaleFactor);
-            setupVRect();
-            if (scaleFactor == 1) {
-                testActionPerformedOnSameScale();
-            } else {
-                testActionPerformed(scaleFactor);
-            }
-        }
-    }
-
-    /**
-     * Test of correct assignment of label to the zoom button
-     */
-    @Test
-    public void testButtonLabelAssignment() {
-        for (double scaleFactor : scaleFactors) {
-            System.out.println("\nScaleFactor: " + scaleFactor);
-            setupVRect();
-            testButtonLabel(scaleFactor);
-        }
     }
 }
