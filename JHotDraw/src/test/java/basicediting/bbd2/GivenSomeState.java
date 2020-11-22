@@ -3,7 +3,6 @@ package basicediting.bbd2;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import javax.swing.JComponent;
 import org.jhotdraw.draw.BezierFigure;
 import org.jhotdraw.draw.DefaultDrawingEditor;
 import org.jhotdraw.draw.DefaultDrawingView;

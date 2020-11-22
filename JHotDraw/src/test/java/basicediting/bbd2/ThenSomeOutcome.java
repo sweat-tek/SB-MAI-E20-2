@@ -3,12 +3,9 @@ package basicediting.bbd2;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import org.assertj.swing.fixture.JPanelFixture;
 import org.jhotdraw.draw.Figure;
-import org.jhotdraw.samples.svg.SVGDrawingPanel;
 
 import java.util.List;
-import javax.swing.JTextField;
 
 import static junit.framework.TestCase.assertTrue;
 import org.jhotdraw.draw.DrawingEditor;
