@@ -6,3 +6,4 @@ out/
 JHotDraw/FeatureTraces/
 JHotDraw/.ij/
 .DS_Store
+/JHotDraw/nbproject/
