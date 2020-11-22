@@ -17,12 +17,12 @@ import org.jhotdraw.geom.BezierPath;
  */
 public class ThenBezierPath extends Stage<ThenBezierPath>{
 
-//    @ExpectedScenarioState
-//    BezierPath bzPath;
+    @ExpectedScenarioState
+    BezierPath bzPath;
     
     public ThenBezierPath the_bezier_curve_has_been_created() {
-//        assertThat(bzPath.size()).isGreaterThan(1);
-//        assertThat(bzPath.getBounds2D()).isNotNull();
+        assertThat(bzPath.size()).isGreaterThan(1);
+        assertThat(bzPath.getBounds2D()).isNotNull();
         
         return this;
     }

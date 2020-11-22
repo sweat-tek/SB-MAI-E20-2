@@ -16,23 +16,23 @@ import org.jhotdraw.geom.Bounds2DCalculator;
  * @author morte
  */
 public class WhenCoordinatesAreConnected extends Stage<WhenCoordinatesAreConnected>{
-//    @ExpectedScenarioState
-//    double x1;
-//    @ExpectedScenarioState
-//    double y1;
-//    @ExpectedScenarioState
-//    double x2;
-//    @ExpectedScenarioState
-//    double y2;
+    @ExpectedScenarioState
+    double x1;
+    @ExpectedScenarioState
+    double y1;
+    @ExpectedScenarioState
+    double x2;
+    @ExpectedScenarioState
+    double y2;
     
-//    @ProvidedScenarioState
-//    protected BezierPath bzPath = new BezierPath();
+    @ProvidedScenarioState
+    protected BezierPath bzPath = new BezierPath();
 //    
     public WhenCoordinatesAreConnected the_coordinates_are_connected(){
-//        assertThat(bzPath).isNotNull();
-//        bzPath.addPoint(x1, y1);
-//        bzPath.addPoint(x2, y2);
-//        assertThat(bzPath.size()).isEqualTo(2);
+        assertThat(bzPath).isNotNull();
+        bzPath.addPoint(x1, y1);
+        bzPath.addPoint(x2, y2);
+        assertThat(bzPath.size()).isEqualTo(2);
         return this;
     }
 }
