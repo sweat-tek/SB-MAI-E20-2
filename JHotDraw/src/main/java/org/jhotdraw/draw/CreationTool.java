@@ -19,6 +19,8 @@ import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
 import org.jhotdraw.samples.svg.figures.SVGRectFigure;
+import org.jhotdraw.samples.svg.figures.SVGEllipseFigure;
+
 import org.jhotdraw.util.*;
 
 /**
@@ -58,7 +60,7 @@ import org.jhotdraw.util.*;
  * <br>1.0 2003-12-01 Derived from JHotDraw 5.4b1.
  */
 public class CreationTool extends AbstractTool {
-
+    private Figure lastFigure;
     /**
      * Attributes to be applied to the created ConnectionFigure.
      * These attributes override the default attributes of the
@@ -323,5 +325,8 @@ public class CreationTool extends AbstractTool {
         } else {
             view.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
+    }
+    public SVGEllipseFigure getLastFigureEllipse(){
+        return (SVGEllipseFigure)lastFigure;
     }
 }
