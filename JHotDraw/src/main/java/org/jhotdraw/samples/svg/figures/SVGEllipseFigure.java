@@ -22,6 +22,8 @@ import org.jhotdraw.draw.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import org.jhotdraw.geom.*;
 import org.jhotdraw.samples.svg.*;
+import org.jhotdraw.samples.svg.figures.Dimensions;
+
 
 /**
  * SVGEllipse represents a SVG ellipse and a SVG circle element.
@@ -37,6 +39,7 @@ import org.jhotdraw.samples.svg.*;
 public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
 
     private Ellipse2D.Double ellipse;
+
     /**
      * This is used to perform faster drawing and hit testing.
      */
@@ -45,18 +48,16 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * This is used to perform faster hit testing.
      */
     private transient Shape cachedHitShape;
-
-    /** Creates a new instance. */
-    public SVGEllipseFigure() {
-        this(0, 0, 0, 0);
-    }
-
+    
     @FeatureEntryPoint(JHotDrawFeatures.ELLIPSE_TOOL)
-    public SVGEllipseFigure(double x, double y, double width, double height) {
-        ellipse = new Ellipse2D.Double(x, y, width, height);
+    public SVGEllipseFigure(Dimensions dimensions) {
+        ellipse = new Ellipse2D.Double(dimensions.getX(), 
+                dimensions.getY(), 
+                dimensions.getWidth(), 
+                dimensions.getHeight());
         SVGAttributeKeys.setDefaults(this);
     }
-
+    
     // DRAWING
     protected void drawFill(Graphics2D g) {
         if (ellipse.width > 0 && ellipse.height > 0) {
@@ -91,7 +92,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     public Rectangle2D.Double getBounds() {
         return (Rectangle2D.Double) ellipse.getBounds2D();
     }
-
+    
     @Override
     public Rectangle2D.Double getDrawingArea() {
         Rectangle2D rx = getTransformedShape().getBounds2D();
@@ -151,35 +152,20 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * Transforms the figure.
      *
      * @param tx the transformation.
+     * moved dublicated code up in the superclass for a shortned method here and in SVGTextAreaFigure
+     * that uses the same piece of code
      */
+    
     public void transform(AffineTransform tx) {
         if (TRANSFORM.get(this) != null ||
                 (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSetClone(this, tx);
             } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
+                super.transformOutCome1(tx);
             }
         } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+                super.transformOutCome2(tx);
         }
         invalidate();
     }

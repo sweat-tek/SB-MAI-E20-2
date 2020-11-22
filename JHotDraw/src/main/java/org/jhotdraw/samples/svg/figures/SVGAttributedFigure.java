@@ -102,6 +102,34 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
             g.setTransform(savedTransform);
         }
     }
+
+    protected void transformOutCome1(AffineTransform tx) {
+        AffineTransform t = TRANSFORM.getClone(this);
+        t.preConcatenate(tx);
+        TRANSFORM.basicSet(this, t);
+    }
+
+    protected void transformOutCome2(AffineTransform tx){
+        Point2D.Double anchor = getStartPoint();
+        Point2D.Double lead = getEndPoint();
+        setBounds(
+                (Point2D.Double) tx.transform(anchor, anchor),
+                (Point2D.Double) tx.transform(lead, lead));
+        if (FILL_GRADIENT.get(this) != null &&
+                !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = FILL_GRADIENT.getClone(this);
+            g.transform(tx);
+            FILL_GRADIENT.basicSet(this, g);
+        }
+        if (STROKE_GRADIENT.get(this) != null &&
+                !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = STROKE_GRADIENT.getClone(this);
+            g.transform(tx);
+            STROKE_GRADIENT.basicSet(this, g);
+        }
+    }
+
+
     @Override
     public <T> void setAttribute(AttributeKey<T> key, T newValue) {
         if (key == TRANSFORM) {
@@ -126,6 +154,7 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
         }
         return actions;
     }
+
     @Override final public void write(DOMOutput out) throws IOException {
         throw new UnsupportedOperationException("Use SVGStorableOutput to write this Figure.");
     }

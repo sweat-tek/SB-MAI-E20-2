@@ -1,8 +1,11 @@
 JHotDraw/target/
-/JHotDraw/nbactions.xml
+JHotDraw/nbactions.xml
 .idea/
 *.iml
 out/
 JHotDraw/FeatureTraces/
 JHotDraw/.ij/
-/JHotDraw/nbproject/
+JHotDraw/nbproject/
+.DS_Store
+JHotDraw/jgiven-reports/
+

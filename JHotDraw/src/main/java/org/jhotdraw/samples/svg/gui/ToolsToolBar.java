@@ -85,8 +85,8 @@ public class ToolsToolBar extends AbstractToolBar {
         gbc.gridy = 1;
         gbc.insets = new Insets(3, 0, 0, 0);
         p.add(btn, gbc);
-
-        btn = ButtonFactory.addToolTo(this, editor, creationTool = new CreationTool(new SVGEllipseFigure(), attributes), "createEllipse", labels);
+        
+        btn = ButtonFactory.addToolTo(this, editor, creationTool = new CreationTool(new SVGEllipseFigure(new Dimensions()), attributes), "createEllipse", labels);
         creationTool.setToolDoneAfterCreation(false);
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
         gbc = new GridBagConstraints();
