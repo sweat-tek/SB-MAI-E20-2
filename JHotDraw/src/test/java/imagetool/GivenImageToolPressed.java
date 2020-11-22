@@ -1,10 +1,12 @@
-package org.jhotdraw.samples.svg.figures;
+package imagetool;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.samples.svg.SVGCreateFromFileTool;
+import org.jhotdraw.samples.svg.figures.SVGGroupFigure;
+import org.jhotdraw.samples.svg.figures.SVGImageFigure;
 import org.mockito.Mockito;
 
 import javax.swing.*;
@@ -18,6 +20,7 @@ public class GivenImageToolPressed extends Stage<GivenImageToolPressed> {
     private DrawingEditor editor;
     private JFileChooser fileChooser;
     private DrawingView view;
+    private String testImagePath;
 
     @BeforeStage
     private void before() {
@@ -28,7 +31,8 @@ public class GivenImageToolPressed extends Stage<GivenImageToolPressed> {
         editor.setActiveView(view);
         fileChooser = Mockito.mock(JFileChooser.class);
         Mockito.when(fileChooser.showOpenDialog(view.getComponent())).thenReturn(JFileChooser.APPROVE_OPTION);
-        Mockito.when(fileChooser.getSelectedFile()).thenReturn(new File("src/test/java/org/jhotdraw/samples/svg/figures/test_image.jpg"));
+        testImagePath = "src/test/java/imagetool/test_image.jpg";
+        Mockito.when(fileChooser.getSelectedFile()).thenReturn(new File(testImagePath));
         createFromFileTool.setFileChooser(fileChooser);
     }
 

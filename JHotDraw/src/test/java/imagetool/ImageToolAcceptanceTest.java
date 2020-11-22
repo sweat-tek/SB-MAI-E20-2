@@ -1,4 +1,4 @@
-package org.jhotdraw.samples.svg.figures;
+package imagetool;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;

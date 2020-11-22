@@ -1,8 +1,9 @@
-package org.jhotdraw.samples.svg.figures;
+package imagetool;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import org.jhotdraw.samples.svg.SVGCreateFromFileTool;
+import org.jhotdraw.samples.svg.figures.SVGImageFigure;
 
 import static org.junit.Assert.assertNotNull;
 

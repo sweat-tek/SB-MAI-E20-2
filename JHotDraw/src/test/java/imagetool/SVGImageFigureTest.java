@@ -1,5 +1,6 @@
-package org.jhotdraw.samples.svg.figures;
+package imagetool;
 
+import org.jhotdraw.samples.svg.figures.SVGImageFigure;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,13 +18,15 @@ public class SVGImageFigureTest {
     private Point2D.Double point2DAnchor;
     private Point2D.Double point2DLead;
     private FileInputStream inputStream;
+    private String testImagePath;
 
     @Before
     public void setUp() throws Exception {
         svgImageFigure = new SVGImageFigure(50, 50, 50, 50);
         point2DAnchor = new Point2D.Double(5.0, 10.0);
         point2DLead = new Point2D.Double(30.0, 20.0);
-        inputStream = new FileInputStream(new File("src/test/java/org/jhotdraw/samples/svg/figures/test_image.jpg"));
+        testImagePath = "src/test/java/imagetool/test_image.jpg";
+        inputStream = new FileInputStream(new File(testImagePath));
     }
 
     @After
