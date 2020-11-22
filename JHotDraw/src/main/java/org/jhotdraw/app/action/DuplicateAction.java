@@ -14,16 +14,9 @@
 
 package org.jhotdraw.app.action;
 
-import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.beans.*;
-import java.util.*;
-import org.jhotdraw.util.*;
 import org.jhotdraw.app.EditableComponent;
-import org.jhotdraw.app.JHotDrawFeatures;
 
 /**
  * DuplicateAction.
@@ -31,26 +24,21 @@ import org.jhotdraw.app.JHotDrawFeatures;
  * @author Werner Randelshofer.
  * @version 1.0 February 27, 2006 Created.
  */
-public class DuplicateAction extends AbstractAction {
+public class DuplicateAction extends AbstractBasicEditingAction {
     public final static String ID = "edit.duplicate";
     
     /** Creates a new instance. */
     public DuplicateAction() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
+        super(ID);
     }
 
-    @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
-    public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
-        if (focusOwner != null) {
-            if (focusOwner instanceof EditableComponent) {
-                ((EditableComponent) focusOwner).duplicate();
-            } else {
-                focusOwner.getToolkit().beep();
-            }
+    @Override
+    protected void preformAction(ActionEvent event, Component component) {
+        if (component instanceof EditableComponent) {
+            ((EditableComponent) component).duplicate();
+        } else {
+            component.getToolkit().beep();
         }
+        
     }
 }

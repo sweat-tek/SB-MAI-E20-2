@@ -20,7 +20,6 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import javax.swing.*;
 import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.util.*;
 /**
  * Pastes the contents of the system clipboard at the caret position.
  * Acts on the EditableComponent or JTextComponent which had the focus when
@@ -31,26 +30,28 @@ import org.jhotdraw.util.*;
  * interface EditableComponent.
  * <br>1.0 October 9, 2005 Created.
  */
-public class PasteAction extends AbstractAction {
+public class PasteAction extends AbstractBasicEditingAction {
     public final static String ID = "edit.paste";
     
     /** Creates a new instance. */
     public PasteAction() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
-        labels.configureAction(this, ID);
+        super(ID);
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent evt) {
-        Component focusOwner = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner();
-        if (focusOwner != null && focusOwner instanceof JComponent) {
-            JComponent component = (JComponent) focusOwner;
-            Transferable t = component.getToolkit().getSystemClipboard().getContents(component);
-            if (t != null && component.getTransferHandler() != null) {
-                component.getTransferHandler().importData(
-                        component,
+        Component focusOwner = getComponent();
+        
+    }
+
+    @Override
+    protected void preformAction(ActionEvent event, Component component) {
+        if (component instanceof JComponent) {
+            JComponent jComponent = (JComponent) component;
+            Transferable t = jComponent.getToolkit().getSystemClipboard().getContents(jComponent);
+            if (t != null && jComponent.getTransferHandler() != null) {
+                jComponent.getTransferHandler().importData(
+                        jComponent,
                         t
                         );
             }
