@@ -84,7 +84,7 @@ public class SelectionComponentDisplayer
 
         component.revalidate();
     }
-
+    
     public void dispose() {
         if (editor != null) {
             if (editor.getActiveView() != null) {

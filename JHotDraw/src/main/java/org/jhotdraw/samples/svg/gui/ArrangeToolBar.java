@@ -13,6 +13,7 @@
  */
 package org.jhotdraw.samples.svg.gui;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import java.beans.*;
 import java.util.prefs.*;
 import javax.swing.border.*;
@@ -26,6 +27,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.app.action.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.action.*;
@@ -42,11 +44,14 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
  * creation tool is active. 
  * <br>1.0 2008-04-11  Created.
  */
+
+
 public class ArrangeToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
 
     /** Creates new instance. */
+    //@FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
     public ArrangeToolBar() {
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));
