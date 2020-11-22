@@ -14,11 +14,17 @@ import static org.junit.Assert.*;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import org.jhotdraw.draw.DefaultDrawingView;
+import org.jhotdraw.draw.QuadTreeDrawing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 public class NullObjectTest {
 
@@ -31,8 +37,12 @@ public class NullObjectTest {
     public static void tearDownClass() {
     }
 
+    DefaultDrawingView defaultDrawingView;
+    
     @Before
     public void setUp() {
+        defaultDrawingView = new DefaultDrawingView();
+        defaultDrawingView.setDrawing(new QuadTreeDrawing());
     }
 
     @After
@@ -52,11 +62,36 @@ public class NullObjectTest {
      */
     @Test
     public void testComponentANullObject() {
-        CopyAction c = new CopyAction();
-        Component componentA = c.getComponent();
-        Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+        
+        try (MockedStatic mocked = mockStatic(KeyboardFocusManager.class)) {
+            
+            KeyboardFocusManager keyboardFocusManager = mock(KeyboardFocusManager.class);
+            mocked.when(KeyboardFocusManager::getCurrentKeyboardFocusManager).thenReturn(keyboardFocusManager);
+            when(keyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner()).thenReturn(defaultDrawingView);
+            
+//            dv.getDrawing().add(lf);
+//            dv.getDrawing().add(bf);
 
-        assertSame(componentA, componentB);
+            ActionEvent evt = new ActionEvent(defaultDrawingView, ActionEvent.ACTION_PERFORMED, "edit.selectAll");
+            CopyAction copyAction = new CopyAction();
+            copyAction.actionPerformed(evt);
+
+//            System.out.println(dv.getSelectedFigures().size());
+//            assert dv.getSelectedFigures().size() > 0;
+//            assertEquals(2, dv.getSelectionCount());
+
+            Component componentA = copyAction.getComponent();
+            Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+
+            assertSame(componentA, componentB);
+        }   
+        
+        
+//        CopyAction c = new CopyAction();
+//        Component componentA = c.getComponent();
+//        Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+//
+//        assertNotSame(componentA, componentB);
     }
 
     /**
@@ -64,10 +99,29 @@ public class NullObjectTest {
      */
     @Test
     public void testComponentBNormal() {
-        CopyAction c = new CopyAction();
-        Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+        
+        try (MockedStatic mocked = mockStatic(KeyboardFocusManager.class)) {
+            
+            KeyboardFocusManager keyboardFocusManager = mock(KeyboardFocusManager.class);
+            mocked.when(KeyboardFocusManager::getCurrentKeyboardFocusManager).thenReturn(keyboardFocusManager);
+            when(keyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner()).thenReturn(defaultDrawingView);
+            
+//            dv.getDrawing().add(lf);
+//            dv.getDrawing().add(bf);
 
-        assertNotNull(componentB);
+            ActionEvent evt = new ActionEvent(defaultDrawingView, ActionEvent.ACTION_PERFORMED, "edit.selectAll");
+            CopyAction copyAction = new CopyAction();
+            copyAction.actionPerformed(evt);
+
+//            System.out.println(dv.getSelectedFigures().size());
+//            assert dv.getSelectedFigures().size() > 0;
+//            assertEquals(2, dv.getSelectionCount());
+
+            Component componentA = copyAction.getComponent();
+            Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+
+            assertNotNull(componentB);
+        }   
     }
 
     /**
@@ -75,23 +129,82 @@ public class NullObjectTest {
      */
     @Test
     public void testComponentCNormal() {
-        CopyAction c = new CopyAction();
-        Component componentA = c.getComponent();
-        Component componentB = c.getComponent();
+        
+        try (MockedStatic mocked = mockStatic(KeyboardFocusManager.class)) {
+            
+            KeyboardFocusManager keyboardFocusManager = mock(KeyboardFocusManager.class);
+            mocked.when(KeyboardFocusManager::getCurrentKeyboardFocusManager).thenReturn(keyboardFocusManager);
+            when(keyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner()).thenReturn(defaultDrawingView);
+            
+//            dv.getDrawing().add(lf);
+//            dv.getDrawing().add(bf);
 
-        assertSame(componentA, componentB);
+            ActionEvent evt = new ActionEvent(defaultDrawingView, ActionEvent.ACTION_PERFORMED, "edit.selectAll");
+            CopyAction copyAction = new CopyAction();
+            copyAction.actionPerformed(evt);
+
+//            System.out.println(dv.getSelectedFigures().size());
+//            assert dv.getSelectedFigures().size() > 0;
+//            assertEquals(2, dv.getSelectionCount());
+
+            Component componentA = copyAction.getComponent();
+            Component componentB = copyAction.getComponent();
+
+            assertSame(componentA, componentB);
+        }   
+    }
+    
+        /**
+     * Test of my getComponent method returns a new NullObject.
+     */
+    @Test
+    public void testComponentDNormal() {
+        
+        try (MockedStatic mocked = mockStatic(KeyboardFocusManager.class)) {
+            
+            KeyboardFocusManager keyboardFocusManager = mock(KeyboardFocusManager.class);
+            mocked.when(KeyboardFocusManager::getCurrentKeyboardFocusManager).thenReturn(keyboardFocusManager);
+            when(keyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner()).thenReturn(null);
+            
+//            dv.getDrawing().add(lf);
+//            dv.getDrawing().add(bf);
+
+            ActionEvent evt = new ActionEvent(defaultDrawingView, ActionEvent.ACTION_PERFORMED, "edit.selectAll");
+            CopyAction copyAction = new CopyAction();
+            copyAction.actionPerformed(evt);
+
+//            System.out.println(dv.getSelectedFigures().size());
+//            assert dv.getSelectedFigures().size() > 0;
+//            assertEquals(2, dv.getSelectionCount());
+
+            Component componentA = copyAction.getComponent();
+
+            assertTrue(componentA instanceof NullComponent);
+        }   
     }
 
     /**
      * Test of my getComponent method returns a new NullObject.
      */
     @Test
-    public void testComponentDAbstractMethod() {
+    public void testComponentEAbstractMethod() {
         CopyAction c = Mockito.mock(CopyAction.class);
         Mockito.when(c.getComponent()).thenReturn(new NullComponent());
         Component componentA = c.getComponent();
         Component componentB = null;
 
         assertNotEquals(componentA, componentB);
+    }
+    
+    /**
+     * Test of my getComponent method returns a new NullObject.
+     */
+    @Test
+    public void testComponentFAbstractMethod() {
+        CopyAction c = Mockito.mock(CopyAction.class);
+        Mockito.when(c.getComponent()).thenReturn(new NullComponent());
+        Component componentA = c.getComponent();
+
+        assertTrue(componentA instanceof NullComponent);
     }
 }
