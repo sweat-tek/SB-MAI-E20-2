@@ -2,29 +2,24 @@ package org.jhotdraw.samples.svg.figures;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-
-import java.io.File;
-import java.io.IOException;
+import org.jhotdraw.draw.DrawingEditor;
+import org.jhotdraw.samples.svg.SVGCreateFromFileTool;
 
 import static org.junit.Assert.assertNull;
 
 public class WhenImageAdded extends Stage<WhenImageAdded> {
 
     @ExpectedScenarioState
-    SVGImageFigure svgImageFigure;
+    SVGCreateFromFileTool createFromFileTool;
     @ExpectedScenarioState
-    File file;
+    DrawingEditor editor;
 
     public WhenImageAdded ImageAdded() {
 
-        assertNull(svgImageFigure.getImageData());
-        assertNull(svgImageFigure.getBufferedImage());
+        // Check that there is no image data
+        assertNull(((SVGImageFigure) createFromFileTool.getPrototype()).getImageData());
 
-        try {
-            svgImageFigure.loadImage(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        createFromFileTool.activate(editor);
 
         return self();
     }
