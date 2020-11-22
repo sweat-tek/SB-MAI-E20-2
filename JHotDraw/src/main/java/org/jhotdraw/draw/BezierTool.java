@@ -113,7 +113,6 @@ public class BezierTool extends AbstractTool {
 
     @Override
     public void mousePressed(MouseEvent evt) {
-
         if (DEBUG) {
             System.out.println("BezierTool.mousePressed " + evt);
         }
@@ -164,7 +163,7 @@ public class BezierTool extends AbstractTool {
         return f;
     }
 
-    protected Figure getCreatedFigure() {
+    public Figure getCreatedFigure() {
         return createdFigure;
     }
 
@@ -245,6 +244,7 @@ public class BezierTool extends AbstractTool {
         });
     }
 
+    @Override
     public void mouseReleased(MouseEvent evt) {
         if (DEBUG) {
             System.out.println("BezierTool.mouseReleased " + evt);

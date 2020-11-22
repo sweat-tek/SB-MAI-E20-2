@@ -141,7 +141,7 @@ public class SVGTextFigure
         return getTextShape().getBounds2D().contains(p);
     }
     
-    private Shape getTextShape() {
+    public Shape getTextShape() {
         if (cachedTextShape == null) {
             String text = getText();
             if (text == null || text.length() == 0) {

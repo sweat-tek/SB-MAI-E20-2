@@ -49,9 +49,10 @@ public class DefaultSVGFigureFactory implements SVGFigureFactory {
     public Figure createCircle(double cx, double cy, double r, Map<AttributeKey, Object> a) {
         return createEllipse(cx, cy, r, r, a);
     }
-    
+    // DUDE DO UNIT TEST HERE! PLZ
     public Figure createEllipse(double cx, double cy, double rx, double ry, Map<AttributeKey, Object> a) {
-        SVGEllipseFigure figure = new SVGEllipseFigure(cx-rx, cy-ry, rx*2d, ry*2d);
+        Dimensions d = new Dimensions(cx-rx, cy-ry, rx*2d, ry*2d);
+        SVGEllipseFigure figure = new SVGEllipseFigure(d);
         figure.setAttributes(a);
         return figure;
     }

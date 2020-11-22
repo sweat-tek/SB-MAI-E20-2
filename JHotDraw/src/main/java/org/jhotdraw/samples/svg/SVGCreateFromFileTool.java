@@ -236,4 +236,8 @@ public class SVGCreateFromFileTool extends CreationTool {
         }
         return fileDialog;
     }
+
+    public void setFileChooser(JFileChooser fileChooser) {
+        this.fileChooser = fileChooser;
+    }
 }
