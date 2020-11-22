@@ -129,6 +129,7 @@ public class ZoomActionTest {
     @Test
     public void testButtonLabelAssignment() {
         for (double scaleFactor : scaleFactors) {
+            System.out.println("\nScaleFactor: " + scaleFactor);
             setupVRect();
             testButtonLabel(scaleFactor);
         }
