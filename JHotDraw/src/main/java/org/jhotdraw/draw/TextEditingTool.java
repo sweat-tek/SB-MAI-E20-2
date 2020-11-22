@@ -15,10 +15,6 @@ package org.jhotdraw.draw;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
-import org.jhotdraw.util.ResourceBundleUtil;
 
 /**
  * A tool to edit figures which implement the {@code TextHolderFigure} interface,
@@ -87,31 +83,8 @@ public class TextEditingTool extends AbstractTool implements ActionListener {
             if (newText.length() > 0) {
                 typingTarget.setText(newText);
             }
-            UndoableEdit edit = new AbstractUndoableEdit() {
-
-                @Override
-                public String getPresentationName() {
-                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-                    return labels.getString("attribute.text.text");
-                }
-
-                @Override
-                public void undo() {
-                    super.undo();
-                    editedFigure.willChange();
-                    editedFigure.setText(oldText);
-                    editedFigure.changed();
-                }
-
-                @Override
-                public void redo() {
-                    super.redo();
-                    editedFigure.willChange();
-                    editedFigure.setText(newText);
-                    editedFigure.changed();
-                }
-            };
-            getDrawing().fireUndoableEditHappened(edit);
+            
+            textFieldEndEdit(textField, typingTarget);
 
             typingTarget.changed();
             typingTarget = null;
