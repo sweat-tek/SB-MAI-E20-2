@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.awt.print.Pageable;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.prefs.Preferences;
+
 import org.jhotdraw.samples.svg.figures.*;
 import org.jhotdraw.samples.svg.io.*;
 import org.jhotdraw.undo.*;

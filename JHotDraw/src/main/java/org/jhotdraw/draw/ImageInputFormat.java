@@ -146,20 +146,7 @@ public class ImageInputFormat implements InputFormat {
         if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             try {
                 Image img = (Image) t.getTransferData(DataFlavor.imageFlavor);
-                img = Images.toBufferedImage(img);
-                ImageHolderFigure figure = (ImageHolderFigure) prototype.clone();
-                figure.setBufferedImage((BufferedImage) img);
-                figure.setBounds(
-                        new Point2D.Double(0, 0),
-                        new Point2D.Double(
-                        figure.getBufferedImage().getWidth(),
-                        figure.getBufferedImage().getHeight()));
-                LinkedList<Figure> list = new LinkedList<Figure>();
-                list.add(figure);
-                if (replace) {
-                    drawing.removeAllChildren();
-                }
-                drawing.addAll(list);
+                readImage(drawing, replace, img);
                 return;
             } catch (Throwable e) {
                 // no need to do anything here, because we try to read the
@@ -172,20 +159,7 @@ public class ImageInputFormat implements InputFormat {
             try {
                 InputStream in = (InputStream) t.getTransferData(ImageTransferable.IMAGE_PNG_FLAVOR);
                 Image img = ImageIO.read(in);
-                img = Images.toBufferedImage(img);
-                ImageHolderFigure figure = (ImageHolderFigure) prototype.clone();
-                figure.setBufferedImage((BufferedImage) img);
-                figure.setBounds(
-                        new Point2D.Double(0, 0),
-                        new Point2D.Double(
-                        figure.getBufferedImage().getWidth(),
-                        figure.getBufferedImage().getHeight()));
-                LinkedList<Figure> list = new LinkedList<Figure>();
-                list.add(figure);
-                if (replace) {
-                    drawing.removeAllChildren();
-                }
-                drawing.addAll(list);
+                readImage(drawing, replace, img);
             } catch (Throwable e) {
                 e.printStackTrace();
                 IOException ex = new IOException("Couldn't import image as image/png flavor");
@@ -195,5 +169,22 @@ public class ImageInputFormat implements InputFormat {
         } else {
             throw new IOException("Couldn't import image.");
         }
+    }
+
+    private void readImage(Drawing drawing, boolean replace, Image img) {
+        img = Images.toBufferedImage(img);
+        ImageHolderFigure figure = (ImageHolderFigure) prototype.clone();
+        figure.setBufferedImage((BufferedImage) img);
+        figure.setBounds(
+                new Point2D.Double(0, 0),
+                new Point2D.Double(
+                figure.getBufferedImage().getWidth(),
+                figure.getBufferedImage().getHeight()));
+        LinkedList<Figure> list = new LinkedList<>();
+        list.add(figure);
+        if (replace) {
+            drawing.removeAllChildren();
+        }
+        drawing.addAll(list);
     }
 }
