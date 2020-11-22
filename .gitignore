@@ -1,8 +1,11 @@
 JHotDraw/target/
-/JHotDraw/nbactions.xml
+JHotDraw/nbactions.xml
 .idea/
 *.iml
 out/
 JHotDraw/FeatureTraces/
 JHotDraw/.ij/
-JHotDraw/jgiven-reports/org.jhotdraw.draw.UndoBehaviorTest.json
+JHotDraw/nbproject/
+.DS_Store
+JHotDraw/jgiven-reports/
+
