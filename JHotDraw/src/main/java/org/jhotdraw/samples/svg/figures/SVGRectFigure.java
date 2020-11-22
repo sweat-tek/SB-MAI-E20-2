@@ -53,15 +53,22 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      */
     private transient Shape cachedHitShape;
 
+    
+    //optional builder pattern
     private SVGRectFigureBuilder rectBuilder;
 
     /**
      * Creates a new instance.
      */
+    
+    /*
+    This can be used to future builder pattern 
+     rectBuilder = new SVGRectFigureBuilder();
+     roundrect = rectBuilder.createSVGRectFigure();
+     SVGAttributeKeys.setDefaults(this);
+    */
     public SVGRectFigure() {
-//        rectBuilder = new SVGRectFigureBuilder();
-//        roundrect = rectBuilder.createSVGRectFigure();
-//        SVGAttributeKeys.setDefaults(this);
+
         this(0, 0, 0, 0);
 
     }
@@ -230,6 +237,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
      * @param tx The transformation.
      */
     public void transform(AffineTransform tx) {
+        assert tx != null: "AffineTrasnform is null";
         invalidateTransformedShape();
         if (TRANSFORM.get(this) != null || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
             isTransform(tx);
@@ -345,6 +353,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
     // CLONING
     public SVGRectFigure clone() {
         SVGRectFigure that = (SVGRectFigure) super.clone();
+        assert that != null : "clone is null";
         that.roundrect = (RoundRectangle2D.Double) this.roundrect.clone();
         that.cachedTransformedShape = null;
         that.cachedHitShape = null;

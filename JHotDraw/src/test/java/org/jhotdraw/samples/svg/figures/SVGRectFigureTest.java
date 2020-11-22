@@ -337,7 +337,6 @@ public class SVGRectFigureTest {
 
     @Test
     public void testIsEmpty() {
-
         //Creating default rect with x=0, y=0, w=0, h=0
         SVGRectFigure rect1 = new SVGRectFigure();
 
