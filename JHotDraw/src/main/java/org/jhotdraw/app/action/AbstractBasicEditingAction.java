@@ -29,13 +29,13 @@ public abstract class AbstractBasicEditingAction extends AbstractAction {
     }
     
     public Component getComponent(){
-        Component component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+        Component component = (KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner() != null) ? KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner() : new NullComponent();
         return component;
     }
     
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent event) {
-        Component component = (getComponent() != null) ? getComponent() : new NullComponent();
+        Component component = getComponent();
         preformAction(event, component);
     }
 
