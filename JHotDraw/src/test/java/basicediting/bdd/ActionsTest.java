@@ -1,8 +1,10 @@
-package Joala09.BDD;
+package basicediting.bdd;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class ActionsTest extends ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
 
     @Test

@@ -35,6 +35,8 @@ public abstract class AbstractBasicEditingAction extends AbstractAction {
     
     @FeatureEntryPoint(JHotDrawFeatures.BASIC_EDITING)
     public void actionPerformed(ActionEvent event) {
+        System.out.println("test1: " + event);       
+       
         Component component = getComponent();
         preformAction(event, component);
     }

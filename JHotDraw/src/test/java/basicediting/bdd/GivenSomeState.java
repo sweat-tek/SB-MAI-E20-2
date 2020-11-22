@@ -1,4 +1,4 @@
-package Joala09.BDD;
+package basicediting.bdd;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeScenario;

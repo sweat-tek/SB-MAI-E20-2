@@ -32,7 +32,7 @@ public class AbstractClassTest {
      * Test of my Abstract class constructor.
      */
     @Test
-    public void testAction() {
+    public void testAbstractClassConstructor() {
         CopyAction c = new CopyAction();
         String a = c.labels.getString("edit.copy.text");
         String b = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels").getString("edit.copy.text");
