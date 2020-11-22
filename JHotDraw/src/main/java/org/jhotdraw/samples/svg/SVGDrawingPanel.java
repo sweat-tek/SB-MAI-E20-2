@@ -61,7 +61,6 @@ public class SVGDrawingPanel extends JPanel {
     }
 
     /** Creates new instance. */
-    @FeatureEntryPoint(JHotDrawFeatures.CANVAS)
     public SVGDrawingPanel() {
         labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
