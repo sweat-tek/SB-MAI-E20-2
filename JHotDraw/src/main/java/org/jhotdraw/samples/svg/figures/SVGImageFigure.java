@@ -34,8 +34,8 @@ import org.jhotdraw.geom.*;
  *
  * @author Werner Randelshofer
  * @version 2.1 2008-05-17 Rendering hints must be copied, when creating
- * a local Graphics2D object. Remove transformation action was not undoable. 
- * <br>2.0.1 2008-04-13 We must catch all throwables when calling ImageIO.read(). 
+ * a local Graphics2D object. Remove transformation action was not undoable.
+ * <br>2.0.1 2008-04-13 We must catch all throwables when calling ImageIO.read().
  * <br>2.0 2007-04-14 Adapted for new AttributeKeys.TRANSFORM support.
  * <br>1.0 July 8, 2006 Created.
  */
@@ -78,43 +78,44 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // DRAWING
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.IMAGE_TOOL)
-    public void draw(Graphics2D g) {
-        //super.draw(g);
-
+    public void draw(Graphics2D graphics2D) {
+        //super.draw(graphics2D);
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
-            Composite savedComposite = g.getComposite();
+            Composite savedComposite = graphics2D.getComposite();
             if (opacity != 1d) {
-                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
             }
-
-            BufferedImage image = getBufferedImage();
-            if (image != null) {
-                if (TRANSFORM.get(this) != null) {
-                    // FIXME - We should cache the transformed image.
-                    //         Drawing a transformed image appears to be very slow.
-                    Graphics2D gx = (Graphics2D) g.create();
-                    
-                    // Use same rendering hints like parent graphics
-                    gx.setRenderingHints(g.getRenderingHints());
-                    
-                    gx.transform(TRANSFORM.get(this));
-                    gx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                    gx.dispose();
-                } else {
-                    g.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                }
-            } else {
-                Shape shape = getTransformedShape();
-                g.setColor(Color.red);
-                g.setStroke(new BasicStroke());
-                g.draw(shape);
-            }
-
+            draw2DGraphics(graphics2D);
             if (opacity != 1d) {
-                g.setComposite(savedComposite);
+                graphics2D.setComposite(savedComposite);
             }
+        }
+    }
+
+    private void draw2DGraphics(Graphics2D graphics2D) {
+        BufferedImage image = getBufferedImage();
+        if (image != null) {
+            drawBufferedImage(graphics2D, image);
+        } else {
+            Shape shape = getTransformedShape();
+            graphics2D.setColor(Color.red);
+            graphics2D.setStroke(new BasicStroke());
+            graphics2D.draw(shape);
+        }
+    }
+
+    private void drawBufferedImage(Graphics2D graphics2D, BufferedImage image) {
+        if (TRANSFORM.get(this) != null) {
+            // FIXME - We should cache the transformed image. Drawing a transformed image appears to be very slow.
+            Graphics2D graphics2Dx = (Graphics2D) graphics2D.create();
+            graphics2Dx.setRenderingHints(graphics2D.getRenderingHints()); // Use same rendering hints like parent graphics
+            graphics2Dx.transform(TRANSFORM.get(this));
+            graphics2Dx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+            graphics2Dx.dispose();
+        } else {
+            graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
         }
     }
 
@@ -295,11 +296,12 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // CLONING
     @Override
     public SVGImageFigure clone() {
-        SVGImageFigure that = (SVGImageFigure) super.clone();
-        that.rectangle = (Rectangle2D.Double) this.rectangle.clone();
-        that.cachedTransformedShape = null;
-        that.cachedHitShape = null;
-        return that;
+        SVGImageFigure svgImageFigure = (SVGImageFigure) super.clone();
+        assert svgImageFigure != null : "Clone is null";
+        svgImageFigure.rectangle = (Rectangle2D.Double) this.rectangle.clone();
+        svgImageFigure.cachedTransformedShape = null;
+        svgImageFigure.cachedHitShape = null;
+        return svgImageFigure;
     }
 
     public boolean isEmpty() {
@@ -393,19 +395,13 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     }
 
     public void loadImage(File file) throws IOException {
-        InputStream in = null;
-        try {
-            in = new FileInputStream(file);
+        try (InputStream in = new FileInputStream(file)) {
             loadImage(in);
         } catch (Throwable t) {
             ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
             IOException e = new IOException(labels.getFormatted("file.failedToLoadImage.message", file.getName()));
             e.initCause(t);
             throw e;
-        } finally {
-            if (in != null) {
-                in.close();
-            }
         }
     }
 
