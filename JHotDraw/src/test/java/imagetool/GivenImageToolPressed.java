@@ -1,43 +1,51 @@
 package imagetool;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import org.jhotdraw.draw.*;
+import org.jhotdraw.draw.DefaultDrawingEditor;
+import org.jhotdraw.draw.DrawingEditor;
 import org.jhotdraw.samples.svg.SVGCreateFromFileTool;
-import org.jhotdraw.samples.svg.figures.SVGGroupFigure;
 import org.jhotdraw.samples.svg.figures.SVGImageFigure;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import javax.swing.*;
 import java.io.File;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertNotNull;
 
 public class GivenImageToolPressed extends Stage<GivenImageToolPressed> {
 
     @ProvidedScenarioState
-    private SVGCreateFromFileTool createFromFileTool;
+    SVGImageFigure svgImageFigure;
     @ProvidedScenarioState
-    private DrawingEditor editor;
-    private JFileChooser fileChooser;
-    private DrawingView view;
-    private String testImagePath;
+    SVGCreateFromFileTool createFromFileTool;
+    @ProvidedScenarioState
+    File file = new File("src/test/java/imagetool/test_image.jpg");
+    @ProvidedScenarioState
+    DrawingEditor editor;
 
-    @BeforeStage
-    private void before() {
-        editor = new DefaultDrawingEditor();
-        view = new DefaultDrawingView();
-        view.setDrawing(new DefaultDrawing());
-        createFromFileTool = new SVGCreateFromFileTool(new SVGImageFigure(), new SVGGroupFigure());
-        editor.setActiveView(view);
-        fileChooser = Mockito.mock(JFileChooser.class);
-        Mockito.when(fileChooser.showOpenDialog(view.getComponent())).thenReturn(JFileChooser.APPROVE_OPTION);
-        testImagePath = "src/test/java/imagetool/test_image.jpg";
-        Mockito.when(fileChooser.getSelectedFile()).thenReturn(new File(testImagePath));
-        createFromFileTool.setFileChooser(fileChooser);
+    public void mockitoSetup() {
+        System.out.println(file.getAbsolutePath());
+        createFromFileTool = Mockito.mock(SVGCreateFromFileTool.class);
+        editor = Mockito.mock(DefaultDrawingEditor.class);
+        Mockito.doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                System.out.println("called with arguments: " + Arrays.toString(args));
+                svgImageFigure = new SVGImageFigure();
+                return null;
+            }
+        }).when(createFromFileTool).activate(editor);
     }
 
     public GivenImageToolPressed imageToolPressed() {
-        editor.setTool(createFromFileTool);
-        return self();
+        mockitoSetup();
+        assertNotNull(createFromFileTool);
+        assertNotNull(editor);
+        createFromFileTool.activate(editor);
+        return this;
     }
 }

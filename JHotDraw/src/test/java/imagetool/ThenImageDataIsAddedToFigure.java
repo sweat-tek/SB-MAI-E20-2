@@ -2,7 +2,6 @@ package imagetool;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import org.jhotdraw.samples.svg.SVGCreateFromFileTool;
 import org.jhotdraw.samples.svg.figures.SVGImageFigure;
 
 import static org.junit.Assert.assertNotNull;
@@ -10,14 +9,11 @@ import static org.junit.Assert.assertNotNull;
 public class ThenImageDataIsAddedToFigure extends Stage<ThenImageDataIsAddedToFigure> {
 
     @ExpectedScenarioState
-    SVGCreateFromFileTool createFromFileTool;
+    SVGImageFigure svgImageFigure;
 
     public ThenImageDataIsAddedToFigure imageDataIsAddedToFigure() {
-
-        // Check that there is now image data on the SVGImageFigure
-        assertNotNull(((SVGImageFigure) createFromFileTool.getPrototype()).getImageData());
-
+        assertNotNull(svgImageFigure.getBufferedImage());
+        assertNotNull(svgImageFigure.getImageData());
         return self();
     }
-
 }
