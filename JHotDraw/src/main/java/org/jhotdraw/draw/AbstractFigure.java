@@ -496,11 +496,11 @@ public abstract class AbstractFigure
         Rectangle2D.Double r = getBounds();
         return new Point2D.Double(r.x, r.y);
     }
-    /*
-    public Rectangle2D.Double getHitBounds() {
-    return getBounds();
-    }
-     */
+   
+//    public Rectangle2D.Double getHitBounds() {
+//    return getBounds();
+//    }
+    
 
     public Dimension2DDouble getPreferredSize() {
         Rectangle2D.Double r = getBounds();
