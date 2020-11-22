@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class BezierToolTest {
+public class UndoRedoUnitTest {
 
     private Drawing drawing;
     private Figure bezierFigure;
