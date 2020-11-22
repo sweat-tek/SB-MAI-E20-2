@@ -56,7 +56,7 @@ public class NullObjectTest {
         Component componentA = c.getComponent();
         Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
 
-        assertNotSame(componentA, componentB);
+        assertSame(componentA, componentB);
     }
 
     /**
@@ -67,7 +67,7 @@ public class NullObjectTest {
         CopyAction c = new CopyAction();
         Component componentB = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
 
-        assertNull(componentB);
+        assertNotNull(componentB);
     }
 
     /**
@@ -79,7 +79,7 @@ public class NullObjectTest {
         Component componentA = c.getComponent();
         Component componentB = c.getComponent();
 
-        assertNotSame(componentA, componentB);
+        assertSame(componentA, componentB);
     }
 
     /**
