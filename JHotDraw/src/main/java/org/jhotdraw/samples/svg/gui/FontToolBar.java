@@ -49,7 +49,7 @@ public class FontToolBar extends AbstractToolBar {
     
     private ResourceBundleUtil labels;
     private JPanel p;
-    private JPanel p1, p2, p3;
+    private JPanel p1, p2;
 
     /** Creates new instance. */
     public FontToolBar() {
@@ -132,10 +132,8 @@ public class FontToolBar extends AbstractToolBar {
 
         p1 = new JPanel(new GridBagLayout());
         p2 = new JPanel(new GridBagLayout());
-        p3 = new JPanel(new GridBagLayout());
         p1.setOpaque(false);
         p2.setOpaque(false);
-        p3.setOpaque(false);
 
         GridBagLayout layout = new GridBagLayout();
         p.setLayout(layout);
@@ -143,6 +141,8 @@ public class FontToolBar extends AbstractToolBar {
     
     // Font face field and popup button
     private void createFontFaceField(int columns, int gridWidth) {
+        assert p != null;
+        
         JAttributeTextField<Font> faceField = new JAttributeTextField<Font>();
         faceField.setColumns(columns);
         faceField.setToolTipText(labels.getString("attribute.font.toolTipText"));
@@ -170,6 +170,8 @@ public class FontToolBar extends AbstractToolBar {
     
     // Font size field with slider
     private void createFontSizeField() {
+        assert p != null && p2 != null;
+        
         JAttributeTextField<Double> sizeField = new JAttributeTextField<Double>();
         sizeField.setColumns(1);
         sizeField.setToolTipText(labels.getString("attribute.fontSize.toolTipText"));
@@ -218,6 +220,8 @@ public class FontToolBar extends AbstractToolBar {
     
     // Font style buttons
     private void createFontStyleButtons() {
+        assert p != null;
+        
         AbstractButton btn = ButtonFactory.createFontStyleBoldButton(editor, labels);
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
         btn.putClientProperty("Palette.Component.segmentPosition", "first");
