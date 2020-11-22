@@ -234,6 +234,9 @@ public interface Figure extends Cloneable, Serializable, DOMStorable {
      * {@code figure.willChange(); figure.setAttribute(key, value);
      * figure.changed(); }.
      * 
+     * @param <T>
+     * @param key
+     * @param value
      * @see AttributeKey#set
      */
     public <T> void setAttribute(AttributeKey<T> key, T value);

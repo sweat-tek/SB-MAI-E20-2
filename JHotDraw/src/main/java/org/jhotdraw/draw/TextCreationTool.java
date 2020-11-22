@@ -19,9 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.util.*;
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
-import org.jhotdraw.util.ResourceBundleUtil;
+
 /**
  * A tool to create figures which implement the {@code TextHolderFigure}
  * interface, such as {@code TextFigure}. The figure to be created is specified
@@ -43,7 +41,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
  * @version 1.0 2009-04-16 Refactored from TextTool.
  */
 public class TextCreationTool extends CreationTool implements ActionListener {
-    private FloatingTextField   textField;
+    private FloatingTextField textField;
     private TextHolderFigure  typingTarget;
     
     /** Creates a new instance. */
@@ -158,31 +156,8 @@ public class TextCreationTool extends CreationTool implements ActionListener {
                     typingTarget.changed();
                 }
             }
-            UndoableEdit edit = new AbstractUndoableEdit() {
-
-                @Override
-                public String getPresentationName() {
-                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-                    return labels.getString("attribute.text.text");
-                }
-
-                @Override
-                public void undo() {
-                    super.undo();
-                    editedFigure.willChange();
-                    editedFigure.setText(oldText);
-                    editedFigure.changed();
-                }
-
-                @Override
-                public void redo() {
-                    super.redo();
-                    editedFigure.willChange();
-                    editedFigure.setText(newText);
-                    editedFigure.changed();
-                }
-            };
-            getDrawing().fireUndoableEditHappened(edit);
+            
+            textFieldEndEdit(textField, typingTarget);
 
             typingTarget.changed();
             typingTarget = null;
@@ -198,6 +173,7 @@ public class TextCreationTool extends CreationTool implements ActionListener {
             fireToolDone();
         }
     }
+    @Override
     public void actionPerformed(ActionEvent event) {
         endEdit();
         if (isToolDoneAfterCreation()) {
