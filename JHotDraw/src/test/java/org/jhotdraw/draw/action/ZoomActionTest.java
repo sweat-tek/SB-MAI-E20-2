@@ -104,8 +104,8 @@ public class ZoomActionTest {
 
         ActionEvent e = mock(ActionEvent.class);
         instance.actionPerformed(e);
-
-        assertTrueZoom(oldVRect, vRect);
+        
+        verify(view).setScaleFactor(1);
     }
 
     @Test
